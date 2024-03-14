@@ -31,7 +31,10 @@
   padding: 20px 160px;
 }
 
-:is(button, img) {
+button {
+  cursor: pointer;
+}
+img {
   width: 56px;
   height: 56px;
   border-radius: 50%;
@@ -39,6 +42,21 @@
 }
 
 .btn-primary {
+  border-radius: 12px;
+  background: #1a80e5;
+  padding: var(--primary-btn-padding);
+  color: var(--main-bg);
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: var(--font-weight);
+  line-height: 21px;
+  letter-spacing: 0.21px;
+  width: 84px;
+  height: 40px;
+}
+
+.btn-secondary {
   border-radius: 12px;
   background: #1a80e5;
   padding: var(--primary-btn-padding);

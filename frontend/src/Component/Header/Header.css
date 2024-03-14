@@ -26,6 +26,7 @@ header {
   display: flex;
   align-items: center;
   gap: 36px;
+  margin-right: -13em;
 }
 
 .navItems > div a {
@@ -35,9 +36,10 @@ header {
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
-  line-height: 21px; /* 150% */
+  line-height: 21px;
 }
 
 .btn__wrapper {
   gap: 16px;
+  margin-right: -30em;
 }
