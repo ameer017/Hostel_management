@@ -1,22 +1,23 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  --main-bg: #fff;
+  --primary-color: #121417;
 
-  /* color-scheme: light; */
-  color: #121417;
-  background-color: #fff;
+  --font-family: "Inter", sans-serif;
+  --font-weight: 700;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --primary-btn-bg: #1a80e5;
+  --primary-btn-padding: 0 16px;
+  --secondary-btn-bg: #f0f2f5;
+  --text-fade: #637587;
+  --text-primary: #121417;
 
-  font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-weight: 500;
   font-style: normal;
-  font-variation-settings: "slnt" 0;
-  scroll-behavior: smooth;
   scroll-padding-top: 5rem;
+  scroll-behavior: smooth;
+}
+
+.container {
+  padding: 20px 160px;
 }
