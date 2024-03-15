@@ -1,0 +1,45 @@
+header {
+  border-bottom: 1px solid #e5e8eb;
+  padding: 12px 40px;
+}
+.logo > a {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.logo a > svg {
+  width: 16px;
+  height: 16px;
+}
+
+.logo a > span {
+  color: #121417;
+  font-feature-settings: "dlig" on;
+  font-family: var(--font-family);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 22.5px;
+  letter-spacing: -0.27px;
+}
+
+.navItems {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  margin-right: -13em;
+}
+
+.navItems > div a {
+  color: #121417;
+  font-feature-settings: "dlig" on;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 21px;
+}
+
+.btn__wrapper {
+  gap: 16px;
+  margin-right: -30em;
+}
