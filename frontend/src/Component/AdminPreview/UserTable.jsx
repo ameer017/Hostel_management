@@ -1,7 +1,7 @@
 import React from 'react';
 import { RiDeleteBin6Line } from "react-icons/ri";
 
-const UserTable = ({ data }) => {
+const UserTable = ({ data, onDelete}) => {
   return (
     <table className='__prevTable'>
       <thead>
@@ -23,7 +23,7 @@ const UserTable = ({ data }) => {
             <td className='__tableData __tableAction'>
               {/* Example action buttons */}
               <button className='__prevEditButton' onClick={() => handleEdit(user)}>Edit</button>
-              <button className='__prevDelButton' onClick={() => handleDelete(user.id)}><RiDeleteBin6Line /></button>
+              <button className='__prevDelButton' onClick={() => onDelete(user.id)}><RiDeleteBin6Line  /></button>
             </td>
           </tr>
         ))}

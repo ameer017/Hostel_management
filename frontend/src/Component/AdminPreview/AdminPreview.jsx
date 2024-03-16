@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./AdminPreview.css";
 import { CiSearch } from "react-icons/ci";
 import UserTable from "./UserTable";
@@ -12,6 +12,29 @@ const userData = [
 ];
 
 const AdminPreview = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [users, setUsers] = useState(userData);
+  const [filteredData, setFilteredData] = useState(userData); // Initialize filtered data with all users
+
+  const handleSearchChange = (e) => {
+    const term = e.target.value.toLowerCase();
+    setSearchTerm(term);
+    const filtered = users.filter(
+      (user) =>
+        user.name.toLowerCase().includes(term) ||
+        user.email.toLowerCase().includes(term) ||
+        user.role.toLowerCase().includes(term)
+    );
+    setFilteredData(filtered);
+  };
+
+  const handleDelete = (userId) => {
+    const updatedUsers = users.filter((user) => user.id !== userId);
+    setUsers(updatedUsers);
+    const updatedFilteredData = filteredData.filter((user) => user.id !== userId);
+    setFilteredData(updatedFilteredData);
+  };
+
   return (
     <div className="__prevCon">
       <h2 className="__prevHeader">Admins</h2>
@@ -21,12 +44,14 @@ const AdminPreview = () => {
         <input
           type="text"
           className="__prevSearch"
-          placeholder="Search by name or email"
+          placeholder="Search by name or email or role"
+          value={searchTerm}
+          onChange={handleSearchChange}
         />
       </div>
 
       <div className="__prevList">
-        <UserTable data={userData} />
+        <UserTable data={filteredData} onDelete={handleDelete} />
       </div>
 
       <div className="__inviteBtnCon">
