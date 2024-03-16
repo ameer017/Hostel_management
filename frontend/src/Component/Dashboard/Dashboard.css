@@ -1,5 +1,9 @@
 .left {
   padding: 16px;
+  width: 307px;
+  max-width: 300px;
+  height: 760px;
+  background-color: #f0f2f54e;
 }
 
 .left > div {
@@ -7,8 +11,50 @@
   margin: 8px;
 }
 
-a {
+.left > div > a {
   font-size: 14px;
   font-weight: 500;
   font-family: Inter;
+  width: 100%;
+  padding: 8px 12px;
+}
+
+.active-link {
+  border-radius: 12px;
+  background: #f0f2f5;
+}
+
+.right {
+  width: 921px;
+}
+
+.search {
+  width: 100%;
+  max-width: 300px;
+}
+
+.table {
+  padding: 5px;
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid #dbe0e5;
+  background: #fff;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 1.4rem;
+}
+
+thead {
+  border-bottom: 1px solid #e5e8eb;
+}
+
+th,
+td {
+  vertical-align: top;
+  text-align: left;
+  padding: 8px;
 }
