@@ -26,13 +26,46 @@
 
 .right {
   width: 921px;
+  padding: 16px;
+}
+
+.right p:nth-child(1) {
+  width: 100%;
+  color: #121417;
+  font-family: Inter;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.right p:nth-child(2) {
+  color: #121417;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px;
+  margin: 12px 0;
 }
 
 .search {
   width: 100%;
   max-width: 300px;
+  border-radius: 12px;
+  background: #f0f2f5;
+  padding: 16px;
+  font-size: 16px;
+  margin: 12px 0;
 }
 
+.search::placeholder {
+  color: #637587;
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+}
 .table {
   padding: 5px;
   width: 100%;
@@ -50,6 +83,7 @@ table {
 
 thead {
   border-bottom: 1px solid #e5e8eb;
+  font-size: 14px;
 }
 
 th,
@@ -57,4 +91,24 @@ td {
   vertical-align: top;
   text-align: left;
   padding: 8px;
+}
+
+tr {
+  border-bottom: 1px solid #ccc;
+  font-size: 14px;
+}
+
+tr:last-child {
+  border-bottom: unset;
+}
+
+tbody tr > td:not(:first-child) {
+  color: #637587;
+}
+
+tr:nth-child(even) {
+  background-color: #fff;
+}
+tbody > tr:hover {
+  cursor: pointer;
 }

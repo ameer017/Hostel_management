@@ -10,6 +10,33 @@ const dashboard = [
   { title: "Reports", url: "/report" },
 ];
 
+const studentsData = [
+  {
+    name: "Jessica Smith",
+    email: "jessica.smith@gmail.com",
+    idNumber: "12345",
+    gender: "Female",
+    age: 20,
+    nationality: "American",
+  },
+  {
+    name: "John Doe",
+    email: "john.doe@gmail.com",
+    idNumber: "67890",
+    gender: "Male",
+    age: 22,
+    nationality: "British",
+  },
+  {
+    name: "Maria Garcia",
+    email: "maria.garcia@gmail.com",
+    idNumber: "54321",
+    gender: "Female",
+    age: 25,
+    nationality: "Spanish",
+  },
+];
+
 const StudentDashboard = () => {
   const activeIndex = 1;
 
@@ -51,17 +78,19 @@ const StudentDashboard = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Jessica Smith</td>
-                <td>jessica.smith@gmail.com</td>
-                <td>12345</td>
-                <td>Female</td>
-                <td>20</td>
-                <td>American</td>
-                <td>
-                  <RiDeleteBin6Line size={25} color="red" />
-                </td>
-              </tr>
+              {studentsData.map((student, index) => (
+                <tr key={index}>
+                  <td>{student.name}</td>
+                  <td>{student.email}</td>
+                  <td>{student.idNumber}</td>
+                  <td>{student.gender}</td>
+                  <td>{student.age}</td>
+                  <td>{student.nationality}</td>
+                  <td>
+                    <RiDeleteBin6Line size={25} color="red" />
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

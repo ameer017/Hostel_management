@@ -6,6 +6,7 @@ import StudentReg from "./Component/Register/StudentReg";
 import Layout from "./Component/Layout/Layout";
 import Loader from "./Component/Loader/Loader";
 import StudentDashboard from "./Component/Dashboard/StudentDashboard";
+import Attendance from "./Component/Attendance/Attendance";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -29,6 +30,7 @@ function App() {
       />
 
       <Route path="/studentdash" element={<StudentDashboard />} />
+
     </Routes>
   );
 
