@@ -5,6 +5,7 @@ import HomeDash from "./Component/Dashboard/HomeDash";
 import StudentReg from "./Component/Register/StudentReg";
 import Layout from "./Component/Layout/Layout";
 import Loader from "./Component/Loader/Loader";
+import AdminPreview from "./Component/AdminPreview/AdminPreview";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -26,6 +27,7 @@ function App() {
           </Layout>
         }
       />
+       <Route path="/adminsPrev" element={<AdminPreview />} />
     </Routes>
   );
 
