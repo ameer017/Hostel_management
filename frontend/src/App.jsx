@@ -5,6 +5,7 @@ import HomeDash from "./Component/Dashboard/HomeDash";
 import StudentReg from "./Component/Register/StudentReg";
 import Layout from "./Component/Layout/Layout";
 import Loader from "./Component/Loader/Loader";
+import StudentDashboard from "./Component/Dashboard/StudentDashboard";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -19,13 +20,15 @@ function App() {
     <Routes>
       <Route path="/" element={<StudentReg />} />
       <Route
-        path="/"
+        path="/homedash"
         element={
           <Layout>
             <HomeDash />
           </Layout>
         }
       />
+
+      <Route path="/studentdash" element={<StudentDashboard />} />
     </Routes>
   );
 

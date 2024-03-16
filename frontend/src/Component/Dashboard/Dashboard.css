@@ -1,0 +1,14 @@
+.left {
+  padding: 16px;
+}
+
+.left > div {
+  padding: 8px 12px;
+  margin: 8px;
+}
+
+a {
+  font-size: 14px;
+  font-weight: 500;
+  font-family: Inter;
+}
