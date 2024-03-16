@@ -35,6 +35,22 @@ const AdminPreview = () => {
     setFilteredData(updatedFilteredData);
   };
 
+  const handleUpdateRole = (userId, newRole) => {
+    const updatedUsers = users.map((user) =>
+      user.id === userId ? { ...user, role: newRole } : user
+    );
+    setUsers(updatedUsers);
+  
+    // Update filtered data as well
+    const updatedFilteredData = filteredData.map((user) =>
+      user.id === userId ? { ...user, role: newRole } : user
+    );
+    setFilteredData(updatedFilteredData);
+  };
+  
+
+
+
   return (
     <div className="__prevCon">
       <h2 className="__prevHeader">Admins</h2>
@@ -51,7 +67,7 @@ const AdminPreview = () => {
       </div>
 
       <div className="__prevList">
-        <UserTable data={filteredData} onDelete={handleDelete} />
+        <UserTable data={filteredData} onDelete={handleDelete}  onUpdateRole={handleUpdateRole}  />
       </div>
 
       <div className="__inviteBtnCon">
