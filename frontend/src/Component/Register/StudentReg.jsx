@@ -3,7 +3,7 @@ import "./Register.css";
 
 const StudentReg = () => {
   return (
-    <div className="container form__ --100vh">
+    <div className=" form__ --100vh">
       <div className="form-container">
         <p className="title">Register a new student</p>
         <form className="form">
