@@ -8,7 +8,7 @@ import AdminReg from "./Component/Register/AdminReg";
 import Layout from "./Component/Layout/Layout";
 import Loader from "./Component/Loader/Loader";
 
-import StudentDashboard from "./Component/Dashboard/StudentDashboard";
+
 
 import AdminPreview from "./Component/AdminPreview/AdminPreview";
 
