@@ -1,22 +1,26 @@
 .form__ {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .form-container {
+  width: 70%;
+  max-width: 35rem;
   background-color: #fff;
   border-radius: 10px;
   box-sizing: border-box;
   padding: 20px 30px;
+  margin: 0 auto;
 }
 
 .title {
   font-family: Inter;
-  font-size: 32px;
+  font-size: 30px;
   font-style: normal;
   font-weight: 700;
-  line-height: 40px;
-  letter-spacing: -0.8px;
+  text-align: center;
 }
 
 .form {
@@ -61,4 +65,20 @@ label {
   background: #1a80e5;
   font-size: 14px;
   color: #fff;
+}
+
+@media screen and (max-width: 600px) and (min-width: 480px) {
+  .title {
+    font-size: 25px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .form-container {
+    width: 100%;
+  }
+
+  .title {
+    font-size: 20px;
+  }
 }

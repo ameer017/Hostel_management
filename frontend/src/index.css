@@ -30,6 +30,10 @@
   outline: none;
 }
 
+a {
+  color: var(--primary-color);
+}
+
 .container {
   padding: 20px 160px;
 }
@@ -37,6 +41,7 @@
 button {
   cursor: pointer;
 }
+
 img {
   width: 56px;
   height: 56px;
