@@ -12,6 +12,9 @@
   --text-fade: #637587;
   --text-primary: #121417;
 
+  --full-width:100%;
+  
+
   font-optical-sizing: auto;
   font-style: normal;
   scroll-padding-top: 5rem;
@@ -126,3 +129,5 @@ img {
 .--mh-100vh {
   min-height: 100vh;
 }
+
+
