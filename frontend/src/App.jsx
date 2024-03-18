@@ -69,7 +69,7 @@ function App() {
           </Layout>
         }
       />
-       <Route path="/adminsPrev" element={<AdminPreview />} />
+      <Route path="/adminsPrev" element={<AdminPreview />} />
     </Routes>
   );
 
