@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const items = [
   { title: "Dashboard", url: "/dashboard" },
   { title: "Students", url: "/students" },
-  { title: "Rooms", url: "/rooms" },
+  { title: "Rooms", url: "/room" },
 ];
 
 const Header = () => {
