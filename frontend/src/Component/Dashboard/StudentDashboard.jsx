@@ -64,29 +64,29 @@ const StudentDashboard = () => {
           className="search"
         />
 
-        <div className="table">
-          <table>
-            <thead>
-              <tr>
-                <th>Student Name</th>
-                <th>Email</th>
-                <th>ID Number</th>
-                <th>Gender</th>
-                <th>Age</th>
-                <th>Nationality</th>
-                <th>Actions</th>
+        <div className="table ">
+          <table className="table_wrapper">
+            <thead className="table__head">
+              <tr className="table__row">
+                <th className="same_class">Student Name</th>
+                <th className="same_class">Email</th>
+                <th className="same_class">ID Number</th>
+                <th className="same_class">Gender</th>
+                <th className="same_class">Age</th>
+                <th className="same_class">Nationality</th>
+                <th className="same_class">Actions</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="table__body">
               {studentsData.map((student, index) => (
-                <tr key={index}>
-                  <td>{student.name}</td>
-                  <td>{student.email}</td>
-                  <td>{student.idNumber}</td>
-                  <td>{student.gender}</td>
-                  <td>{student.age}</td>
-                  <td>{student.nationality}</td>
-                  <td>
+                <tr key={index} className="table__row">
+                  <td className="same_class">{student.name}</td>
+                  <td className="same_class">{student.email}</td>
+                  <td className="same_class">{student.idNumber}</td>
+                  <td className="same_class">{student.gender}</td>
+                  <td className="same_class">{student.age}</td>
+                  <td className="same_class">{student.nationality}</td>
+                  <td className="same_class">
                     <RiDeleteBin6Line size={25} color="red" />
                   </td>
                 </tr>
