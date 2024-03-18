@@ -75,38 +75,37 @@
   background: #fff;
 }
 
-table {
+.table_wrapper {
   border-collapse: collapse;
   width: 100%;
   font-size: 1.4rem;
 }
 
-thead {
+.table__head {
   border-bottom: 1px solid #e5e8eb;
   font-size: 14px;
 }
 
-th,
-td {
+.same_class {
   vertical-align: top;
   text-align: left;
   padding: 8px;
 }
 
-tr {
+.table__row {
   border-bottom: 1px solid #ccc;
   font-size: 14px;
 }
 
-tr:last-child {
+.table__row:last-child {
   border-bottom: unset;
 }
 
-tbody tr > td:not(:first-child) {
+.table__body .table__row > td:not(:first-child) {
   color: #637587;
 }
 
-tr:nth-child(even) {
+.table__row:nth-child(even) {
   background-color: #fff;
 }
 tbody > tr:hover {
