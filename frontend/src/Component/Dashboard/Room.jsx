@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import Sidebar from "./Sidebar";
 import RoomTable from "./RommTable";
 
-const rooms = [
+const roomsData = [
   {
     roomNumber: "101",
     capacity: 4,
@@ -41,16 +41,49 @@ const rooms = [
 ];
 
 const Room = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [rooms, setRooms] = useState(roomsData);
+  const [filteredData, setFilteredData] = useState(roomsData); 
+
+  const handleSearchChange = (e) => {
+    const term = e.target.value.toLowerCase();
+    setSearchTerm(term);
+    const filtered = roomsData.filter(
+      (room) =>
+        room.capacity.toLowerCase().includes(term) ||
+        room.status.toLowerCase().includes(term) ||
+        room.location.toLowerCase().includes(term)
+    );
+    setFilteredData(filtered);
+  };
+
+
   const handleAddRoom = () => {
     // Implement logic to add a new room
   };
 
-  const handleUpdateRoom = (updatedRoom) => {
-    // Implement logic to update the room
+  const handleUpdateRoom = (roomNumber, newStatus) => {
+    const updatedRooms = roomsData.map((room) =>
+      room.roomNumber === roomNumber ? { ...room, status: newStatus } : room
+    );
+    setRooms(updatedRooms);
+  
+    // Update filtered data as well
+    const updatedFilteredData = filteredData.map((room) =>
+      room.roomNumber === roomNumber ? { ...room, status: newStatus } : room
+    );
+    setFilteredData(updatedFilteredData);
   };
 
-  const handleDeleteRoom = (roomToDelete) => {
-    // Implement logic to delete the room
+  const handleDeleteRoom = (roomNumber) => {
+    const updatedRooms = roomsData.filter(
+      (room) => room.id !== roomNumber
+    );
+    setRooms(updatedRooms);
+    const updatedFilteredData = filteredData.filter(
+      (room) => room.roomNumber !== roomNumber
+    );
+    setFilteredData(updatedFilteredData);
   };
 
   return (
@@ -59,6 +92,15 @@ const Room = () => {
 
       <div>
         <h1>Hostel Room Listing</h1>
+
+        <input
+          placeholder="Search by room number, status, or location"
+          type="text"
+          className="search"
+          value={searchTerm}
+          onChange={handleSearchChange}
+        />
+
         <RoomTable
           rooms={rooms}
           onAddRoom={handleAddRoom}
