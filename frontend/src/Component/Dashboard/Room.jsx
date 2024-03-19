@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Sidebar from "./Sidebar";
 import RoomTable from "./RommTable";
 
-const roomsData = [
+const initialRooms = [
   {
     roomNumber: "101",
     capacity: 4,
@@ -24,75 +24,51 @@ const roomsData = [
     status: "Available",
     location: "Maplewood Lodge, Greenfield",
   },
-  {
-    roomNumber: "102",
-    capacity: 3,
-    occupancy: 3,
-    status: "Occupied",
-    location: "Pinecrest Residence, Oakville",
-  },
-  {
-    roomNumber: "102",
-    capacity: 3,
-    occupancy: 3,
-    status: "Occupied",
-    location: "Meadowbrook Inn, Bloomfield",
-  },
+  // Add more rooms as needed
 ];
 
 const Room = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [rooms, setRooms] = useState(roomsData);
-  const [filteredData, setFilteredData] = useState(roomsData); 
+  const [rooms, setRooms] = useState(initialRooms);
+  const [filteredData, setFilteredData] = useState(initialRooms);
 
   const handleSearchChange = (e) => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
-    const filtered = roomsData.filter(
+    const filtered = rooms.filter(
       (room) =>
-        room.capacity.toLowerCase().includes(term) ||
+        room.roomNumber.toLowerCase().includes(term) ||
         room.status.toLowerCase().includes(term) ||
         room.location.toLowerCase().includes(term)
     );
     setFilteredData(filtered);
   };
 
-
   const handleAddRoom = () => {
     // Implement logic to add a new room
   };
 
   const handleUpdateRoom = (roomNumber, newStatus) => {
-    const updatedRooms = roomsData.map((room) =>
+    const updatedRooms = rooms.map((room) =>
       room.roomNumber === roomNumber ? { ...room, status: newStatus } : room
     );
     setRooms(updatedRooms);
-  
-    // Update filtered data as well
-    const updatedFilteredData = filteredData.map((room) =>
-      room.roomNumber === roomNumber ? { ...room, status: newStatus } : room
-    );
-    setFilteredData(updatedFilteredData);
+    setFilteredData(updatedRooms);
   };
 
   const handleDeleteRoom = (roomNumber) => {
-    const updatedRooms = roomsData.filter(
-      (room) => room.id !== roomNumber
-    );
-    setRooms(updatedRooms);
-    const updatedFilteredData = filteredData.filter(
+    const updatedRooms = rooms.filter(
       (room) => room.roomNumber !== roomNumber
     );
-    setFilteredData(updatedFilteredData);
+    setRooms(updatedRooms);
+    setFilteredData(updatedRooms);
   };
 
   return (
     <div className="container --flex-start">
       <Sidebar />
-
       <div>
         <h1>Hostel Room Listing</h1>
-
         <input
           placeholder="Search by room number, status, or location"
           type="text"
@@ -100,9 +76,8 @@ const Room = () => {
           value={searchTerm}
           onChange={handleSearchChange}
         />
-
         <RoomTable
-          rooms={rooms}
+          rooms={filteredData}
           onAddRoom={handleAddRoom}
           onUpdateRoom={handleUpdateRoom}
           onDeleteRoom={handleDeleteRoom}
