@@ -111,3 +111,21 @@
 tbody > tr:hover {
   cursor: pointer;
 }
+
+.right button {
+  margin-top: 1.2em;
+  width: 480px;
+  height: 40px;
+  padding: 0px 16px;
+  color: #121417;
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 21px;
+  letter-spacing: 0.21px;
+}
+
+
+._noBg {
+  background: transparent;
+}
