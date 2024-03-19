@@ -1,9 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Dashboard.css";
 import { RiDeleteBin6Line, RiFilePaperLine } from "react-icons/ri";
 import { FaPen } from "react-icons/fa";
+import EditStatusModal from "./EditStatusModal";
 
 const RoomTable = ({ rooms, onAddRoom, onUpdateRoom, onDeleteRoom }) => {
+  const [showModal, setShowModal] = useState(false);
+  const [selectedRoom, setSelectedRoom] = useState(null);
+
+  const openModal = (room) => {
+    setSelectedRoom(room);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
   return (
     <div className="room-table-container">
       <h2>Available Rooms</h2>
@@ -28,10 +41,13 @@ const RoomTable = ({ rooms, onAddRoom, onUpdateRoom, onDeleteRoom }) => {
                 <td className="same_class">{room.location}</td>
                 <td className="same_class">{room.status}</td>
                 <td className="same_class ">
-                  <button onClick={() => onUpdateRoom(room)} className="_noBg">
+                  <button onClick={() => openModal(room)} className="_noBg">
                     <FaPen size={25} color="blue" />
                   </button>
-                  <button onClick={() => onDeleteRoom(room)} className="_noBg">
+                  <button
+                    onClick={() => onDeleteRoom(room.roomNumber)}
+                    className="_noBg"
+                  >
                     <RiDeleteBin6Line size={25} color="red" />
                   </button>
                 </td>
@@ -44,6 +60,13 @@ const RoomTable = ({ rooms, onAddRoom, onUpdateRoom, onDeleteRoom }) => {
         <button onClick={onAddRoom} className="btn-secondary">
           Add New Room
         </button>
+        {showModal && (
+          <EditStatusModal
+            room={selectedRoom}
+            onUpdateRoom={onUpdateRoom}
+            onClose={closeModal}
+          />
+        )}
       </div>
     </div>
   );
