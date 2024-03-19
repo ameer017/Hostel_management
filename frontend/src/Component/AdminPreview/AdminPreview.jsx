@@ -14,7 +14,7 @@ const userData = [
 const AdminPreview = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUsers] = useState(userData);
-  const [filteredData, setFilteredData] = useState(userData); // Initialize filtered data with all users
+  const [filteredData, setFilteredData] = useState(userData); 
 
   const handleSearchChange = (e) => {
     const term = e.target.value.toLowerCase();

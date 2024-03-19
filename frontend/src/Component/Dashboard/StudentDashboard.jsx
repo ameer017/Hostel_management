@@ -1,17 +1,12 @@
-import React from "react";
-import "./Dashboard.css";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
-
-const dashboard = [
-  { title: "Dashboard", url: "/homedash" },
-  { title: "Students", url: "/studentdash" },
-  { title: "Rooms", url: "/room" },
-  { title: "Reports", url: "/report" },
-];
+import "./Dashboard.css";
+import Sidebar from "./Sidebar";
+import { Link } from "react-router-dom";
 
 const studentsData = [
   {
+    id: 1,
     name: "Jessica Smith",
     email: "jessica.smith@gmail.com",
     idNumber: "12345",
@@ -20,6 +15,7 @@ const studentsData = [
     nationality: "American",
   },
   {
+    id: 2,
     name: "John Doe",
     email: "john.doe@gmail.com",
     idNumber: "67890",
@@ -28,6 +24,7 @@ const studentsData = [
     nationality: "British",
   },
   {
+    id: 3,
     name: "Maria Garcia",
     email: "maria.garcia@gmail.com",
     idNumber: "54321",
@@ -38,22 +35,35 @@ const studentsData = [
 ];
 
 const StudentDashboard = () => {
-  const activeIndex = 1;
+  const [searchTerm, setSearchTerm] = useState("");
+  const [students, setStudents] = useState(studentsData);
+  const [filteredData, setFilteredData] = useState(studentsData);
+
+  const handleSearchChange = (e) => {
+    const term = e.target.value.toLowerCase();
+    setSearchTerm(term);
+    const filtered = studentsData.filter(
+      (student) =>
+        student.name.toLowerCase().includes(term) ||
+        student.email.toLowerCase().includes(term)
+    );
+    setFilteredData(filtered);
+  };
+
+  const handleDelete = (studentId) => {
+    const updatedStudents = students.filter(
+      (student) => student.id !== studentId
+    );
+    setStudents(updatedStudents);
+    const updatedFilteredData = filteredData.filter(
+      (student) => student.id !== studentId
+    );
+    setFilteredData(updatedFilteredData);
+  };
 
   return (
     <div className="container --flex-start">
-      <div className="left">
-        {dashboard.map(({ i, title, url }, index) => (
-          <div className="--flex-center  --dir-column" key={index}>
-            <Link
-              to={url}
-              className={index === activeIndex ? "active-link" : ""}
-            >
-              {title}
-            </Link>
-          </div>
-        ))}
-      </div>
+      <Sidebar />
       <div className="right">
         <p>Students</p>
         <p>Search students</p>
@@ -62,9 +72,11 @@ const StudentDashboard = () => {
           placeholder="Search by name, email, or ID number"
           type="text"
           className="search"
+          value={searchTerm}
+          onChange={handleSearchChange}
         />
 
-        <div className="table ">
+        <div className="table">
           <table className="table_wrapper">
             <thead className="table__head">
               <tr className="table__row">
@@ -78,7 +90,7 @@ const StudentDashboard = () => {
               </tr>
             </thead>
             <tbody className="table__body">
-              {studentsData.map((student, index) => (
+              {filteredData.map((student, index) => (
                 <tr key={index} className="table__row">
                   <td className="same_class">{student.name}</td>
                   <td className="same_class">{student.email}</td>
@@ -87,13 +99,20 @@ const StudentDashboard = () => {
                   <td className="same_class">{student.age}</td>
                   <td className="same_class">{student.nationality}</td>
                   <td className="same_class">
-                    <RiDeleteBin6Line size={25} color="red" />
+                    <RiDeleteBin6Line
+                      size={25}
+                      color="red"
+                      onClick={() => handleDelete(student.id)}
+                    />
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+        <button className="btn-secondary">
+          <Link to="/studentreg">Add a student</Link>
+        </button>
       </div>
     </div>
   );
