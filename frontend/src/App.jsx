@@ -10,7 +10,7 @@ import Loader from "./Component/Loader/Loader";
 import AdminPreview from "./Component/AdminPreview/AdminPreview";
 import StudentDashboard from "./Component/Dashboard/StudentDashboard";
 import Login from "./Component/Register/Login";
-import Room from "./Component/Room/Room";
+import Room from "./Component/Dashboard/Room";
 
 function App() {
   const [loading, setLoading] = useState(true);

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import "./Dashboard.css";
 import Sidebar from "./Sidebar";
+import { Link } from "react-router-dom";
 
 const studentsData = [
   {
@@ -110,6 +110,9 @@ const StudentDashboard = () => {
             </tbody>
           </table>
         </div>
+        <button className="btn-secondary">
+          <Link to="/studentreg">Add a student</Link>
+        </button>
       </div>
     </div>
   );
