@@ -45,7 +45,6 @@ const Room = () => {
   };
 
   const handleAddRoom = () => {
-    // Implement logic to add a new room
   };
 
   const handleUpdateRoom = (roomNumber, newStatus) => {
