@@ -1,5 +1,5 @@
 import React from "react";
-import "./AdminReg.css";
+import "./Register.css";
 
 const AdminReg = () => {
   return (
@@ -21,9 +21,9 @@ const AdminReg = () => {
           <div className="--dir-column">
             <label htmlFor="name">Email:</label>
             <input
-              type="text"
+              type="email"
               className="input"
-              name="age"
+              name="email"
               placeholder="Enter your email"
               required
             />
@@ -32,9 +32,9 @@ const AdminReg = () => {
           <div className="--dir-column">
             <label htmlFor="name">Password:</label>
             <input
-              type="email"
+              type="password"
               className="input"
-              name="email"
+              name="password"
               placeholder="Enter your password"
               required
             />
@@ -43,9 +43,9 @@ const AdminReg = () => {
           <div className="--dir-column">
             <label htmlFor="name">Confirm password:</label>
             <input
-              type="email"
+              type="password"
               className="input"
-              name="email"
+              name="password"
               placeholder="Re-enter your password"
               required
             />
