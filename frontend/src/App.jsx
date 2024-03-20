@@ -8,9 +8,13 @@ import Layout from "./Component/Layout/Layout";
 import Loader from "./Component/Loader/Loader";
 
 import AdminPreview from "./Component/AdminPreview/AdminPreview";
+
+import Attendance from "./Component/Attendance/Attendance";
+
 import StudentDashboard from "./Component/Dashboard/StudentDashboard";
 import Login from "./Component/Register/Login";
 import Room from "./Component/Dashboard/Room";
+
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -36,9 +40,14 @@ function App() {
         }
       />
 
+       <Route path="/adminsPrev" element={< AdminPreview />} />
+       <Route path="/attendance" element={<Attendance />} />
+
+
       <Route path="/studentdash" element={<StudentDashboard />} />
 
       <Route path="/adminsPrev" element={<AdminPreview />} />
+
     </Routes>
   );
 
