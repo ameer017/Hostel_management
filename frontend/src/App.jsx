@@ -46,6 +46,7 @@ import AdminReg from "./Component/Register/AdminReg";
 import Layout from "./Component/Layout/Layout";
 import Loader from "./Component/Loader/Loader";
 import AdminPreview from "./Component/AdminPreview/AdminPreview";
+import Attendance from "./Component/Attendance/Attendance";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -69,7 +70,8 @@ function App() {
           </Layout>
         }
       />
-       <Route path="/adminsPrev" element={<AdminPreview />} />
+       <Route path="/adminsPrev" element={< AdminPreview />} />
+       <Route path="/attendance" element={<Attendance />} />
     </Routes>
   );
 
