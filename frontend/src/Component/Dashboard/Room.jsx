@@ -24,7 +24,6 @@ const initialRooms = [
     status: "Available",
     location: "Maplewood Lodge, Greenfield",
   },
-  // Add more rooms as needed
 ];
 
 const Room = () => {

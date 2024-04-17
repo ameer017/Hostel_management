@@ -60,6 +60,8 @@ const RoomTable = ({ rooms, onAddRoom, onUpdateRoom, onDeleteRoom }) => {
         <button onClick={onAddRoom} className="btn-secondary">
           Add New Room
         </button>
+
+        
         {showModal && (
           <EditStatusModal
             room={selectedRoom}
