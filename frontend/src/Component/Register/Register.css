@@ -15,6 +15,11 @@
   margin: 0 auto;
 }
 
+.form-container > p > a {
+  text-decoration: underline;
+  font-size: 15px;
+}
+
 .title {
   font-family: Inter;
   font-size: 30px;
