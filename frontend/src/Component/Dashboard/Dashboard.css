@@ -129,3 +129,15 @@ tbody > tr:hover {
 ._noBg {
   background: transparent;
 }
+
+.modal-content input {
+  border: 1px solid grey;
+  width: 100%;
+  padding: 4px ;
+  font-size: 12px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+}
