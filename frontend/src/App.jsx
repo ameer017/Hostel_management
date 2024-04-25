@@ -36,8 +36,6 @@ function App() {
 
 
       <Route path="/studentdash" element={<StudentDashboard />} />
-
-      <Route path="/adminsPrev" element={<AdminPreview />} />
     </Routes>
   );
 }
