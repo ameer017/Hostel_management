@@ -43,8 +43,11 @@ const Room = () => {
     setFilteredData(filtered);
   };
 
-  const handleAddRoom = () => {
+  const handleAddRoom = (newRoomData) => {
+    setRooms([...rooms, newRoomData]);
+    setFilteredData([...rooms, newRoomData]);
   };
+  
 
   const handleUpdateRoom = (roomNumber, newStatus) => {
     const updatedRooms = rooms.map((room) =>
