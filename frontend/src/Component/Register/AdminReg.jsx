@@ -67,7 +67,7 @@ const AdminReg = () => {
               <button className="--btn">Create account</button>
             </form>
             <p>
-              Already have an account? <Link to="/login">Login</Link>
+              Already have an account? <Link to="/login">Login</Link> || <Link to="/homedash">Go Home</Link>
             </p>
           </div>
         </div>
