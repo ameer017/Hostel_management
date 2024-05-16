@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Sidebar from "./Sidebar";
 import RoomTable from "./RommTable";
 
+
 const initialRooms = [
   {
     roomNumber: "101",
@@ -66,10 +67,14 @@ const Room = () => {
   };
 
   return (
-    <div className="container --flex-start">
+    <div className="flex-gap">
+
       <Sidebar />
+    <div className=" --flex-start mt" >
       <div>
         <h1>Hostel Room Listing</h1>
+        <p>Search students</p>
+
         <input
           placeholder="Search by room number, status, or location"
           type="text"
@@ -84,6 +89,7 @@ const Room = () => {
           onDeleteRoom={handleDeleteRoom}
         />
       </div>
+    </div>
     </div>
   );
 };

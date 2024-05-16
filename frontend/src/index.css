@@ -88,6 +88,12 @@ img {
 }
 
 /* Flex */
+.ml {
+  margin-left: 50px;
+}
+.mt {
+  margin-top: 50px;
+}
 .--flex-center {
   display: flex;
   justify-content: center;
@@ -131,3 +137,7 @@ img {
 }
 
 
+.flex-gap {
+  display: flex;
+  gap: 10px;
+}

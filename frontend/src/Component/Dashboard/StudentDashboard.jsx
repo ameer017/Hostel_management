@@ -62,8 +62,10 @@ const StudentDashboard = () => {
   };
 
   return (
-    <div className="container --flex-start">
+    <div className="flex-gap">
+
       <Sidebar />
+    <div className=" --flex-start mt">
       <div className="right">
         <p>Students</p>
         <p>Search students</p>
@@ -114,6 +116,7 @@ const StudentDashboard = () => {
           <Link to="/studentreg">Add a student</Link>
         </button>
       </div>
+    </div>
     </div>
   );
 };

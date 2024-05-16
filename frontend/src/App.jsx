@@ -14,7 +14,6 @@ import StudentDashboard from "./Component/Dashboard/StudentDashboard";
 import Login from "./Component/Register/Login";
 import Room from "./Component/Dashboard/Room";
 
-
 function App() {
   return (
     <Routes>
@@ -31,9 +30,7 @@ function App() {
         }
       />
 
-       <Route path="/adminsPrev" element={< AdminPreview />} />
-       <Route path="/attendance" element={<Attendance />} />
-
+      <Route path="/attendance" element={<Attendance />} />
 
       <Route path="/studentdash" element={<StudentDashboard />} />
 

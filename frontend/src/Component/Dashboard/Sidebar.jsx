@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "./Dashboard.css";
 
 const dashboardLinks = [
+  { title: "Home", url: "/homedash" },
   { title: "Students", url: "/studentdash" },
   { title: "Rooms", url: "/room" },
   { title: "Reports", url: "/report" },
@@ -16,13 +17,13 @@ const Sidebar = () => {
   };
 
   return (
-    <div className=" --flex-start">
+    <div className=" --flex-start ml">
       <div className="left">
         {dashboardLinks.map(({ title, url }, index) => (
           <div className="--flex-center  --dir-column" key={index}>
             <Link
               to={url}
-              className={index === activeIndex ? "active-link" : ""}
+              // className={index === activeIndex ? "active-link" : ""}
               onClick={() => handleLinkClick(index)}
             >
               {title}

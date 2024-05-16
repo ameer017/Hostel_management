@@ -1,4 +1,4 @@
-.form__ {
+/* .form__ {
   position: relative;
   display: flex;
   align-items: center;
@@ -85,5 +85,102 @@ label {
 
   .title {
     font-size: 20px;
+  }
+} */
+
+
+.form__ {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-container {
+  width: 70%;
+  max-width: 35rem;
+  background-color: #fff;
+  border-radius: 10px;
+  box-sizing: border-box;
+  padding: 20px 30px;
+  margin: 0 auto;
+}
+
+.form-container > p > a {
+  text-decoration: underline;
+  font-size: 15px;
+}
+
+.title {
+  font-family: Inter;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+  text-align: center;
+}
+
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 30px 0;
+}
+
+.input {
+  width: 100%;
+  display: flex;
+  height: 37px;
+  padding: 8px 12px;
+  align-items: center;
+  gap: 12px;
+  align-self: stretch;
+  border-radius: 12px;
+  background: #f0f2f5;
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+label {
+  color: #121417;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 21px;
+}
+
+.--btn {
+  display: flex;
+  height: 40px;
+  padding: 16px;
+  justify-content: center;
+  align-items: center;
+  flex: 1 0 0;
+  border-radius: 12px;
+  background: #1a80e5;
+  font-size: 14px;
+  color: #fff;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+  .form-container {
+    max-width: 80%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .form-container {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .input {
+    font-size: 10px;
   }
 }

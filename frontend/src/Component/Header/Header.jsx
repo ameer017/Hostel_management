@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Header.css";
 import { Link } from "react-router-dom";
+import { MdMenu } from "react-icons/md";
 
 const items = [
   { title: "Dashboard", url: "/dashboard" },
@@ -9,11 +10,16 @@ const items = [
 ];
 
 const Header = () => {
+  const [showNav, setShowNav] = useState(false);
+
+  const toggleNav = () => {
+    setShowNav(!showNav);
+  };
   return (
     <header>
       <nav className="navigation --flex-between">
         <div className="logo">
-          <Link to="/homedash">
+          <Link to="/homedash" className="logo-link">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="14"
@@ -62,6 +68,10 @@ const Header = () => {
 
         <div>
           <img src="/src/assets/asset-1.png" />
+        </div>
+
+        <div className="menu-icon" onClick={toggleNav}>
+        <MdMenu />
         </div>
       </nav>
     </header>

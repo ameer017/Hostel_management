@@ -189,7 +189,11 @@
 }
 
 .__addBtn{
-    width: 118.94px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 5px;
     background: #1A80E5;
     font-family: var(--font-family);
     font-size: 14px;
@@ -197,6 +201,10 @@
     line-height: 21px;
     letter-spacing: 0.20999999344348907px;
     color: #fff;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
 }
 
 .__attendBtn{
@@ -205,6 +213,9 @@
     font-weight: 700;
     line-height: 21px;
     letter-spacing: 0.20999999344348907px;
-    color: #121417;
+    color: #f7f7f7;
+    background-color: #637587;
+    padding: 10px;
+    border-radius: 5px;
 }
 
