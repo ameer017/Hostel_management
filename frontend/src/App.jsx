@@ -13,30 +13,58 @@ import Attendance from "./Component/Attendance/Attendance";
 import StudentDashboard from "./Component/Dashboard/StudentDashboard";
 import Login from "./Component/Register/Login";
 import Room from "./Component/Dashboard/Room";
+import Loader from "./Component/Loader/Loader";
 
 function App() {
-  return (
+
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    setTimeout(()=> {
+      setLoading(false)
+    }, 3000)
+  }, [])
+
+  const renderRoute =() => (
+ 
+    
     <Routes>
+      
       <Route path="/" element={<AdminReg />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/studentreg" element={<StudentReg />} />
+      
+      <Route path="/studentreg" element=
+      {
+        <Layout>
+      <StudentReg />
+
+      </Layout>
+      } />
       <Route path="/room" element={<Room />} />
       <Route
         path="/homedash"
         element={
-          <Layout>
+           <Layout>
             <HomeDash />
-          </Layout>
+           </Layout>
         }
       />
 
-      <Route path="/attendance" element={<Attendance />} />
+      <Route path="/adminsPrev" element={<AdminPreview />} />
+      <Route path="/attendance" element={
+     
+      <Layout>
+      <Attendance />
+      </Layout>
+      } />
 
       <Route path="/studentdash" element={<StudentDashboard />} />
-
-      <Route path="/adminsPrev" element={<AdminPreview />} />
     </Routes>
-  );
+
+    
+   );
+
+  return <>{loading ? <Loader/> : renderRoute()}</>
 }
 
 export default App;

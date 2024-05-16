@@ -1,7 +1,9 @@
 import React from "react";
 import "./HomeDash.css";
 import { moe } from "../../assets";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+
+
 const HomeDash = () => {
   return (
     <div className="--flex-center __homeDashCon">
@@ -82,9 +84,17 @@ const HomeDash = () => {
 
       <div className="__lastCon">
         <h3 className="__lastTitle">Quick Actions</h3>
-        <div>
-          <Link to="/studentreg" className="__addBtn ">Add student</Link>
-          <Link to="/attendance" className="__attendBtn">Attendance</Link>
+        <div className="__homeBtn">
+          <button className="__addBtn">
+            <Link to="/studentreg">
+            Add student
+            </Link>
+          </button>
+          <button className="__attendBtn">
+           <Link to="/attendance">
+            Attendance
+           </Link>
+          </button>
         </div>
       </div>
     </div>

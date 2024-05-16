@@ -1,25 +1,46 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import "./Header.css";
 import { Link } from "react-router-dom";
-import { MdMenu } from "react-icons/md";
+import { IoMenu,  IoCloseOutline} from "react-icons/io5";
+import HeaderSideNav from "./HeaderSideNav";
+
 
 const items = [
-  { title: "Dashboard", url: "/dashboard" },
+  { title: "Dashboard", url: "/homedash" },
   { title: "Students", url: "/studentdash" },
   { title: "Rooms", url: "/room" },
 ];
 
 const Header = () => {
-  const [showNav, setShowNav] = useState(false);
 
-  const toggleNav = () => {
-    setShowNav(!showNav);
-  };
+  const [navToggle, setNavToggle] = useState(false);
+
+
   return (
+    <>
+    {navToggle && (
+      <div className="mobile-sidebar">
+        <HeaderSideNav items={items} setNavToggle={setNavToggle}/>
+      </div>
+    )}  
     <header>
       <nav className="navigation --flex-between">
         <div className="logo">
-          <Link to="/homedash" className="logo-link">
+          {navToggle ? (
+            
+            <IoCloseOutline
+            className="sidebar-toggle-icon" 
+            onClick={()=> setNavToggle(false)}
+            />
+          ) :(
+            <IoMenu
+            className="sidebar-toggle-icon" 
+            onClick={()=> setNavToggle(true)}
+            />
+
+          )} 
+
+          <Link to="/homedash">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="14"
@@ -38,7 +59,7 @@ const Header = () => {
           </Link>
         </div>
 
-        <div className="navItems --flex-center">
+        <div className="navItems">
           {items.map(({ title, url, i }) => (
             <div key={i}>
               <Link to={url}> {title} </Link>
@@ -64,18 +85,19 @@ const Header = () => {
               />
             </svg>
           </button>
-        </div>
 
-        <div>
+          <div>
           <img src="/src/assets/asset-1.png" />
         </div>
-
-        <div className="menu-icon" onClick={toggleNav}>
-        <MdMenu />
         </div>
+ 
+        
       </nav>
     </header>
+
+    </>
   );
 };
 
 export default Header;
+ 

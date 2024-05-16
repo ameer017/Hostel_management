@@ -3,6 +3,8 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import "./Dashboard.css";
 import Sidebar from "./Sidebar";
 import { Link } from "react-router-dom";
+import { IoMenu,  IoCloseOutline} from "react-icons/io5";
+
 
 const studentsData = [
   {
@@ -38,6 +40,7 @@ const StudentDashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [students, setStudents] = useState(studentsData);
   const [filteredData, setFilteredData] = useState(studentsData);
+  const [isSidebarToggle, setIsSidebarToggle] = useState(false)
 
   const handleSearchChange = (e) => {
     const term = e.target.value.toLowerCase();
@@ -62,12 +65,35 @@ const StudentDashboard = () => {
   };
 
   return (
-    <div className="flex-gap">
 
-      <Sidebar />
-    <div className=" --flex-start mt">
-      <div className="right">
+    <div>
+      {isSidebarToggle && (
+         <div className="mobile-side-nav">
+         <Sidebar /> 
+         </div>
+      )}
+     
+
+      <div className="--flex --overflow-hidden">
+      <div className="desktop-side-nav">
+        <Sidebar />
+      </div>
+
+      <div className="--flex-dir-column --overflow-y-auto --flex-One --overflow-x-hidden">
+      <main className="--flex-justify-center w-full">
+      <div className="right dash-main">
+        <div className="--flex-justify-between">
         <p>Students</p>
+        { isSidebarToggle ? (
+        <IoCloseOutline className="sidebar-toggle-iconB" 
+        onClick={() => setIsSidebarToggle(false)}/>
+      ) :(
+           <IoMenu className="sidebar-toggle-iconB"
+           onClick={() => setIsSidebarToggle(true)}/>
+        )}
+       
+        </div>
+        
         <p>Search students</p>
 
         <input
@@ -79,7 +105,7 @@ const StudentDashboard = () => {
         />
 
         <div className="table">
-          <table className="table_wrapper">
+          <table className="table_wrapper ">
             <thead className="table__head">
               <tr className="table__row">
                 <th className="same_class">Student Name</th>
@@ -116,8 +142,15 @@ const StudentDashboard = () => {
           <Link to="/studentreg">Add a student</Link>
         </button>
       </div>
+      </main>
+      
     </div>
     </div>
+
+    </div>
+
+    
+    
   );
 };
 
