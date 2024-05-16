@@ -171,44 +171,4 @@ img {
   min-height: 100vh;
 }
 
-/* NEEW */
-.--flex-justify-center {
-  display: flex;
-  justify-content: center;
-  
-}
-
-
-
-/* .relative {
-  position: relative;
-} */
-
-
-
-@media (min-width: 768px) and (max-width: 991px) {
-  .container {
-    padding: 0;
-  }
-}
-
-@media (min-width: 481px) and (max-width: 767px) {
-  .container {
-   padding: 50px 70px;
-  }
-}
-@media (min-width: 290px) and (max-width: 480px) {
-  .container {
-   padding: 0;
-  }
-}
-
-@media (max-width: 390px) {
-  img {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    cursor: pointer;
-  }
-}
 
