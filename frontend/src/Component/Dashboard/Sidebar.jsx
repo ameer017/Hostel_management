@@ -14,14 +14,10 @@ const Sidebar = () => {
 
   const handleLinkClick = (index) => {
     setActiveIndex(index);
-  };  
+  };
 
   return (
-<<<<<<< HEAD
-    <aside className=" --flex-start">
-=======
     <div className=" --flex-start ml">
->>>>>>> 355d77ebaff37ef3575df58abd74d7f66bdd3038
       <div className="left">
         {dashboardLinks.map(({ title, url }, index) => (
           <div className="--flex-center  --dir-column" key={index}>
@@ -35,10 +31,8 @@ const Sidebar = () => {
           </div>
         ))}
       </div>
-    </aside>
+    </div>
   );
 };
 
 export default Sidebar;
-
-

@@ -48,16 +48,6 @@ header {
 
 .btn__wrapper {
   gap: 16px;
-<<<<<<< HEAD
-  /* margin-right: -30em; */
-}
-
- .sidebar-toggle-icon {
-  cursor: pointer;
-  font-size: 50px;
-  /* display: none; */
-} 
-=======
   /* margin-right: -13em; */
 }
 
@@ -66,75 +56,31 @@ header {
   cursor: pointer;
   display: none;
 }
->>>>>>> 355d77ebaff37ef3575df58abd74d7f66bdd3038
 
 .mobile-sidebar {
   display: block;
   position: fixed;
   left: 0;
-<<<<<<< HEAD
-  background-color: #fff;
-}
-.sidebar-close {
-=======
  background-color: #fff;
  z-index: 1;
 }
 
 .--sidebar-close {
->>>>>>> 355d77ebaff37ef3575df58abd74d7f66bdd3038
   padding-top: 20px;
   padding-right: 30px;
 }
 
-<<<<<<< HEAD
-.sidebar-close-icon{
-=======
 .sidebar-toggle-icon {
->>>>>>> 355d77ebaff37ef3575df58abd74d7f66bdd3038
   cursor: pointer;
   font-size: 30px;
 }
 
-<<<<<<< HEAD
-.left {
-  padding: 16px;
-  width: 307px;
-  max-width: 300px;
-  height: 760px;
-  background-color: #f0f2f54e;
-}
-
-.left > div {
-  padding: 8px 12px;
-  margin: 8px;
-}
-
-.left > div > a {
-  font-size: 14px;
-  font-weight: 500;
-  font-family: Inter;
-  width: 100%;
-  padding: 8px 12px;
-}
-
-.active-link {
-  border-radius: 12px;
-  background: #f0f2f5;
-}
-
- @media (max-width: 900px) {
-  .sidebar-toggle-icon {
-    display: block;
-  }
-=======
 
 @media (max-width: 900px) {
   .sidebar-toggle-icon {
      display: block; 
   }
 
->>>>>>> 355d77ebaff37ef3575df58abd74d7f66bdd3038
   .logo a > span {
     display: none;
   }
@@ -143,16 +89,6 @@ header {
     width: 30px;
     height: 30px;
   }
-<<<<<<< HEAD
-  .btn__wrapper button:nth-child(odd){
-    display: none;
-  }
-
-  .navItems{
-    display: none;
-  }
-} 
-=======
 
   .btn__wrapper button:nth-child(odd) {
     display: none;
@@ -161,4 +97,3 @@ header {
     display: none;
   }
 }
->>>>>>> 355d77ebaff37ef3575df58abd74d7f66bdd3038

@@ -156,20 +156,6 @@ tbody > tr:hover {
   background: transparent;
 }
 
-<<<<<<< HEAD
-/* NEW */
-
-.dash-main {
-  width: 90%;
-  padding: 16px;
-}
-.room-table {
-  min-width: 600px;
-  
-}
-
-.sidebar-toggle-icon {
-=======
 .modal-content input {
   border: 1px solid grey;
   width: 100%;
@@ -191,43 +177,21 @@ tbody > tr:hover {
 }
 
 .sidebar-toggle-iconB {
->>>>>>> 355d77ebaff37ef3575df58abd74d7f66bdd3038
   cursor: pointer;
   font-size: 50px;
   display: none;
 }
 
-<<<<<<< HEAD
-.mobile-side-nav {
-display: block;
-position: fixed;
-left: 0;
-background-color: #fff;
-}
-
-@media (max-width: 900px) {
-  .sidebar-toggle-icon {
-    display: block;
-  }
-  .desktop-side-nav{
-=======
 @media (max-width: 991px) {
   .sidebar-toggle-iconB {
     display: block;
   }
 
   .desktop-side-nav {
->>>>>>> 355d77ebaff37ef3575df58abd74d7f66bdd3038
     display: none;
   }
 
   .dash-main {
     width: 100%;
   }
-<<<<<<< HEAD
-}
-@media (min-width:481px) and (max-width: 768px){
-  
-=======
->>>>>>> 355d77ebaff37ef3575df58abd74d7f66bdd3038
 }

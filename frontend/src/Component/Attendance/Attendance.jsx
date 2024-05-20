@@ -196,9 +196,4 @@ const Attendance = () => {
   );
 };
 
-<<<<<<< HEAD
-export default  Attendance;
- 
-=======
 export default Attendance;
->>>>>>> 355d77ebaff37ef3575df58abd74d7f66bdd3038
