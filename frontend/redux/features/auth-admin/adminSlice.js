@@ -263,7 +263,6 @@ const adminSlice = createSlice({
 
 export const { RESET } = adminSlice.actions;
 
-export const selectIsLoggedIn = (state) => state.auth.isLoggedIn;
-export const selectUser = (state) => state.auth.admin;
+
 
 export default adminSlice.reducer;
