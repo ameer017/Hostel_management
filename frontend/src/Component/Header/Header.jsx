@@ -1,19 +1,46 @@
-import React from "react";
+import React, {useState} from "react";
 import "./Header.css";
 import { Link } from "react-router-dom";
+import { IoMenu,  IoCloseOutline} from "react-icons/io5";
+import HeaderSideNav from "./HeaderSideNav";
+
 
 const items = [
-  { title: "Dashboard", url: "/dashboard" },
-  { title: "Students", url: "/students" },
-  { title: "Rooms", url: "/rooms" },
+  { title: "Dashboard", url: "/homedash" },
+  { title: "Students", url: "/studentdash" },
+  { title: "Rooms", url: "/room" },
 ];
 
 const Header = () => {
+
+  const [navToggle, setNavToggle] = useState(false);
+
+
   return (
+    <>
+    {navToggle && (
+      <div className="mobile-sidebar">
+        <HeaderSideNav items={items} setNavToggle={setNavToggle}/>
+      </div>
+    )}  
     <header>
       <nav className="navigation --flex-between">
         <div className="logo">
-          <Link to="/">
+          {navToggle ? (
+            
+            <IoCloseOutline
+            className="sidebar-toggle-icon" 
+            onClick={()=> setNavToggle(false)}
+            />
+          ) :(
+            <IoMenu
+            className="sidebar-toggle-icon" 
+            onClick={()=> setNavToggle(true)}
+            />
+
+          )} 
+
+          <Link to="/homedash">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="14"
@@ -32,7 +59,7 @@ const Header = () => {
           </Link>
         </div>
 
-        <div className="navItems --flex-center">
+        <div className="navItems">
           {items.map(({ title, url, i }) => (
             <div key={i}>
               <Link to={url}> {title} </Link>
@@ -58,14 +85,19 @@ const Header = () => {
               />
             </svg>
           </button>
-        </div>
 
-        <div>
+          <div>
           <img src="/src/assets/asset-1.png" />
         </div>
+        </div>
+ 
+        
       </nav>
     </header>
+
+    </>
   );
 };
 
 export default Header;
+ 

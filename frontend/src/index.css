@@ -12,6 +12,8 @@
   --text-fade: #637587;
   --text-primary: #121417;
 
+  --full-width: 100%;
+
   font-optical-sizing: auto;
   font-style: normal;
   scroll-padding-top: 5rem;
@@ -25,6 +27,11 @@
   box-sizing: border-box;
   text-decoration: none;
   outline: none;
+  list-style: none;
+}
+
+a {
+  color: var(--primary-color);
 }
 
 .container {
@@ -34,6 +41,7 @@
 button {
   cursor: pointer;
 }
+
 img {
   width: 56px;
   height: 56px;
@@ -58,7 +66,7 @@ img {
 
 .btn-secondary {
   border-radius: 12px;
-  background: #1a80e5;
+  background: var(--secondary-btn-bg);
   padding: var(--primary-btn-padding);
   color: var(--main-bg);
   font-family: var(--font-family);
@@ -67,7 +75,7 @@ img {
   font-weight: var(--font-weight);
   line-height: 21px;
   letter-spacing: 0.21px;
-  width: 84px;
+  /* width: 84px; */
   height: 40px;
 }
 
@@ -79,40 +87,82 @@ img {
   padding: 10px;
 }
 
-/* Flex */
-.--flex-center {
+ /* Flex  */
+ .--flex-center {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .--flex-start {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
 }
+
 .--flex-end {
   display: flex;
   justify-content: flex-end;
   align-items: center;
 }
-.--flex-between {
+
+.--flex-justify-between {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+}
+
+ .--flex {
+  display: flex;
+}
+
+.--flex-One {
+  flex: 1 1 0%;
 }
 
 .--dir-column {
   flex-direction: column;
 }
+ 
+.--flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+} 
 
 .--flex-dir-column {
   display: flex;
+  flex-direction: column;
 }
+
 
 .--align-center {
   display: flex;
   align-items: center;
 }
+
+.--overflow-x-hidden {
+  overflow-x: hidden;
+}
+
+.--overflow-hidden {
+  overflow: hidden;
+}
+
+.--overflow-x-hidden {
+  overflow: hidden;
+}
+
+.--overflow-x-auto {
+  overflow-x: auto;
+}
+.--overflow-y-hidden {
+  overflow-y: hidden;
+}
+.--overflow-y-auto {
+  overflow-y: auto;
+}
+
+
 
 .--100vh {
   height: 100vh;
@@ -121,3 +171,16 @@ img {
 .--mh-100vh {
   min-height: 100vh;
 }
+
+/* NEEW */
+.--flex-justify-center {
+  display: flex;
+  justify-content: center;
+  
+}
+
+
+
+/* .relative {
+  position: relative;
+} */
