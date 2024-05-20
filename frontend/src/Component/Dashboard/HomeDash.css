@@ -5,14 +5,15 @@
 }
 
 .__flex{
-    display: flex;justify-content: center;
+    display: flex;
+    justify-content: center;
 }
 
 .__homeDashCon{
     flex-direction: column;
     margin: 20px 160px 0 160px;
 }
-
+    
 .__paraCon{
     width: 100%;
     padding: 24px;
@@ -208,3 +209,41 @@
     color: #121417;
 }
 
+
+.dashboard-links-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+@media screen and (min-width: 768px) {
+    .__homeDashCon {
+      margin: 10px 20px 0 20px; /* Adjust margin for smaller screens */
+    }
+  
+    .__boardss {
+      flex-direction: column; /* Adjust flex direction for smaller screens */
+      align-items: center; /* Center align items */
+    }
+  
+    .__board {
+      width: 100%; /* Set board width to 100% */
+      margin-bottom: 12px; /* Add some space between boards */
+    }
+  
+    .__firstCon {
+      padding: 12px; /* Adjust padding for smaller screens */
+    }
+  
+    .__users {
+      justify-content: center; /* Center align users */
+    }
+  
+    .__lastCon {
+      padding: 12px; /* Adjust padding for smaller screens */
+    }
+  
+    .__lastCon > div {
+      justify-content: center; /* Center align buttons */
+    }
+  }

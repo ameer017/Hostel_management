@@ -12,8 +12,7 @@
   --text-fade: #637587;
   --text-primary: #121417;
 
-  --full-width:100%;
-  
+  --full-width: 100%;
 
   font-optical-sizing: auto;
   font-style: normal;
@@ -87,39 +86,83 @@ img {
   padding: 10px;
 }
 
-/* Flex */
-.--flex-center {
+ /* Flex  */
+ .--flex-center {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .--flex-start {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
 }
+
 .--flex-end {
   display: flex;
   justify-content: flex-end;
   align-items: center;
 }
-.--flex-between {
+
+.--flex-justify-between {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+}
+
+ .--flex {
+  display: flex;
+}
+
+.--flex-1 {
+  flex: 1 1 0%;
 }
 
 .--dir-column {
   flex-direction: column;
 }
+ 
+
+
+
+
+.--flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+} 
 
 .--flex-dir-column {
   display: flex;
+  flex-direction: column;
 }
+
 
 .--align-center {
   display: flex;
   align-items: center;
+}
+
+.--overflow-x-hidden {
+  overflow-x: hidden;
+}
+
+.--overflow-hidden {
+  overflow: hidden;
+}
+
+.--overflow-x-hidden {
+  overflow: hidden;
+}
+
+.--overflow-x-auto {
+  overflow-x: auto;
+}
+.--overflow-y-hidden {
+  overflow-y: hidden;
+}
+.--overflow-y-auto {
+  overflow-y: auto;
 }
 
 .--100vh {
@@ -130,4 +173,15 @@ img {
   min-height: 100vh;
 }
 
+/* NEEW */
+.--flex-justify-center {
+  display: flex;
+  justify-content: center;
+  
+}
 
+
+
+/* .relative {
+  position: relative;
+} */

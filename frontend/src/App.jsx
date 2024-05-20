@@ -41,10 +41,14 @@ function App() {
       />
 
        <Route path="/adminsPrev" element={< AdminPreview />} />
-       <Route path="/attendance" element={<Attendance />} />
+       <Route path="/attendance" element={
+        <Layout>
+       <Attendance />
+       </Layout>
+       } />
 
 
-      <Route path="/studentdash" element={<StudentDashboard />} />
+      <Route path="/studentdash" element={<StudentDashboard /> } />
 
       <Route path="/adminsPrev" element={<AdminPreview />} />
     </Routes>

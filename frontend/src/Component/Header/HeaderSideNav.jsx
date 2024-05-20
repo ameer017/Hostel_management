@@ -1,6 +1,6 @@
 import React, { useState } from "react";
+import { IoCloseSharp } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import "./Dashboard.css";
 
 const dashboardLinks = [
   { title: "Students", url: "/studentdash" },
@@ -8,18 +8,24 @@ const dashboardLinks = [
   { title: "Reports", url: "/report" },
 ];
 
-const Sidebar = () => {
+const HeaderSideNav = ({ items, setIsSidebarToggled }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const handleLinkClick = (index) => {
     setActiveIndex(index);
-  };  
+  };
 
   return (
-    <aside className=" --flex-start">
+    <aside>
+      <div className="--flex-end sidebar-close">
+        <IoCloseSharp
+          className="sidebar-close-icon"
+          onClick={() => setIsSidebarToggled(false)}
+        />
+      </div>
       <div className="left">
-        {dashboardLinks.map(({ title, url }, index) => (
-          <div className="--flex-center  --dir-column" key={index}>
+        {items.map(({ title, url }, index) => (
+          <div className="--flex-center  --dir-column" key={index}  >
             <Link
               to={url}
               className={index === activeIndex ? "active-link" : ""}
@@ -29,11 +35,12 @@ const Sidebar = () => {
             </Link>
           </div>
         ))}
+        <div className="--flex-start --dir-column">
+          <button className="btn-primary">New</button>
+        </div>
       </div>
     </aside>
   );
 };
 
-export default Sidebar;
-
-
+export default HeaderSideNav;
