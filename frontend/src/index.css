@@ -27,6 +27,7 @@
   box-sizing: border-box;
   text-decoration: none;
   outline: none;
+  list-style: none;
 }
 
 a {
@@ -114,7 +115,7 @@ img {
   display: flex;
 }
 
-.--flex-1 {
+.--flex-One {
   flex: 1 1 0%;
 }
 
@@ -122,10 +123,6 @@ img {
   flex-direction: column;
 }
  
-
-
-
-
 .--flex-between {
   display: flex;
   justify-content: space-between;
@@ -164,6 +161,8 @@ img {
 .--overflow-y-auto {
   overflow-y: auto;
 }
+
+
 
 .--100vh {
   height: 100vh;

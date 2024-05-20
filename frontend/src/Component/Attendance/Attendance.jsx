@@ -1,46 +1,49 @@
-import React, { useState } from 'react';
- import { moe } from '../../assets';
- import { FaChevronLeft, FaChevronRight  } from "react-icons/fa";
- import { LuChevronsLeft, LuChevronsRight  } from "react-icons/lu";
+import React, { useState } from "react";
+import "./Attendance.css";
+import { moe } from "../../assets";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { LuChevronsLeft, LuChevronsRight } from "react-icons/lu";
 
-import './Attendance.css'
-
-function Attendance() {
+const Attendance = () => {
   const [year, setYear] = useState(new Date().getFullYear());
-  const [month, setMonth] = useState(new Date().getMonth() + 1); // Months are zero-based
+  const [month, setMonth] = useState(new Date().getMonth() + 1);
 
   const createCalendar = () => {
     const monthNames = [
-      "January", "February", "March",
-      "April", "May", "June", "July",
-      "August", "September", "October",
-      "November", "December"
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
     ];
 
-    const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"];
 
-    // Get the first day of the month
     const firstDay = new Date(year, month - 1, 1).getDay();
 
-    // Get the number of days in the month
     const numDays = new Date(year, month, 0).getDate();
 
-    // Create an array to hold the days in the month
     let days = [];
 
-    // Add empty placeholders for days before the first day of the month
     for (let i = 0; i < firstDay; i++) {
-      days.push('');
+      days.push("");
     }
 
-    // Add the days of the month
     for (let day = 1; day <= numDays; day++) {
       days.push(day);
     }
 
-    // Split the days into weeks
+    // split the number of days into weeks
     let weeks = [];
     let week = [];
+
     days.forEach((day, index) => {
       week.push(day);
       if ((index + 1) % 7 === 0 || index === days.length - 1) {
@@ -48,20 +51,27 @@ function Attendance() {
         week = [];
       }
     });
-
-   
     return (
       <div>
-        <h2>{monthNames[month - 1]} {year}</h2>
+        <h2>
+          {monthNames[month - 1]} {year}{" "}
+        </h2>
+
         <div className="days-of-week">
-          {daysOfWeek.map(day => (
+          {daysOfWeek.map((day) => (
             <div key={day}>{day}</div>
           ))}
         </div>
+
         {weeks.map((week, index) => (
           <div key={index} className="week">
             {week.map((day, index) => (
-              <div key={index} className={`day ${day === '' ? 'empty' : ''} ${isToday(year, month, day) ? 'today' : ''}`}>
+              <div
+                key={index}
+                className={`day ${day === "" ? "empty" : ""} ${
+                  isToday(year, month, day) ? "today" : ""
+                }`}
+              >
                 {day}
               </div>
             ))}
@@ -71,15 +81,15 @@ function Attendance() {
     );
   };
 
-  // Function to check if a given date is today
   const isToday = (checkYear, checkMonth, checkDay) => {
     const today = new Date();
-    return checkYear === today.getFullYear() &&
-      checkMonth === today.getMonth() + 1 &&
-      checkDay === today.getDate();
-  };
 
-  //Mark Attendance
+    return (
+      checkYear === today.getFullYear() &&
+      checkMonth === today.getMonth() + 1 &&
+      checkDay === today.getDate()
+    );
+  };
 
   const [activeIndex, setActiveIndex] = useState(-1);
 
@@ -87,22 +97,22 @@ function Attendance() {
     setActiveIndex(index === activeIndex ? -1 : index);
   };
 
-  const peopleData = [
+  const studentData = [
     {
       name: "Aliyu Abdullah",
-      buttonText: "go there",
-      image: moe // Assuming moe is your image source
+      buttonText: "Go there",
+      image: moe,
     },
     {
       name: "Kenny Soliu",
-      buttonText: "Assuming you fine more than this",
-      image: moe
+      buttonText: "Assuming you are fine than this",
+      image: moe,
     },
     {
-      name: "Zainab MM",
-      buttonText: "software Dev",
-      image: moe
-    }
+      name: "Zainabuuu MM",
+      buttonText: "Software Dev.",
+      image: moe,
+    },
   ];
 
   const handlePrevMonthClick = () => {
@@ -113,7 +123,6 @@ function Attendance() {
       setMonth(month - 1);
     }
   };
-
   const handleNextMonthClick = () => {
     if (month === 12) {
       setMonth(1);
@@ -122,82 +131,74 @@ function Attendance() {
       setMonth(month + 1);
     }
   };
-
   const handlePrevYearClick = () => {
     setYear(year - 1);
   };
-
   const handleNextYearClick = () => {
     setYear(year + 1);
   };
 
-
-
   return (
-    <div className='attCon'>
-    <div>
-    <h2 className='dailyText'>Daily Attendance</h2>
-    <p className='selectDay'>Select Date</p>
-    </div>
-    <div className="calendar">
-        
-      <div className="controls">
-      <button className="yearButton" onClick={handlePrevYearClick}>
-         {/* <LuChevronsLeft />  */}
-         <FaChevronLeft />
+    <div className="attCon">
+      <div>
+        <h2 className="dailyText">Daily Attendance</h2>
+        <p className="selectDay">Select Day</p>
+      </div>
+
+      <div className="calendar">
+        <div className="controls">
+          <button className="yearButton" onClick={handlePrevYearClick}>
+            <LuChevronsLeft />
           </button>
           <button className="monthButton" onClick={handlePrevMonthClick}>
-          <FaChevronLeft />
-            
+            <FaChevronLeft />
           </button>
           {createCalendar()}
           <button className="monthButton" onClick={handleNextMonthClick}>
-          <FaChevronRight />
+            <FaChevronRight />
           </button>
           <button className="yearButton" onClick={handleNextYearClick}>
-          {/* <LuChevronsRight /> */}
-          <FaChevronRight />
+            <LuChevronsRight />
           </button>
+        </div>
       </div>
-      
-    </div>
-    
-    <div className='peopleDetail'>
-      <h2 className='markText'>Mark Attendance</h2>
-      {peopleData.map((person, index) => (
-        <div key={index} className='peopleMov'>
-          <div>
-            <div className='image_st'>
-              <img src={person.image} alt={person.name} />
+
+      <div className="peopleDetail">
+        <h2 className="markText">Mark Attendance</h2>
+        {studentData.map((person, i) => (
+          <div className="peopleMov" key={i}>
+            <div className="flex-column">
+              <div className="image_st">
+                <img src={person.image} alt={person.name} />
+              </div>
+
+              <div className="titleBox">
+                <h3 className="titleText">{person.name}</h3>
+
+                <p className="titlePara">{person.buttonText}</p>
+              </div>
             </div>
-            <div className='titleBox'>
-              <h3 className='titleText'>{person.name}</h3>
-              <p className='titlePara'>{person.buttonText}</p>
-            </div>
-          </div>
-          <div>
+
             <div
-              className={`toggleSwitch ${activeIndex === index ? 'active' : ''}`}
-              onClick={() => handleToggleClick(index)}
+              className={`toggleSwitch ${
+                activeIndex === i ? "active" : ""
+              }`}
+              onClick={() => handleToggleClick(i)}
             ></div>
           </div>
+        ))}
+
+        <div className="attendanceLas">
+            <button className="attendanceBtn">Submit</button>
         </div>
-      ))}
-
-    <div className='attendanceLas'>
-    <button className='attendanceBtn'>submit</button>
+      </div>
     </div>
-    
-    </div>
-
-    
-     
-    
-  </div>
-    
-    
   );
-}
+};
 
+<<<<<<< HEAD
 export default  Attendance;
  
+=======
+export default Attendance;
+>>>>>>> 355d77ebaff37ef3575df58abd74d7f66bdd3038

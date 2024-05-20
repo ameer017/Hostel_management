@@ -1,8 +1,14 @@
 import React from "react";
 import "./HomeDash.css";
 import { moe } from "../../assets";
+<<<<<<< HEAD
 import { ellp } from "../../assets";
 import { Link } from "react-router-dom";
+=======
+import { Link } from "react-router-dom";
+
+
+>>>>>>> 355d77ebaff37ef3575df58abd74d7f66bdd3038
 const HomeDash = () => {
 
   const activities = [
@@ -78,12 +84,25 @@ const HomeDash = () => {
 
       <div className="__lastCon">
         <h3 className="__lastTitle">Quick Actions</h3>
+<<<<<<< HEAD
         <div>
           <button className="__addBtn">
           <Link to="/studentreg">Add a student</Link>
           </button>
           <button className="__attendBtn">
           <Link to="/attendance">Add a student</Link>
+=======
+        <div className="__homeBtn">
+          <button className="__addBtn">
+            <Link to="/studentreg">
+            Add student
+            </Link>
+          </button>
+          <button className="__attendBtn">
+           <Link to="/attendance">
+            Attendance
+           </Link>
+>>>>>>> 355d77ebaff37ef3575df58abd74d7f66bdd3038
           </button>
         </div>
       </div>

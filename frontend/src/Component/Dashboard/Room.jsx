@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import Sidebar from "./Sidebar";
 import RoomTable from "./RommTable";
+<<<<<<< HEAD
 import { IoCloseSharp, IoMenu } from "react-icons/io5";
+=======
+import { IoMenu,  IoCloseOutline} from "react-icons/io5";
+
+>>>>>>> 355d77ebaff37ef3575df58abd74d7f66bdd3038
 
 const initialRooms = [
   {
@@ -25,15 +30,18 @@ const initialRooms = [
     status: "Available",
     location: "Maplewood Lodge, Greenfield",
   },
-  // Add more rooms as needed
 ];
 
 const Room = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [rooms, setRooms] = useState(initialRooms);
   const [filteredData, setFilteredData] = useState(initialRooms);
+<<<<<<< HEAD
   const [isSidebarToggled, setIsSidebarToggled] = useState(false);
 
+=======
+  const [isSidebarToggle, setIsSidebarToggle] = useState(false)
+>>>>>>> 355d77ebaff37ef3575df58abd74d7f66bdd3038
 
   const handleSearchChange = (e) => {
     const term = e.target.value.toLowerCase();
@@ -47,7 +55,14 @@ const Room = () => {
     setFilteredData(filtered);
   };
 
+<<<<<<< HEAD
   const handleAddRoom = () => {};
+=======
+  const handleAddRoom = (newRoomData) => {
+    setRooms([...rooms, newRoomData]);
+    setFilteredData([...rooms, newRoomData]);
+  };
+>>>>>>> 355d77ebaff37ef3575df58abd74d7f66bdd3038
 
   const handleUpdateRoom = (roomNumber, newStatus) => {
     const updatedRooms = rooms.map((room) =>
@@ -65,6 +80,7 @@ const Room = () => {
 
   return (
     <>
+<<<<<<< HEAD
       
 
 {isSidebarToggled && (
@@ -112,6 +128,56 @@ const Room = () => {
 					</main>
 				</div>
 			</div>
+=======
+    <div>
+
+    {isSidebarToggle && (
+         <div className="mobile-side-nav">
+         <Sidebar /> 
+         </div>
+      )}
+
+    <div className="--flex-justify-between">
+      <div className="desktop-side-nav">
+        <Sidebar />
+      </div>
+
+      <div className="--flex-dir-column --overflow-y-auto --flex-One --overflow-x-hidden">
+        <main className="--flex-justify-center w-full">
+          <div className="right dash-main">
+            <div className="--flex-justify-between">
+              <h1>Hostel Room Listing</h1>
+
+              { isSidebarToggle ? (
+        <IoCloseOutline className="sidebar-toggle-iconB" 
+        onClick={() => setIsSidebarToggle(false)}/>
+      ) :(
+           <IoMenu className="sidebar-toggle-iconB"
+           onClick={() => setIsSidebarToggle(true)}/>
+        )}
+       
+            </div>
+            <input
+              placeholder="Search by room number, status, or location"
+              type="text"
+              className="search"
+              value={searchTerm}
+              onChange={handleSearchChange}
+            />
+            <RoomTable
+              rooms={filteredData}
+              onAddRoom={handleAddRoom}
+              onUpdateRoom={handleUpdateRoom}
+              onDeleteRoom={handleDeleteRoom}
+            />
+          </div>
+        </main>
+      </div>
+    </div>
+    </div>
+    
+
+>>>>>>> 355d77ebaff37ef3575df58abd74d7f66bdd3038
     </>
   );
 };
