@@ -3,6 +3,13 @@ import "./HomeDash.css";
 import { moe } from "../../assets";
 import { Link } from "react-router-dom";
 
+export const shortenText = (text, n) => {
+  if (text.length > n) {
+    const shoretenedText = text.substring(0, n).concat("...");
+    return shoretenedText;
+  }
+  return text;
+};
 
 const HomeDash = () => {
   return (
@@ -86,14 +93,10 @@ const HomeDash = () => {
         <h3 className="__lastTitle">Quick Actions</h3>
         <div className="__homeBtn">
           <button className="__addBtn">
-            <Link to="/studentreg">
-            Add student
-            </Link>
+            <Link to="/studentreg">Add student</Link>
           </button>
           <button className="__attendBtn">
-           <Link to="/attendance">
-            Attendance
-           </Link>
+            <Link to="/attendance">Attendance</Link>
           </button>
         </div>
       </div>
