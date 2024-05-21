@@ -27,6 +27,7 @@
   box-sizing: border-box;
   text-decoration: none;
   outline: none;
+  list-style: none;
 }
 
 a {
@@ -66,6 +67,20 @@ img {
 .btn-secondary {
   border-radius: 12px;
   background: var(--secondary-btn-bg);
+  padding: var(--primary-btn-padding);
+  color: var(--main-bg);
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: var(--font-weight);
+  line-height: 21px;
+  letter-spacing: 0.21px;
+  /* width: 84px; */
+  height: 40px;
+}
+.btn-danger {
+  border-radius: 12px;
+  background: tomato;
   padding: var(--primary-btn-padding);
   color: var(--main-bg);
   font-family: var(--font-family);
@@ -171,4 +186,15 @@ img {
   min-height: 100vh;
 }
 
+/* NEEW */
+.--flex-justify-center {
+  display: flex;
+  justify-content: center;
+  
+}
 
+
+
+/* .relative {
+  position: relative;
+} */
