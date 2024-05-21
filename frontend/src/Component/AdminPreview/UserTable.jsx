@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import EditRoleModal from "./EditRoleModal";
 
-const UserTable = ({ data, onDelete, onUpdateRole}) => {
+const UserTable = ({ data, onDelete, onUpdateRole }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
 
@@ -17,10 +17,9 @@ const UserTable = ({ data, onDelete, onUpdateRole}) => {
   };
 
   const onEdit = (user) => {
-      openModal(user);
-    };
+    openModal(user);
+  };
 
-  
   return (
     <div>
       <table className="__prevTable">
@@ -41,7 +40,6 @@ const UserTable = ({ data, onDelete, onUpdateRole}) => {
                 <p>{user.role}</p>
               </td>
               <td className="__tableData __tableAction">
-                {/* Example action buttons */}
                 <button
                   className="__prevEditButton"
                   onClick={() => onEdit(user)}
