@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const BACKEND_URL = import.meta.env.BACKEND_URL;
-export const API_URL = `${BACKEND_URL}/api/students/`;
+export const API_URL = `http://localhost:3500/api/students/`;
 
 const addStudent = async (userData) => {
   const response = await axios.post(API_URL + "register", userData);
