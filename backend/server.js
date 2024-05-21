@@ -6,8 +6,6 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const errorHandler = require("./middleware/errorMiddleware");
 
-
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
