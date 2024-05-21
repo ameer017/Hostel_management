@@ -2,8 +2,10 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
+const adminRoutes = require('./routes/adminRoutes');
 
 
 
@@ -29,6 +31,9 @@ app.use(
   })
 );
 
+// Routes
+app.use('/admin', adminRoutes);
+
 const PORT = process.env.PORT || 3500;
 
 
@@ -37,4 +42,11 @@ app.get("/", (req, res) => {
 })
 
 
-app.listen(PORT, () => console.log(`App running on port ${PORT}`));
+// app.listen(PORT, () => console.log(`App running on port ${PORT}`));
+
+mongoose
+	.connect(process.env.MONGO_URI)
+	.then(() => {
+		app.listen(PORT, () => console.log(`Server Is 🏃‍♂️ On PORT ${PORT}`));
+	})
+	.catch((err) => console.log(err));
