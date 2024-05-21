@@ -63,7 +63,7 @@ export const getRooms = createAsyncThunk(
 );
 
 export const deleteRoom = createAsyncThunk(
-  "room/deleteAdmin",
+  "room/deleteRoom",
   async (id, thunkAPI) => {
     try {
       return await roomService.deleteRoom(id);
