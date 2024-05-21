@@ -1,245 +1,140 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import "./Dashboard.css";
 import Sidebar from "./Sidebar";
 import { Link } from "react-router-dom";
-<<<<<<< HEAD
-import { IoMenu, IoCloseSharp } from "react-icons/io5";
-=======
-import { IoMenu,  IoCloseOutline} from "react-icons/io5";
-
->>>>>>> 355d77ebaff37ef3575df58abd74d7f66bdd3038
-
-const studentsData = [
-  {
-    id: 1,
-    name: "Jessica Smith",
-    email: "jessica.smith@gmail.com",
-    idNumber: "12345",
-    gender: "Female",
-    age: 20,
-    nationality: "American",
-  },
-  {
-    id: 2,
-    name: "John Doe",
-    email: "john.doe@gmail.com",
-    idNumber: "67890",
-    gender: "Male",
-    age: 22,
-    nationality: "British",
-  },
-  {
-    id: 3,
-    name: "Maria Garcia",
-    email: "maria.garcia@gmail.com",
-    idNumber: "54321",
-    gender: "Female",
-    age: 25,
-    nationality: "Spanish",
-  },
-];
+import { IoMenu, IoCloseOutline } from "react-icons/io5";
+import { useDispatch, useSelector } from "react-redux";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
+import { deleteStudent, getStudents } from "../../../redux/features/student/studentSlice";
+import { FILTER_STUDENTS, selectStudents } from "../../../redux/features/filterSlice";
 
 const StudentDashboard = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [students, setStudents] = useState(studentsData);
-  const [filteredData, setFilteredData] = useState(studentsData);
-<<<<<<< HEAD
-  const [isSidebarToggled, setIsSidebarToggled] = useState(false);
-=======
-  const [isSidebarToggle, setIsSidebarToggle] = useState(false)
->>>>>>> 355d77ebaff37ef3575df58abd74d7f66bdd3038
+  const dispatch = useDispatch();
+  const [search, setSearch] = useState("");
+  const [isSidebarToggle, setIsSidebarToggle] = useState(false);
 
-  const handleSearchChange = (e) => {
-    const term = e.target.value.toLowerCase();
-    setSearchTerm(term);
-    const filtered = studentsData.filter(
-      (student) =>
-        student.name.toLowerCase().includes(term) ||
-        student.email.toLowerCase().includes(term)
-    );
-    setFilteredData(filtered);
+  const { students } = useSelector(
+    (state) => state.student
+  );
+
+  const filteredStudents = useSelector(selectStudents);
+
+  useEffect(() => {
+    dispatch(getStudents());
+  }, [dispatch]);
+
+  const removeStudent = async (id) => {
+    await dispatch(deleteStudent(id));
+    dispatch(getStudents());
   };
 
-  const handleDelete = (studentId) => {
-    const updatedStudents = students.filter(
-      (student) => student.id !== studentId
-    );
-    setStudents(updatedStudents);
-    const updatedFilteredData = filteredData.filter(
-      (student) => student.id !== studentId
-    );
-    setFilteredData(updatedFilteredData);
+  const confirmDelete = (id) => {
+    confirmAlert({
+      title: "Delete This Student",
+      message: "Are you sure to delete this student?",
+      buttons: [
+        {
+          label: "Delete",
+          onClick: () => removeStudent(id),
+        },
+        {
+          label: "Cancel",
+          onClick: () => console.log("Delete canceled"),
+        },
+      ],
+    });
   };
+
+  useEffect(() => {
+    dispatch(FILTER_STUDENTS({ students, search }));
+  }, [dispatch, students, search]);
 
   return (
-<<<<<<< HEAD
-    
-    <div>
-			{isSidebarToggled && (
-				<div className="mobile-side-nav">
-					<Sidebar />
-				</div>
-			)}
-			<div className=" --flex --overflow-hidden">
-				<div className="desktop-side-nav">
-					<Sidebar />
-				</div>
-=======
-
     <div>
       {isSidebarToggle && (
-         <div className="mobile-side-nav">
-         <Sidebar /> 
-         </div>
+        <div className="mobile-side-nav">
+          <Sidebar />
+        </div>
       )}
-     
 
       <div className="--flex --overflow-hidden">
-      <div className="desktop-side-nav">
-        <Sidebar />
-      </div>
-
-      <div className="--flex-dir-column --overflow-y-auto --flex-One --overflow-x-hidden">
-      <main className="--flex-justify-center w-full">
-      <div className="right dash-main">
-        <div className="--flex-justify-between">
-        <p>Students</p>
-        { isSidebarToggle ? (
-        <IoCloseOutline className="sidebar-toggle-iconB" 
-        onClick={() => setIsSidebarToggle(false)}/>
-      ) :(
-           <IoMenu className="sidebar-toggle-iconB"
-           onClick={() => setIsSidebarToggle(true)}/>
-        )}
-       
+        <div className="desktop-side-nav">
+          <Sidebar />
         </div>
-        
-        <p>Search students</p>
->>>>>>> 355d77ebaff37ef3575df58abd74d7f66bdd3038
 
-				<div className="--flex-dir-column --overflow-y-auto --flex-1 --overflow-x-hidden">
-					<main className="-- flex-justify-center  w-full">
-						<div className="right  dash-main">
-							<div className=" --flex-justify-between">
-								<p>Students</p>
-								{isSidebarToggled ? (
-									<IoCloseSharp
-										className="sidebar-toggle-icon "
-										onClick={() => setIsSidebarToggled(false)}
-									/>
-								) : (
-									<IoMenu
-										className="sidebar-toggle-icon "
-										onClick={() => setIsSidebarToggled(true)}
-									/>
-								)}
-							</div>
-							<p>Search students</p>
+        <div className="--flex-dir-column --overflow-y-auto --flex-One --overflow-x-hidden">
+          <main className="--flex-justify-center w-full">
+            <div className="right dash-main">
+              <div className="--flex-justify-between">
+                <p>Students</p>
+                {isSidebarToggle ? (
+                  <IoCloseOutline
+                    className="sidebar-toggle-iconB"
+                    onClick={() => setIsSidebarToggle(false)}
+                  />
+                ) : (
+                  <IoMenu
+                    className="sidebar-toggle-iconB"
+                    onClick={() => setIsSidebarToggle(true)}
+                  />
+                )}
+              </div>
 
-<<<<<<< HEAD
-							<input
-								placeholder="Search by name, email, or ID number"
-								type="text"
-								className="search"
-								value={searchTerm}
-								onChange={handleSearchChange}
-							/>
+              <p>Search students</p>
 
-							<div className="table">
-								<table className="table_wrapper">
-									<thead className="table__head">
-										<tr className="table__row">
-											<th className="same_class">Student Name</th>
-											<th className="same_class">Email</th>
-											<th className="same_class">ID Number</th>
-											<th className="same_class">Gender</th>
-											<th className="same_class">Age</th>
-											<th className="same_class">Nationality</th>
-											<th className="same_class">Actions</th>
-										</tr>
-									</thead>
-									<tbody className="table__body">
-										{filteredData.map((student, index) => (
-											<tr key={index} className="table__row">
-												<td className="same_class">{student.name}</td>
-												<td className="same_class">{student.email}</td>
-												<td className="same_class">{student.idNumber}</td>
-												<td className="same_class">{student.gender}</td>
-												<td className="same_class">{student.age}</td>
-												<td className="same_class">{student.nationality}</td>
-												<td className="same_class">
-													<RiDeleteBin6Line
-														size={25}
-														color="red"
-														onClick={() => handleDelete(student.id)}
-													/>
-												</td>
-											</tr>
-										))}
-									</tbody>
-								</table>
-							</div>
-							<button className="btn-secondary">
-								<Link to="/studentreg">Add a student</Link>
-							</button>
-						</div>
-					</main>
-				</div>
-			</div>
-		</div>
-	
-=======
-        <div className="table">
-          <table className="table_wrapper ">
-            <thead className="table__head">
-              <tr className="table__row">
-                <th className="same_class">Student Name</th>
-                <th className="same_class">Email</th>
-                <th className="same_class">ID Number</th>
-                <th className="same_class">Gender</th>
-                <th className="same_class">Age</th>
-                <th className="same_class">Nationality</th>
-                <th className="same_class">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="table__body">
-              {filteredData.map((student, index) => (
-                <tr key={index} className="table__row">
-                  <td className="same_class">{student.name}</td>
-                  <td className="same_class">{student.email}</td>
-                  <td className="same_class">{student.idNumber}</td>
-                  <td className="same_class">{student.gender}</td>
-                  <td className="same_class">{student.age}</td>
-                  <td className="same_class">{student.nationality}</td>
-                  <td className="same_class">
-                    <RiDeleteBin6Line
-                      size={25}
-                      color="red"
-                      onClick={() => handleDelete(student.id)}
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+              <input
+                placeholder="Search by name, email, or ID number"
+                type="text"
+                className="search"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+
+              <div className="table">
+                <table className="table_wrapper ">
+                  <thead className="table__head">
+                    <tr className="table__row">
+                      <th className="same_class">Student Name</th>
+                      <th className="same_class">Email</th>
+                      <th className="same_class">ID Number</th>
+                      <th className="same_class">Gender</th>
+                      <th className="same_class">Age</th>
+                      <th className="same_class">Nationality</th>
+                      <th className="same_class">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="table__body">
+                    {filteredStudents.map((student) => (
+                      <tr key={student.id} className="table__row">
+                        <td className="same_class">{student.name}</td>
+                        <td className="same_class">{student.email}</td>
+                        <td className="same_class">{student.idNumber}</td>
+                        <td className="same_class">{student.gender}</td>
+                        <td className="same_class">{student.age}</td>
+                        <td className="same_class">{student.nationality}</td>
+                        <td className="same_class">
+                          <RiDeleteBin6Line
+                            size={25}
+                            color="red"
+                            onClick={() => confirmDelete(student.id)}
+                          />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <button className="btn-secondary">
+                <Link to="/studentreg">Add a student</Link>
+              </button>
+            </div>
+          </main>
         </div>
-        <button className="btn-secondary">
-          <Link to="/studentreg">Add a student</Link>
-        </button>
       </div>
-      </main>
-      
     </div>
-    </div>
-
-    </div>
-
-    
-    
->>>>>>> 355d77ebaff37ef3575df58abd74d7f66bdd3038
   );
 };
 
 export default StudentDashboard;
- 

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import studentService from "./studentService";
+import { toast } from "react-toastify";
 
 const initialState = {
   student: null,
@@ -8,6 +9,7 @@ const initialState = {
   isSuccess: false,
   isLoading: false,
   message: "",
+  activeUsers: 0
 };
 
 export const addStudent = createAsyncThunk(
@@ -105,6 +107,20 @@ const studentSlice = createSlice({
       state.isLoading = false;
       state.message = "";
     },
+    CALC_ACTIVE_STUDENT(state, action) {
+      const array = [];
+      state.students.map((student) => {
+        const { status } = student;
+        return array.push(status);
+      });
+      let count = 0;
+      array.forEach((item) => {
+        if (item === "active") {
+          count += 1;
+        }
+      });
+      state.activeUsers = count;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -191,6 +207,6 @@ const studentSlice = createSlice({
   },
 });
 
-export const { RESET } = studentSlice.actions;
+export const { RESET, CALC_ACTIVE_STUDENT } = studentSlice.actions;
 
 export default studentSlice.reducer;

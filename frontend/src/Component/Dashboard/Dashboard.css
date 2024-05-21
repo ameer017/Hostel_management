@@ -1,3 +1,4 @@
+
 .left {
   padding: 16px;
   width: 307px;
@@ -75,29 +76,14 @@
   font-weight: 400;
   line-height: 24px;
 }
-
-/* .room-table-con {
-  overflow-x: auto;
-} */
- 
-
 .table {
   padding: 5px;
   width: 100%;
-<<<<<<< HEAD
-  /* overflow-x: auto; */
-  overflow: auto;
-  border-radius: 12px;
-  border: 1px solid #dbe0e5;
-  background: #fff;
-  /* overflow-x: scroll; */
-=======
     overflow-x: auto;  
   border-radius: 12px;
   border: 1px solid #dbe0e5;
   background: #fff;
    overflow: auto; 
->>>>>>> 355d77ebaff37ef3575df58abd74d7f66bdd3038
 }
 
 .table_wrapper {
@@ -136,7 +122,6 @@
 tbody > tr:hover {
   cursor: pointer;
 }
-
 
 .right button {
   margin-top: 1.2em;

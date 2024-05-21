@@ -127,6 +127,23 @@ export const deleteUser = createAsyncThunk(
   }
 );
 
+export const updateUser = createAsyncThunk(
+  "auth/updateAdmin",
+  async (userData, thunkAPI) => {
+    try {
+      return await adminService.updateUser(userData);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 const adminSlice = createSlice({
   name: "auth",
   initialState,
@@ -263,6 +280,7 @@ const adminSlice = createSlice({
 
 export const { RESET } = adminSlice.actions;
 
-
+export const selectIsLoggedIn = (state) => state.isLoggedIn;
+export const selectAdmin = (state) => state.auth.admin;
 
 export default adminSlice.reducer;
