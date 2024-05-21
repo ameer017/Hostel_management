@@ -5,6 +5,7 @@
     max-width: 55rem;
     padding: 20px 40px;
     font-size: 25px;
+    
   }
 
   .title {
@@ -112,6 +113,17 @@ label {
   color: #fff;
 }
 
+.card {
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 2px 5px #354d5f;
+  overflow: hidden;
+}
+
+.indicator {
+  list-style: none;
+  font-size: 15px;
+}
 /* Normal css */
 
 @media (min-width:992px) and (max-width: 1199px) {

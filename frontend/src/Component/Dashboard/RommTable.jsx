@@ -17,16 +17,15 @@ const RoomTable = ({ rooms, onAddRoom, onUpdateRoom, onDeleteRoom }) => {
 
   const openAddModal = () => {
     setShowAddModal(true);
+  };
 
-  }
   const closeModal = () => {
     setShowModal(false);
   };
   
   const closeAddModal = () => {
     setShowAddModal(false);
-
-  }
+  };
 
   return (
     <>
@@ -51,7 +50,7 @@ const RoomTable = ({ rooms, onAddRoom, onUpdateRoom, onDeleteRoom }) => {
                 <td className="same_class">{room.occupancy}</td>
                 <td className="same_class">{room.location}</td>
                 <td className="same_class">{room.status}</td>
-                <td className="same_class ">
+                <td className="same_class">
                   <button onClick={() => openModal(room)} className="_noBg">
                     <FaPen size={25} color="blue" />
                   </button>
@@ -68,7 +67,7 @@ const RoomTable = ({ rooms, onAddRoom, onUpdateRoom, onDeleteRoom }) => {
         </table>
       </div>
       <div className="right">
-        <button onClick={() => setShowAddModal(true)} className="btn-secondary">
+        <button onClick={openAddModal} className="btn-secondary">
           Add New Room
         </button>
 

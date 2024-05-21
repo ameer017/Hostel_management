@@ -30,6 +30,7 @@ header {
 
 .navItems {
   display: flex;
+  justify-content: center;
   align-items: center;
   gap: 36px;
   /* margin-right: -13em; */
