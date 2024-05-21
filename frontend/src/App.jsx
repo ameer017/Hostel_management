@@ -16,14 +16,7 @@ function App() {
       <Route path="/" element={<AdminReg />} />
       <Route path="/login" element={<Login />} />
 
-      <Route
-        path="/studentreg"
-        element={
-          <Layout>
-            <StudentReg />
-          </Layout>
-        }
-      />
+      <Route path="/studentreg" element={<StudentReg />} />
       <Route path="/room" element={<Room />} />
       <Route
         path="/homedash"
@@ -34,7 +27,14 @@ function App() {
         }
       />
 
-      <Route path="/adminsPrev" element={<AdminPreview />} />
+      <Route
+        path="/adminsPrev"
+        element={
+          <Layout>
+            <AdminPreview />
+          </Layout>
+        }
+      />
       <Route
         path="/attendance"
         element={

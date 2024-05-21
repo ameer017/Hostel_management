@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const BACKEND_URL = import.meta.env.BACKEND_URL;
-export const API_URL = `${BACKEND_URL}/api/admins/`;
+export const API_URL = `http://localhost:3500/api/admins/`;
 
 const register = async (userData) => {
   const response = await axios.post(API_URL + "register", userData);
@@ -45,6 +45,12 @@ const deleteUser = async (id) => {
   return response.data.message;
 };
 
+
+const updateUser = async (userData) => {
+  const response = await axios.patch(API_URL + "updateUser", userData);
+  return response.data;
+};
+
 const adminService = {
   register,
   login,
@@ -53,6 +59,7 @@ const adminService = {
   getUser,
   getUsers,
   deleteUser,
+  updateUser
 };
 
 export default adminService;
