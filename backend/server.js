@@ -4,6 +4,7 @@ const app = express();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
+const errorHandler = require("./middleware/errorMiddleware");
 
 
 
@@ -36,5 +37,7 @@ app.get("/", (req, res) => {
     res.send("Home Page!")
 })
 
+
+app.use(errorHandler)
 
 app.listen(PORT, () => console.log(`App running on port ${PORT}`));

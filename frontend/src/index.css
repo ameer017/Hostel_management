@@ -27,6 +27,7 @@
   box-sizing: border-box;
   text-decoration: none;
   outline: none;
+  list-style: none;
 }
 
 a {
@@ -171,4 +172,15 @@ img {
   min-height: 100vh;
 }
 
+/* NEEW */
+.--flex-justify-center {
+  display: flex;
+  justify-content: center;
+  
+}
 
+
+
+/* .relative {
+  position: relative;
+} */
