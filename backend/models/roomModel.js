@@ -12,7 +12,7 @@ const roomSchema = new mongoose.Schema({
 
   roomOccupancy: [
     {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       ref: "Student",
     },
   ],

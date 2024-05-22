@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { CALC_ACTIVE_STUDENT } from "../../../redux/features/student/studentSlice";
 import { getUser } from "../../../redux/features/auth-admin/adminSlice";
 import StudentStatus from "../AdminPreview/StudentStatus";
+import useRedirectLoggedOutUser from "../../hiddenLink/useRedirect";
 
 export const shortenText = (text, n) => {
   if (text.length > n) {
@@ -15,6 +16,7 @@ export const shortenText = (text, n) => {
 };
 
 const HomeDash = () => {
+  useRedirectLoggedOutUser("/")
   const dispatch = useDispatch();
   const { students, activeStudent } = useSelector((state) => state.student);
 
@@ -60,9 +62,7 @@ const HomeDash = () => {
     <div className="--flex-center __homeDashCon">
       <div className="__paraCon">
         {admin && (
-          <h1 className="__paraHeader">
-            Welcome back, {dashboard?.name || John}!
-          </h1>
+          <h1 className="__paraHeader">Welcome back, {dashboard?.name}!</h1>
         )}
       </div>
 

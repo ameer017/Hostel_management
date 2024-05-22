@@ -1,28 +1,68 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
 
-const studentSchema = new mongoose.Schema({
-  name: {
+const guardianSchema = new mongoose.Schema({
+  guardianName: {
     type: String,
     required: true,
   },
-  Hostel: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Hostel',
-    default: null,
+  guardianEmail: {
+    type: String,
+    required: [true, 'Please add an email'],
+    trim: true,
+    match: [
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      'Please enter a valid email',
+    ]
+  }
+});
+
+const studentSchema = new mongoose.Schema({
+  _id: {
+    type: String,
+    required: true,
+    unique: true 
   },
-  isVerified: {
-    type: Boolean,
-    default: false,
+  firstname: {
+    type: String,
+    required: true,
+  },
+  lastname: {
+    type: String,
+    required: true,
+  },
+  age: {
+    type: Number,
+    required: true,
+  },
+  gender: {
+    type: String,
+    required: true,
+    enum: ['female', 'male']
+  },
+  nationality: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    required: [true, 'Please add an email'],
+    trim: true,
+    unique: true,
+    match: [
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      'Please enter a valid email',
+    ]
+  },
+  guardian: guardianSchema,
+  room: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Room',
+    default: null,
   },
   role: {
     type: String,
     enum: ['student'],
     default: 'student',
-  },
-  studentAgent: {
-    type: Array,
-    default: [],
   },
   checkedIn: {
     type: Boolean,
@@ -45,13 +85,14 @@ const studentSchema = new mongoose.Schema({
 studentSchema.methods.checkIn = function() {
   this.checkedIn = true;
   this.checkInTime = new Date();
-  this.checkOutTime = null;  
+  this.checkOutTime = null;
 };
-
 
 studentSchema.methods.checkOut = function() {
   this.checkedIn = false;
   this.checkOutTime = new Date();
+  this.checkInTime = null
+ 
 };
 
 const Student = mongoose.model('Student', studentSchema);
