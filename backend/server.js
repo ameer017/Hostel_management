@@ -6,8 +6,9 @@ const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const errorHandler = require("./middleware/errorMiddleware");
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 const connectDb = require("./config/DBConnect");
+const adminRoutes = require("./routes/adminRoutes");
 const PORT = process.env.PORT || 3500;
 
 app.use(express.json());
@@ -28,7 +29,7 @@ app.use(
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   })
 );
-
+app.use("/admin", adminRoutes);
 app.use("/room", require("./routes/room"));
 
 app.get("/", (req, res) => {

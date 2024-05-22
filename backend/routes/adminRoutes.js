@@ -11,4 +11,8 @@ router.post('/login', adminController.login);
 // Delete admin
 router.delete('/:adminId', adminController.deleteAdmin);
 
+router.get('/login-status/:adminId', adminController.getLoginStatus);
+router.get('/:adminId', adminController.getAdmin);
+router.get('/', adminController.getAdmins);
+
 module.exports = router;
