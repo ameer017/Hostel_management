@@ -40,8 +40,7 @@ const filterSlice = createSlice({
 
       const tempRooms = rooms.filter(
         (room) =>
-          room.capacity.toLowerCase().includes(lowerCaseSearch) ||
-          room.status.toLowerCase().includes(lowerCaseSearch)
+          room.roomStatus.toLowerCase().includes(lowerCaseSearch) 
       );
 
       state.filteredRooms = tempRooms;

@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
-import RoomTable from "./RommTable"; // Corrected typo from RommTable to RoomTable
+import RoomTable from "./RommTable";
 import { IoMenu, IoCloseOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import { FILTER_ROOM, selectRooms } from "../../../redux/features/filterSlice";
-import { deleteRoom, getRooms, addRoom, updateRoom } from "../../../redux/features/room/roomSlice";
+import {
+  deleteRoom,
+  getRooms,
+  addRoom,
+  updateRoom,
+} from "../../../redux/features/room/roomSlice";
 
 const Room = () => {
   const [search, setSearch] = useState("");
