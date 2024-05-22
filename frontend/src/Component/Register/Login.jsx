@@ -1,52 +1,64 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useCallback, useContext } from "react";
 import "./Register.css";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { RESET, login } from "../../../redux/features/auth-admin/adminSlice";
 import { toast } from "react-toastify";
 import PasswordInput from "../PasswordInput/PasswordInput";
-const initialState = {
-  email: "",
-  password: "",
-};
+import { UserContext } from "../../../context/userContext";
+import axios from "axios";
 
 const Login = () => {
-  const [formData, setFormData] = useState(initialState);
-  const { email, password } = formData;
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const [formValidMessage, setFormValidMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { setUser } = useContext(UserContext);
 
-  const { isLoading, isLoggedIn, isSuccess, message, isError, twoFactor } =
-    useSelector((state) => state.admin);
+  const handleInputChange = useCallback((e) => {
+    setFormValidMessage("");
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  }, []);
 
-  const loginUser = async (e) => {
-    e.preventDefault();
+  const loginUser = useCallback(
+    (event) => {
+      event.preventDefault();
 
-    if (!email || !password) {
-      return toast.error("All fields are required");
-    }
+      const { email, password } = formData;
 
-    const userData = {
-      email,
-      password,
-    };
+      if (!email || !password) {
+        setFormValidMessage("Oops! all fields are required");
+        return;
+      }
 
-    // console.log(userData);
-    await dispatch(login(userData));
-  };
+      setIsSubmitting(true);
 
-  useEffect(() => {
-    if (isSuccess && isLoggedIn) {
-      navigate("/homedash");
-    }
-
-    dispatch(RESET());
-  }, [isLoggedIn, isSuccess, dispatch, navigate]);
+      axios
+        .post(`http://localhost:3500/admin/login`, formData)
+        .then((response) => {
+          console.log(response.data);
+          setUser(response.data);
+          setIsSubmitting(false);
+          toast.success("Login Successful")
+          navigate("/homedash", { state: { user: response.data } });
+        })
+        .catch((error) => {
+          setIsSubmitting(false);
+          const message =
+            error.response?.status === 400
+              ? "Invalid Login Credentials"
+              : "Server error!";
+          setFormValidMessage(message);
+        });
+    },
+    [formData, navigate, setUser]
+  );
 
   return (
     <div className="container form__ --100vh">
@@ -54,32 +66,35 @@ const Login = () => {
         <p className="title">Admin Login</p>
         <form className="form" onSubmit={loginUser}>
           <div className="--dir-column">
-            <label htmlFor="name">Email:</label>
+            <label htmlFor="email">Email:</label>
             <input
               type="email"
               className="input"
               name="email"
               placeholder="Enter your email"
               required
-              value={email}
+              value={formData.email}
               onChange={handleInputChange}
             />
           </div>
-
           <div className="--dir-column">
-            <label htmlFor="name">Password:</label>
+            <label htmlFor="password">Password:</label>
             <PasswordInput
               placeholder="Password"
               name="password"
-              value={password}
+              value={formData.password}
               onChange={handleInputChange}
             />
           </div>
-
-          <button className="--btn">Sign In</button>
+          <button className="--btn" disabled={isSubmitting}>
+            {isSubmitting ? "Signing In..." : "Sign In"}
+          </button>
         </form>
+        {formValidMessage && (
+          <p className="error-message">{formValidMessage}</p>
+        )}
         <p>
-          Don&apos;t have an account yet? <Link to="/">Sign Up</Link>
+          Don't have an account yet? <Link to="/">Sign Up</Link>
         </p>
       </div>
     </div>

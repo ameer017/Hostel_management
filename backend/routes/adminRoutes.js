@@ -9,12 +9,13 @@ router.post("/register", adminController.register);
 router.post("/login", adminController.login);
 
 // Delete admin
-router.delete("/:id", adminController.deleteAdmin);
 
-router.get("/login-status", adminController.getLoginStatus);
-router.get("/getAdmin",  adminController.getAdmin);
-router.get("/getAdmins", adminController.getAdmins);
+router.get("/admins", adminController.getAdmins);
+router.post("/logout", adminController.logoutAdmin);
 
 router.patch("/updateAdmin", adminController.updateAdmin);
+
+router.get("/:adminId", adminController.getAdmin);
+router.delete("/:id", adminController.deleteAdmin);
 
 module.exports = router;

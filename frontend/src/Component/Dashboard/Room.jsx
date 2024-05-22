@@ -2,43 +2,75 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import RoomTable from "./RommTable";
 import { IoMenu, IoCloseOutline } from "react-icons/io5";
-import { useDispatch, useSelector } from "react-redux";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
-import { FILTER_ROOM, selectRooms } from "../../../redux/features/filterSlice";
-import {
-  deleteRoom,
-  getRooms,
-  addRoom,
-  updateRoom,
-} from "../../../redux/features/room/roomSlice";
+import axios from "axios";
+import useAuthRedirect from "../../../context/useAuth";
 
 const Room = () => {
+  useAuthRedirect()
+  const [roomData, setRoomData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [search, setSearch] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [message, setMessage] = useState();
   const [isSidebarToggle, setIsSidebarToggle] = useState(false);
 
-  const dispatch = useDispatch();
-  const { rooms } = useSelector((state) => state.room);
+  useEffect(() => {
+    setIsLoading(true);
+    const fetchRoom = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3500/room/get-all-room`
+        );
 
-  const filteredRooms = useSelector(selectRooms);
+        setRoomData(response.data);
+      } catch (error) {
+        setIsLoading(false);
+        if (error.response && error.response.status === 400) {
+          setMessage("Cannot fetch data");
+        } else {
+          setMessage("Server error");
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchRoom();
+  }, []);
 
   useEffect(() => {
-    dispatch(getRooms());
-  }, [dispatch]);
+    const filteredRooms = roomData.filter((res) => {
+      const roomLocation = res.roomLocation?.toLowerCase() || "";
+      const roomStatus = res.roomStatus?.toLowerCase() || "";
+      return (
+        roomLocation.includes(search.toLowerCase()) ||
+        roomStatus.includes(search.toLowerCase())
+      );
+    });
+    setSearchResults(filteredRooms);
+  }, [roomData, search]);
 
   const handleAddRoom = (newRoomData) => {
-    dispatch(addRoom(newRoomData));
-    dispatch(getRooms());
+    setRoomData((prevData) => [...prevData, newRoomData]);
   };
 
   const handleUpdateRoom = (updatedRoomData) => {
-    dispatch(updateRoom(updatedRoomData));
-    dispatch(getRooms());
+    setRoomData((prevData) =>
+      prevData.map((room) =>
+        room._id === updatedRoomData._id ? updatedRoomData : room
+      )
+    );
   };
-
+  
+  
   const removeRoom = async (id) => {
-    await dispatch(deleteRoom(id));
-    dispatch(getRooms());
+    try {
+      await axios.delete(`http://localhost:3500/room/delete-room/${id}`);
+      setRoomData((prevRoomData) => prevRoomData.filter((room) => room._id !== id));
+    } catch (error) {
+      console.error("Failed to delete room", error);
+    }
   };
 
   const confirmDelete = (id) => {
@@ -57,10 +89,6 @@ const Room = () => {
       ],
     });
   };
-
-  useEffect(() => {
-    dispatch(FILTER_ROOM({ rooms, search }));
-  }, [dispatch, rooms, search]);
 
   return (
     <>
@@ -102,7 +130,7 @@ const Room = () => {
                   onChange={(e) => setSearch(e.target.value)}
                 />
                 <RoomTable
-                  rooms={filteredRooms}
+                  rooms={searchResults}
                   onAddRoom={handleAddRoom}
                   onUpdateRoom={handleUpdateRoom}
                   onDeleteRoom={confirmDelete}

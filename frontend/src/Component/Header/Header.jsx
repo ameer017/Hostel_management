@@ -1,31 +1,36 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./Header.css";
 import { Link, useNavigate } from "react-router-dom";
 import { IoMenu, IoCloseOutline } from "react-icons/io5";
 import HeaderSideNav from "./HeaderSideNav";
-import { RESET, logout } from "../../../redux/features/auth-admin/adminSlice";
-import { ShowOnLogin, ShowOnLogout } from "../../hiddenLink/protect";
-import { useDispatch } from "react-redux";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { UserContext } from "../../../context/userContext";
 
 const items = [
-  { title: "Dashboard", url: "/homedash" },
+  // { title: "Dashboard", url: "/homedash" },
   { title: "Rooms", url: "/room" },
   { title: "Students", url: "/studentdash" },
 ];
 
 const Header = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [navToggle, setNavToggle] = useState(false);
-  const add = async (e) => {
-    e.preventDefault();
-    navigate("/login");
-  };
+  const { setUser } = useContext(UserContext);
 
   const logoutUser = async () => {
-    dispatch(RESET());
-    await dispatch(logout());
-    navigate("/adminreg");
+    try {
+      await axios.post("http://localhost:3500/admin/logout", null, {
+        withCredentials: true,
+      });
+
+      setUser(null);
+      toast.success("user logged out!")
+
+      navigate("/login");
+    } catch (error) {
+      console.error("Failed to logout", error);
+    }
   };
 
   return (
@@ -78,19 +83,10 @@ const Header = () => {
           </div>
 
           <div className="btn__wrapper --flex-center">
-          <ShowOnLogout>
-
-            <button className="btn-primary" onClick={add}>
-              Login
+            <button className="btn-danger" onClick={logoutUser}>
+              Logout
             </button>
-          </ShowOnLogout>
-            <ShowOnLogin>
 
-              <button className="btn-danger" onClick={logoutUser}>
-                Logout
-              </button>
-            </ShowOnLogin>
-            
             <button className="notification">
               <svg
                 xmlns="http://www.w3.org/2000/svg"

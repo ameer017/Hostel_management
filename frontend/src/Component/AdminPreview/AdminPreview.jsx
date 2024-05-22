@@ -2,37 +2,68 @@ import React, { useEffect, useState } from "react";
 import "./AdminPreview.css";
 import { CiSearch } from "react-icons/ci";
 import UserTable from "./UserTable";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  FILTER_ADMIN,
-  selectAdmins,
-} from "../../../redux/features/filterSlice";
-import {
-  deleteUser,
-  getUsers,
-  updateUser,
-} from "../../../redux/features/auth-admin/adminSlice";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
+import useAuthRedirect from "../../../context/useAuth";
+import axios from "axios";
 
 const AdminPreview = () => {
-  const dispatch = useDispatch();
+  useAuthRedirect()
   const [search, setSearch] = useState("");
-  const { admins } = useSelector((state) => state.admin);
-  const filteredData = useSelector(selectAdmins);
+  const [adminData, setAdminData] = useState([])
+  const [message, setMessage] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+
 
   useEffect(() => {
-    dispatch(getUsers());
-  }, [dispatch]);
+    setIsLoading(true);
+    const fetchAdmins = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3500/admin/admins`
+        );
 
-  const handleUpdateRole = (userData) => {
-    dispatch(updateUser(userData));
-    dispatch(getUsers());
+        setAdminData(response.data);
+        console.log(adminData)
+      } catch (error) {
+        setIsLoading(false);
+        if (error.response && error.response.status === 400) {
+          setMessage("Cannot fetch data");
+        } else {
+          setMessage("Server error");
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchAdmins();
+  }, []);
+
+  const handleUpdateRole = async (id, newRole) => {
+    try {
+      const response = await axios.patch(`http://localhost:3500/admin/updateAdmin`, {
+        id,
+        role: newRole,
+      });
+      setAdminData(adminData.map((admin) =>
+        admin._id === id ? { ...admin, role: newRole } : admin
+      ));
+      setMessage("Admin role updated successfully");
+    } catch (error) {
+      setMessage("Failed to update admin role");
+      console.error("Error updating admin role:", error);
+    }
   };
 
   const removeUser = async (id) => {
-    await dispatch(deleteUser(id));
-    dispatch(getUsers());
+    try {
+      await axios.delete(`http://localhost:3500/admin/${id}`);
+      setAdminData(adminData.filter((admin) => admin._id !== id));
+      setMessage("Admin deleted successfully");
+    } catch (error) {
+      setMessage("Failed to delete admin");
+      console.error("Error deleting admin:", error);
+    }
   };
 
   const confirmDelete = (id) => {
@@ -52,9 +83,11 @@ const AdminPreview = () => {
     });
   };
 
-  useEffect(() => {
-    dispatch(FILTER_ADMIN({ admins, search }));
-  }, [dispatch, admins, search]);
+  const filteredData = adminData.filter(
+    (admin) =>
+      admin.fullname.toLowerCase().includes(search.toLowerCase()) ||
+      admin.email.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div className="__prevCon">

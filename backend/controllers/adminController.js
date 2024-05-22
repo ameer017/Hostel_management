@@ -131,40 +131,32 @@ const deleteAdmin = asyncHandler(async (req, res) => {
   }
 });
 
-// Get login status of the admin
-const getLoginStatus = asyncHandler(async (req, res) => {
-  const token = req.cookies.token;
-  if (!token) {
-    return res.json(false);
-  }
-
-  // Verify token
-  const verified = jwt.verify(token, process.env.JWT_SECRET);
-
-  if (verified) {
-    return res.json(true);
-  }
-  return res.json(false);
-});
 
 // Get details of a single admin
 const getAdmin = asyncHandler(async (req, res) => {
-  const admin = await Admin.findById(req.admin._id);
+  try {
+    const { adminId } = req.params;
 
-  if (admin) {
-    const { _id, fullname, email, role } = admin;
+    const admin = await Admin.findById(adminId);
 
-    res.status(200).json({
-      _id,
-      fullname,
-      email,
-      role,
-    });
-  } else {
-    res.status(404);
-    throw new Error("Admin not found");
+    if (admin) {
+      const { _id, fullname, email, role } = admin;
+
+      res.status(200).json({
+        _id,
+        fullname,
+        email,
+        role,
+      });
+    } else {
+      res.status(404).json({ message: "Admin not found" });
+    }
+  } catch (err) {
+    console.error('Error retrieving admin:', err.message);
+    res.status(500).json({ message: "Server Error" });
   }
 });
+
 
 // Get details of all admins
 const getAdmins = asyncHandler(async (req, res) => {
@@ -200,12 +192,23 @@ const updateAdmin = asyncHandler(async (req, res) => {
   }
 });
 
+const logoutAdmin = asyncHandler(async (req, res) => {
+  res.cookie("token", "", {
+    path: "/",
+    httpOnly: true,
+    expires: new Date(0), // 1 day
+    sameSite: "none",
+    secure: true,
+  });
+  return res.status(200).json({ message: "Logout successful" });
+});
+
 module.exports = {
   register,
   login,
   deleteAdmin,
-  getLoginStatus,
   getAdmin,
   getAdmins,
   updateAdmin,
+  logoutAdmin
 };
