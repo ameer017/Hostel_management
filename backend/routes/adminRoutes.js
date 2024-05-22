@@ -9,6 +9,6 @@ router.post('/register', adminController.register);
 router.post('/login', adminController.login);
 
 // Delete admin
-router.delete('/:adminId', adminController.deleteAdmin);
+router.delete('/:id', adminController.deleteAdmin);
 
 module.exports = router;

@@ -1,41 +1,70 @@
 const Admin = require("../models/adminModel");
 const bcrypt = require("bcryptjs");
-
+const { generateToken } = require("../utils");
+const asyncHandler = require("express-async-handler");
 
 // Register a new admin
-const register = async (req, res) => {
+const register = asyncHandler(async (req, res) => {
   try {
     const { email, fullname, password } = req.body;
 
+    if (!fullname || !email || !password) {
+      res.status(400);
+      throw new Error("Please fill in all the required fields.");
+    }
+
+    if (password.length < 6) {
+      res.status(400);
+      throw new Error("Password must be up to 6 characters.");
+    }
+
     // Check if user already exists
-    let admin = await Admin.findOne({ email });
-    if (admin) {
+    const userExist = await Admin.findOne({ email });
+
+    if (userExist) {
       return res.status(400).json({ msg: "User already exists" });
     }
 
     // Create new admin
-    admin = new Admin({
-      email,
+    const admin = await Admin.create({
       fullname,
+      email,
       password,
     });
 
-    // Encrypt password
-    const salt = await bcrypt.genSalt(10);
-    admin.password = await bcrypt.hash(password, salt);
+    const token = generateToken(admin._id);
 
-    // Save admin
-    await admin.save();
+    // Send HTTP-only cookie
+    res.cookie("token", token, {
+      path: "/",
+      httpOnly: true,
+      expires: new Date(Date.now() + 1000 * 86400), // 1 day
+      sameSite: "none",
+      secure: true,
+    });
 
-    res.status(201).json({ msg: "Admin registered successfully" });
+    if (admin) {
+      const { _id, fullname, email, role } = admin;
+
+      res.status(201).json({
+        _id,
+        fullname,
+        email,
+        token,
+        role,
+      });
+    } else {
+      res.status(400);
+      throw new Error("Invalid data");
+    }
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
   }
-};
+});
 
 // Admin login
-const login = async (req, res) => {
+const login = asyncHandler(async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -51,26 +80,55 @@ const login = async (req, res) => {
       return res.status(400).json({ msg: "Invalid Credentials" });
     }
 
-    res.status(200).json({ msg: "Admin logged in successfully" });
+    const token = generateToken(admin._id);
+
+    if (admin && isMatch) {
+      // Send HTTP-only cookie
+      res.cookie("token", token, {
+        path: "/",
+        httpOnly: true,
+        expires: new Date(Date.now() + 1000 * 86400), // 1 day
+        sameSite: "none",
+        secure: true,
+      });
+
+      const { _id, fullname, email, role } = admin;
+
+      res.status(201).json({
+        _id,
+        fullname,
+        email,
+        token,
+        role,
+      });
+    } else {
+      res.status(500);
+      throw new Error("Something went wrong, please try again");
+    }
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
   }
-};
+});
 
 // Delete an admin
-const deleteAdmin = async (req, res) => {
+const deleteAdmin = asyncHandler(async (req, res) => {
   try {
-    const { adminId } = req.params;
+    const admin = Admin.findById(req.params.id);
 
-    // Find admin and delete
-    await Admin.findByIdAndDelete(adminId);
+    if (!admin) {
+      res.status(404);
+      throw new Error("User not found");
+    }
 
-    res.status(200).json({ msg: "Admin deleted successfully" });
+    await admin.deleteOne();
+    res.status(200).json({
+      message: "Admin data deleted successfully",
+    });
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
   }
-};
+});
 
 module.exports = { register, login, deleteAdmin };

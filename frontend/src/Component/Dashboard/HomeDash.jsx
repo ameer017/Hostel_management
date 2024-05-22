@@ -61,7 +61,7 @@ const HomeDash = () => {
       <div className="__paraCon">
         {admin && (
           <h1 className="__paraHeader">
-            Welcome back, {dashboard?.name || John}!
+            Welcome back, {dashboard?.name}!
           </h1>
         )}
       </div>
