@@ -63,7 +63,7 @@ export const getRooms = createAsyncThunk(
 );
 
 export const deleteRoom = createAsyncThunk(
-  "room/deleteAdmin",
+  "room/deleteRoom",
   async (id, thunkAPI) => {
     try {
       return await roomService.deleteRoom(id);
@@ -83,7 +83,7 @@ export const updateRoom = createAsyncThunk(
   "room/updateRoom",
   async (roomData, thunkAPI) => {
     try {
-      return await roomService.updateUser(roomData);
+      return await roomService.updateRoom(roomData);
     } catch (error) {
       const message =
         (error.response &&

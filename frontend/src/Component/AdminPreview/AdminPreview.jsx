@@ -1,55 +1,60 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./AdminPreview.css";
 import { CiSearch } from "react-icons/ci";
 import UserTable from "./UserTable";
-
-const userData = [
-  { name: "Nafisat", email: "john@example.com", role: "Admin", id: 1 },
-  { name: "Zainab ", email: "Zainab@example.com", role: "User", id: 2 },
-  { name: "Basirat", email: "Basirat@example.com", role: "Member", id: 3 },
-  { name: "Azeez", email: "Azeez@example.com", role: "Admin", id: 4 },
-  { name: "Soliu", email: "Soliu@example.com", role: "Member", id: 5 },
-];
+import { useDispatch, useSelector } from "react-redux";
+import {
+  FILTER_ADMIN,
+  selectAdmins,
+} from "../../../redux/features/filterSlice";
+import {
+  deleteUser,
+  getUsers,
+  updateUser,
+} from "../../../redux/features/auth-admin/adminSlice";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 const AdminPreview = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [users, setUsers] = useState(userData);
-  const [filteredData, setFilteredData] = useState(userData); 
+  const dispatch = useDispatch();
+  const [search, setSearch] = useState("");
+  const { admins } = useSelector((state) => state.admin);
+  const filteredData = useSelector(selectAdmins);
 
-  const handleSearchChange = (e) => {
-    const term = e.target.value.toLowerCase();
-    setSearchTerm(term);
-    const filtered = users.filter(
-      (user) =>
-        user.name.toLowerCase().includes(term) ||
-        user.email.toLowerCase().includes(term) ||
-        user.role.toLowerCase().includes(term)
-    );
-    setFilteredData(filtered);
+  useEffect(() => {
+    dispatch(getUsers());
+  }, [dispatch]);
+
+  const handleUpdateRole = (userData) => {
+    dispatch(updateUser(userData));
+    dispatch(getUsers());
   };
 
-  const handleDelete = (userId) => {
-    const updatedUsers = users.filter((user) => user.id !== userId);
-    setUsers(updatedUsers);
-    const updatedFilteredData = filteredData.filter((user) => user.id !== userId);
-    setFilteredData(updatedFilteredData);
+  const removeUser = async (id) => {
+    await dispatch(deleteUser(id));
+    dispatch(getUsers());
   };
 
-  const handleUpdateRole = (userId, newRole) => {
-    const updatedUsers = users.map((user) =>
-      user.id === userId ? { ...user, role: newRole } : user
-    );
-    setUsers(updatedUsers);
-  
-    // Update filtered data as well
-    const updatedFilteredData = filteredData.map((user) =>
-      user.id === userId ? { ...user, role: newRole } : user
-    );
-    setFilteredData(updatedFilteredData);
+  const confirmDelete = (id) => {
+    confirmAlert({
+      title: "Delete This User",
+      message: "Are you sure to delete this user?",
+      buttons: [
+        {
+          label: "Delete",
+          onClick: () => removeUser(id),
+        },
+        {
+          label: "Cancel",
+          onClick: () => alert("Deletion cancelled"),
+        },
+      ],
+    });
   };
-  
 
-
+  useEffect(() => {
+    dispatch(FILTER_ADMIN({ admins, search }));
+  }, [dispatch, admins, search]);
 
   return (
     <div className="__prevCon">
@@ -60,18 +65,14 @@ const AdminPreview = () => {
         <input
           type="text"
           className="__prevSearch"
-          placeholder="Search by name or email or role"
-          value={searchTerm}
-          onChange={handleSearchChange}
+          placeholder="Search by name, email, or role"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
       </div>
 
       <div className="__prevList">
-        <UserTable data={filteredData} onDelete={handleDelete}  onUpdateRole={handleUpdateRole}  />
-      </div>
-
-      <div className="__inviteBtnCon">
-        <button className="__inviteBtn">Invite Admin</button>
+        <UserTable data={filteredData} onDelete={confirmDelete} onUpdateRole={handleUpdateRole}/>
       </div>
     </div>
   );

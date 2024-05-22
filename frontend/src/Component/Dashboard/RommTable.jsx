@@ -1,37 +1,36 @@
-import React, { useState } from "react";
-import "./Dashboard.css";
 import { RiDeleteBin6Line, RiFilePaperLine } from "react-icons/ri";
 import { FaPen } from "react-icons/fa";
+
+import React, { useState } from "react";
 import EditStatusModal from "./EditStatusModal";
 import AddRoomModal from "./AddRoomModal";
 
 const RoomTable = ({ rooms, onAddRoom, onUpdateRoom, onDeleteRoom }) => {
-  const [showModal, setShowModal] = useState(false);
-  const [showAddModal, setShowAddModal] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState(null);
 
-  const openModal = (room) => {
+  const handleEditClick = (room) => {
     setSelectedRoom(room);
-    setShowModal(true);
+    setIsEditModalOpen(true);
   };
 
-  const openAddModal = () => {
-    setShowAddModal(true);
-
-  }
-  const closeModal = () => {
-    setShowModal(false);
+  const handleEditModalClose = () => {
+    setIsEditModalOpen(false);
+    setSelectedRoom(null);
   };
-  
-  const closeAddModal = () => {
-    setShowAddModal(false);
 
-  }
+  const handleAddModalOpen = () => {
+    setIsAddModalOpen(true);
+  };
+
+  const handleAddModalClose = () => {
+    setIsAddModalOpen(false);
+  };
 
   return (
     <>
       <h2>Available Rooms</h2>
-      
       <div className="table">
         <table className="table_wrapper room-table">
           <thead className="table_head">
@@ -45,19 +44,23 @@ const RoomTable = ({ rooms, onAddRoom, onUpdateRoom, onDeleteRoom }) => {
             </tr>
           </thead>
           <tbody className="table__body">
-            {rooms.map((room, index) => (
-              <tr key={index} className="table__row">
+            {rooms.map((room) => (
+              <tr key={room._id} className="table_row">
                 <td className="same_class">{room.roomNumber}</td>
-                <td className="same_class">{room.capacity}</td>
-                <td className="same_class">{room.occupancy}</td>
-                <td className="same_class">{room.location}</td>
-                <td className="same_class">{room.status}</td>
-                <td className="same_class ">
-                  <button onClick={() => openModal(room)} className="_noBg">
+                <td className="same_class">{room.roomCapacity}</td>
+                <td className="same_class">{room.roomOccupancy}</td>
+                <td className="same_class">{room.roomLocation}</td>
+                <td className="same_class">{room.roomStatus}</td>
+
+                <td>
+                  <button
+                    onClick={() => handleEditClick(room)}
+                    className="_noBg"
+                  >
                     <FaPen size={25} color="blue" />
                   </button>
                   <button
-                    onClick={() => onDeleteRoom(room.roomNumber)}
+                    onClick={() => onDeleteRoom(room._id)}
                     className="_noBg"
                   >
                     <RiDeleteBin6Line size={25} color="red" />
@@ -67,24 +70,21 @@ const RoomTable = ({ rooms, onAddRoom, onUpdateRoom, onDeleteRoom }) => {
             ))}
           </tbody>
         </table>
-      </div>
-      <div className="right">
-        <button onClick={() => setShowAddModal(true)} className="btn-secondary">
-          Add New Room
-        </button>
 
-        {showAddModal && (
-          <AddRoomModal onAddRoom={onAddRoom} onClose={closeAddModal} />
+      </div>
+        <div className="right">
+          <button onClick={handleAddModalOpen} className="btn-secondary">
+            Add New Room
+          </button>
+        </div>
+
+        {isAddModalOpen && (
+          <AddRoomModal onAddRoom={onAddRoom} onClose={handleAddModalClose} />
         )}
 
-        {showModal && (
-          <EditStatusModal
-            room={selectedRoom}
-            onUpdateRoom={onUpdateRoom}
-            onClose={closeModal}
-          />
+        {isEditModalOpen && (
+          <EditStatusModal room={selectedRoom} onClose={handleEditModalClose} />
         )}
-      </div>
     </>
   );
 };

@@ -1,25 +1,27 @@
 import axios from "axios";
 
-const BACKEND_URL = import.meta.env.BACKEND_URL;
-export const API_URL = `${BACKEND_URL}/api/room/`;
+export const API_URL = `http://localhost:3500/room/`;
 
-const addRoom = async (userData) => {
-  const response = await axios.post(API_URL + "register", userData);
+const addRoom = async (roomData) => {
+  const response = await axios.post(API_URL + "create-room", roomData);
   return response.data;
 };
 
 const getRoom = async () => {
-  const response = await axios.get(API_URL + "getRoom");
+  const response = await axios.get(API_URL + "get-single-room");
   return response.data;
 };
 
-const updateRoom = async (userData) => {
-  const response = await axios.patch(API_URL + "updateRoom", userData);
-  return response.data;
+const updateRoom = async (roomData) => {
+  try {
+    const response = await axios.patch(`${API_URL}update-room/${roomData.id}`, roomData);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 };
-
 const getRooms = async () => {
-  const response = await axios.get(API_URL + "getRooms");
+  const response = await axios.get(API_URL + "get-all-room");
 
   return response.data;
 };

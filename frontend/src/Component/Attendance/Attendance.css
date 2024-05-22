@@ -386,242 +386,17 @@
 
 }
 
-<<<<<<< HEAD
-@media (min-width: 1200px) and (max-width: 1919px) {
-  .attCon {
-    background-color: #e68888;
-  }
-
-  .dailyText {
-    font-size: 45px;
-  }
-
-  .selectDay{
-    font-size: 32px;
-    margin-top: 1.2rem;
-  }
-
-  .calendar {
-    max-width: 500px;
-  }
-
-
-  .days-of-week {
-    margin-top: 12px;
-    font-size: 25px;
-  }
-
-  .week {
-    gap: 30px;
-  }
-
-  .day {
-    width: 40px;
-    height: 40px;
-    font-size: 25px ;
-    
-  }
-
-  .peopleMov {
-    padding: 10px 32px;
-  }
-
-  .peopleMov > div {
-    gap: 12px;
-  }
-
-  .markText {
-    margin-bottom: 1.2rem;
-    font-size: 25px;
-  }
-
-  .titleText {
-    font-size: 25px;
-  }
-
-  .titlePara {
-    font-size: 20px;
-  }
-
-  .toggleSwitch {
-    width: 60px;
-    height: 40px;
-    border-radius: 30px;
-    -webkit-border-radius: 30px;
-    -moz-border-radius: 30px;
-    -ms-border-radius: 30px;
-    -o-border-radius: 30px;
-}
-
-  .toggleSwitch::after {
-   content: '';
-   position: absolute;
-   width: 35px;
-   height: 35px;
-   border-radius: 50%;
-   -webkit-border-radius: 50%;
-   -moz-border-radius: 50%;
-   -ms-border-radius: 50%;
-   -o-border-radius: 50%;
-}
-
-.attendanceBtn {
-  font-size: 20px;
- padding: 10px 15px;
- 
-}
-  
-}
-
-@media (min-width: 992px) and (max-width: 1199px) {
-  .attCon {
-    background-color: #7070ea;
-  }
-
-  .dailyText {
-    font-size: 30px;
-    font-weight: 800;
-  }
-
-  .selectDay{
-    font-size: 22px;
-    font-weight: 600;
-    margin-top: 0.8rem;
-  }
-
-  .calendar {
-    max-width: 400px;
-  }
-
-  .days-of-week {
-    margin-top: 12px;
-    font-size: 20px;
-  }
-
-  .week {
-    gap: 25px;
-   
-  }
-
-  .day {
-    width: 40px;
-    height: 40px;
-    font-size: 20px ;
-  }
-
-  .titleText {
-    font-size: 20px;
-  }
-
-  .titlePara {
-    font-size: 18px;
-  }
-
-}
-
-@media (min-width:768px) and (max-width: 991px) {
-  .attCon {
-    background-color: #1A80E5;
-    padding: 30px 60px;
-  }
-
-  .dailyText {
-    font-size: 25px;
-    font-weight: 800;
-  }
-
-  .selectDay{
-    font-size: 18px;
-    font-weight: 500;
-    margin-top: 0.8rem;
-  }
-
-  .days-of-week {
-    margin-top: 12px;
-    font-size: 14px;
-  }
-
-  .calendar {
-    font-size: 12px;
-  }
-
-  .week {
-    gap: 20px;
-   
-  }
-  .day {
-    width: 20px;
-    height: 20px;
-    font-size: 16px ;
-  }
-
-  .markText {
-    font-size: 18px;
-    font-weight: 700;
-  }
-
-  .titleText {
-    font-size: 18px;
-  }
-
-  .titlePara {
-    font-size: 16px;
-  }
-
-  
-}
-
 @media (min-width: 481px) and (max-width: 767px) {
   .attCon {
-    background-color: cyan;
-=======
-@media (min-width: 481px) and (max-width: 767px) {
-  .attCon {
->>>>>>> 355d77ebaff37ef3575df58abd74d7f66bdd3038
     padding: 30px 40px;
   }
 
   .dailyText {
-<<<<<<< HEAD
-    font-size: 20px;
-    font-weight: 700;
-  }
-
-  .selectDay{
-    font-size: 16px;
-    font-weight: 600;
-    margin-top: 0.8rem;
-  }
-
-  .markText {
-    font-size: 16px;
-    font-weight: 700;
-  }
-}
-
-@media (min-width: 350px) and (max-width: 480px) {
-  .attCon {
-    background-color: brown;
-    padding: 30px 20px;
-  }
-
-  .dailyText {
-    font-size: 10px;
-=======
     font-size: 25px;
->>>>>>> 355d77ebaff37ef3575df58abd74d7f66bdd3038
     font-weight: 800;
   }
 
   .selectDay{
-<<<<<<< HEAD
-    font-size: 11px;
-    font-weight: 600;
-    margin-top: 0.8rem;
-  }
-  .calendar {
-    font-size: 10px;
-=======
     font-size: 18px;
     font-weight: 700;
     margin-top: 2px;
@@ -690,34 +465,10 @@
     font-size: 10px;
     margin-bottom: 5px;
     gap: 2px;
->>>>>>> 355d77ebaff37ef3575df58abd74d7f66bdd3038
   }
 
   .week {
     gap: 10px;
-<<<<<<< HEAD
-   
-  }
-
-  .flex-column {
-    display: flex;
-    /* flex-direction: column; */
-    justify-content: center;
-    align-self: flex-start;
-  } */
-
-  .peopleMov {
-    padding: 10px 5px;
-  }
-
-  .markText {
-    font-size: 12px;
-    font-weight: 700;
-  }
-
-  .titleText {
-    font-size: 12px;
-=======
   }
 
   .day {
@@ -743,20 +494,15 @@
 
   .titleText {
     font-size: 14px;
->>>>>>> 355d77ebaff37ef3575df58abd74d7f66bdd3038
   }
 
   .titlePara {
     font-size: 12px;
   }
 
-<<<<<<< HEAD
-}
-=======
   .attendanceBtn {
     font-size: 12px;
     font-weight: 400;
   }
   
 }
->>>>>>> 355d77ebaff37ef3575df58abd74d7f66bdd3038

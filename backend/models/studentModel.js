@@ -6,10 +6,6 @@ const studentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  password: {
-    type: String,
-    required: [true, 'Please add a password'],
-  },
   Hostel: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Hostel',
@@ -45,19 +41,6 @@ const studentSchema = new mongoose.Schema({
   minimize: false,
   toJSON: { getters: true },
 });
-
-studentSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) {
-    return next();
-  }
-
-  // Hash password
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-
-  next();
-});
-
 
 studentSchema.methods.checkIn = function() {
   this.checkedIn = true;
