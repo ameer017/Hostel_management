@@ -9,6 +9,7 @@ const errorHandler = require("./middleware/errorMiddleware");
 const connectDb = require("./config/DBConnect");
 const roomRoute = require("./routes/room");
 const adminRoute = require("./routes/adminRoutes");
+const studentRoute = require("./routes/student")
 const PORT = process.env.PORT || 3500;
 
 app.use(express.json());
@@ -32,6 +33,7 @@ app.use(
 
 app.use("/room", roomRoute);
 app.use("/admin", adminRoute);
+app.use("/students", studentRoute);
 
 app.get("/", (req, res) => {
   res.send("Home Page!");
