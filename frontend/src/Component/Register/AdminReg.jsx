@@ -9,7 +9,7 @@ import { RESET, register } from "../../../redux/features/auth-admin/adminSlice";
 import PasswordInput from "../PasswordInput/PasswordInput";
 import { toast } from "react-toastify";
 const initialState = {
-  name: "",
+  fullname: "",
   email: "",
   password: "",
   password2: "",
@@ -18,7 +18,7 @@ const initialState = {
 const AdminReg = () => {
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState(initialState);
-  const { name, email, password, password2 } = formData;
+  const { fullname, email, password, password2 } = formData;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -44,6 +44,7 @@ const AdminReg = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    // console.log(e.target.value)
     setFormData({ ...formData, [name]: value });
   };
 
@@ -77,25 +78,19 @@ const AdminReg = () => {
   const registerUser = async (e) => {
     e.preventDefault();
 
-    if (!name || !email || !password) {
+    if (!fullname || !email || !password) {
       return toast.error("All fields are required");
     }
     if (password.length < 6) {
       return toast.error("Password must be up to 6 characters");
     }
-    if (
-      email.match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      )
-    ) {
-      return toast.error("Please enter a valid email");
-    }
+
     if (password !== password2) {
       return toast.error("Passwords do not match");
     }
 
     const userData = {
-      name,
+      fullname,
       email,
       password,
     };
@@ -132,8 +127,8 @@ const AdminReg = () => {
                 <input
                   type="text"
                   className="input"
-                  name="name"
-                  value={name}
+                  name="fullname"
+                  value={fullname}
                   placeholder="Enter your full name"
                   required
                   onChange={handleInputChange}
