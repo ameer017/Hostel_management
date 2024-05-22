@@ -21,18 +21,18 @@ const logout = async () => {
 
 // Get Login Status
 const getLoginStatus = async () => {
-  const response = await axios.get(API_URL + "loginStatus");
+  const response = await axios.get(API_URL + "login-status");
   return response.data;
 };
 
 // Get Admin profile
 const getUser = async () => {
-  const response = await axios.get(API_URL + "getUser");
+  const response = await axios.get(API_URL + "getAdmin");
   return response.data;
 };
 
 const getUsers = async () => {
-  const response = await axios.get(API_URL + "getUsers");
+  const response = await axios.get(API_URL + "getAdmins");
 
   return response.data;
 };

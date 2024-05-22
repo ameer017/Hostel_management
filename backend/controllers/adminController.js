@@ -1,6 +1,7 @@
 const Admin = require("../models/adminModel");
 const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");
+const { generateToken } = require("../utils");
 
 // Register a new admin
 const register = asyncHandler(async (req, res) => {
@@ -131,53 +132,73 @@ const deleteAdmin = asyncHandler(async (req, res) => {
 });
 
 // Get login status of the admin
-const getLoginStatus = async (req, res) => {
-  try {
-    const { adminId } = req.params;
-
-    const admin = await Admin.findById(adminId);
-    if (!admin) {
-      return res.status(404).json({ msg: "Admin not found" });
-    }
-
-    res.status(200).json({ loggedIn: admin.loggedIn });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
+const getLoginStatus = asyncHandler(async (req, res) => {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.json(false);
   }
-};
+
+  // Verify token
+  const verified = jwt.verify(token, process.env.JWT_SECRET);
+
+  if (verified) {
+    return res.json(true);
+  }
+  return res.json(false);
+});
 
 // Get details of a single admin
-const getAdmin = async (req, res) => {
-  try {
-    const { adminId } = req.params;
+const getAdmin = asyncHandler(async (req, res) => {
+  const admin = await Admin.findById(req.admin._id);
 
-    const admin = await Admin.findById(adminId);
-    if (!admin) {
-      return res.status(404).json({ msg: "Admin not found" });
-    }
+  if (admin) {
+    const { _id, fullname, email, role } = admin;
 
-    res.status(200).json(admin);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
+    res.status(200).json({
+      _id,
+      fullname,
+      email,
+      role,
+    });
+  } else {
+    res.status(404);
+    throw new Error("Admin not found");
   }
-};
+});
 
 // Get details of all admins
-const getAdmins = async (req, res) => {
-  try {
-    const admins = await Admin.find();
-    if (!admins.length) {
-      return res.status(404).json({ msg: "No admins found" });
-    }
-
-    res.status(200).json(admins);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
+const getAdmins = asyncHandler(async (req, res) => {
+  const admins = await Admin.find().sort("-createdAt").select("-password");
+  if (!admins) {
+    res.status(500);
+    throw new Error("Something went wrong");
   }
-};
+  res.status(200).json(admins);
+});
+
+const updateAdmin = asyncHandler(async (req, res) => {
+  const admin = await Admin.findById(req.admin._id);
+
+  if (admin) {
+    const { _id, fullname, email, role } = admin;
+
+    admin.email = email;
+    admin.fullname = req.body.name || fullname;
+    admin.role = req.body.role || role;
+
+    const updatedAdmin = await admin.save();
+
+    res.status(200).json({
+      _id: updatedAdmin._id,
+      fullname: updatedAdmin.fullname,
+      role: updatedAdmin.role,
+      email: updatedAdmin.email,
+    });
+  } else {
+    res.status(404);
+    throw new Error("Admin not found");
+  }
+});
 
 module.exports = {
   register,
@@ -186,4 +207,5 @@ module.exports = {
   getLoginStatus,
   getAdmin,
   getAdmins,
+  updateAdmin,
 };

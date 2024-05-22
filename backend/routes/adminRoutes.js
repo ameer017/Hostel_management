@@ -11,8 +11,10 @@ router.post("/login", adminController.login);
 // Delete admin
 router.delete("/:id", adminController.deleteAdmin);
 
-router.get("/login-status/:adminId", adminController.getLoginStatus);
-router.get("/:adminId", adminController.getAdmin);
-router.get("/", adminController.getAdmins);
+router.get("/login-status", adminController.getLoginStatus);
+router.get("/getAdmin",  adminController.getAdmin);
+router.get("/getAdmins", adminController.getAdmins);
+
+router.patch("/updateAdmin", adminController.updateAdmin);
 
 module.exports = router;
