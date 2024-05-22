@@ -1,6 +1,5 @@
 import axios from "axios";
 
-const BACKEND_URL = import.meta.env.BACKEND_URL;
 export const API_URL = `http://localhost:3500/api/admins/`;
 
 const register = async (userData) => {

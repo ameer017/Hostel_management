@@ -1,15 +1,27 @@
 import React, { useState } from 'react';
-import './Dashboard.css'
+import { useDispatch } from 'react-redux';
+import './Dashboard.css';
+import { updateRoom } from '../../../redux/features/room/roomSlice';
 
-const EditStatusModal = ({ room, onUpdateRoom, onClose }) => {
-  const [newStatus, setNewStatus] = useState(room.status);
+const EditStatusModal = ({ room, onClose }) => {
+  const [newStatus, setNewStatus] = useState(room.roomStatus);
+  const dispatch = useDispatch();
 
   const handleStatusChange = (e) => {
     setNewStatus(e.target.value);
   };
 
   const handleSubmit = () => {
-    onUpdateRoom(room.roomNumber, newStatus);
+    const roomData = {
+      id: room._id,
+      roomNumber: room.roomNumber,
+      roomStatus: newStatus,
+      roomCapacity: room.roomCapacity,
+      roomOccupancy: room.roomOccupancy,
+      roomLocation: room.roomLocation,
+    };
+
+    dispatch(updateRoom(roomData));
     onClose();
   };
 
@@ -20,8 +32,7 @@ const EditStatusModal = ({ room, onUpdateRoom, onClose }) => {
         <p className="room-number">Room Number: {room.roomNumber}</p>
         <label htmlFor="status" className="status-label">New Status:</label>
         <div className="right">
-
-        <input type="text" id="status" className="search" value={newStatus} onChange={handleStatusChange} />
+          <input type="text" id="status" className="search" value={newStatus} onChange={handleStatusChange} />
         </div>
         <div className="button-group">
           <button className="save-button" onClick={handleSubmit}>Save</button>

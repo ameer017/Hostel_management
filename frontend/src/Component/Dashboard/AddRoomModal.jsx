@@ -4,10 +4,9 @@ import "./Dashboard.css";
 const AddRoomModal = ({ onAddRoom, onClose }) => {
   const [newRoom, setNewRoom] = useState({
     roomNumber: "",
-    capacity: "",
-    occupancy: "",
-    status: "",
-    location: "",
+    roomCapacity: "",
+    roomStatus: "",
+    roomLocation: "",
   });
 
   const handleChange = (e) => {
@@ -44,30 +43,20 @@ const AddRoomModal = ({ onAddRoom, onClose }) => {
         <input
           type="text"
           id="capacity"
-          name="capacity"
-          value={newRoom.capacity}
+          name="roomCapacity"
+          value={newRoom.roomCapacity}
           onChange={handleChange}
           className="input-field"
         />
-        <label htmlFor="occupancy" className="room-label">
-          Occupancy:
-        </label>
-        <input
-          type="text"
-          id="occupancy"
-          name="occupancy"
-          value={newRoom.occupancy}
-          onChange={handleChange}
-          className="input-field"
-        />
+        
         <label htmlFor="status" className="room-label">
           Status:
         </label>
         <input
           type="text"
           id="status"
-          name="status"
-          value={newRoom.status}
+          name="roomStatus"
+          value={newRoom.roomStatus}
           onChange={handleChange}
           className="input-field"
         />
@@ -77,8 +66,8 @@ const AddRoomModal = ({ onAddRoom, onClose }) => {
         <input
           type="text"
           id="location"
-          name="location"
-          value={newRoom.location}
+          name="roomLocation"
+          value={newRoom.roomLocation}
           onChange={handleChange}
           className="input-field"
         />

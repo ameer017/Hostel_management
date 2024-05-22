@@ -83,7 +83,7 @@ export const updateRoom = createAsyncThunk(
   "room/updateRoom",
   async (roomData, thunkAPI) => {
     try {
-      return await roomService.updateUser(roomData);
+      return await roomService.updateRoom(roomData);
     } catch (error) {
       const message =
         (error.response &&
