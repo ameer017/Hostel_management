@@ -1,7 +1,6 @@
 const Admin = require("../models/adminModel");
 const bcrypt = require("bcryptjs");
 
-
 // Register a new admin
 const register = async (req, res) => {
   try {
@@ -73,4 +72,60 @@ const deleteAdmin = async (req, res) => {
   }
 };
 
-module.exports = { register, login, deleteAdmin };
+// Get login status of the admin
+const getLoginStatus = async (req, res) => {
+  try {
+    const { adminId } = req.params;
+
+    const admin = await Admin.findById(adminId);
+    if (!admin) {
+      return res.status(404).json({ msg: "Admin not found" });
+    }
+
+    res.status(200).json({ loggedIn: admin.loggedIn });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+};
+
+// Get details of a single admin
+const getAdmin = async (req, res) => {
+  try {
+    const { adminId } = req.params;
+
+    const admin = await Admin.findById(adminId);
+    if (!admin) {
+      return res.status(404).json({ msg: "Admin not found" });
+    }
+
+    res.status(200).json(admin);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+};
+
+// Get details of all admins
+const getAdmins = async (req, res) => {
+  try {
+    const admins = await Admin.find();
+    if (!admins.length) {
+      return res.status(404).json({ msg: "No admins found" });
+    }
+
+    res.status(200).json(admins);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+};
+
+module.exports = {
+  register,
+  login,
+  deleteAdmin,
+  getLoginStatus,
+  getAdmin,
+  getAdmins
+};
