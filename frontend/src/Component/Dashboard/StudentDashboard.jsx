@@ -4,52 +4,15 @@ import "./Dashboard.css";
 import Sidebar from "./Sidebar";
 import { Link } from "react-router-dom";
 import { IoMenu, IoCloseOutline } from "react-icons/io5";
-import { useDispatch, useSelector } from "react-redux";
-import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
-import { deleteStudent, getStudents } from "../../../redux/features/student/studentSlice";
-import { FILTER_STUDENTS, selectStudents } from "../../../redux/features/filterSlice";
+import useAuthRedirect from "../../../context/useAuth";
 
 const StudentDashboard = () => {
-  const dispatch = useDispatch();
+  useAuthRedirect()
   const [search, setSearch] = useState("");
   const [isSidebarToggle, setIsSidebarToggle] = useState(false);
 
-  const { students } = useSelector(
-    (state) => state.student
-  );
 
-  const filteredStudents = useSelector(selectStudents);
-
-  useEffect(() => {
-    dispatch(getStudents());
-  }, [dispatch]);
-
-  const removeStudent = async (id) => {
-    await dispatch(deleteStudent(id));
-    dispatch(getStudents());
-  };
-
-  const confirmDelete = (id) => {
-    confirmAlert({
-      title: "Delete This Student",
-      message: "Are you sure to delete this student?",
-      buttons: [
-        {
-          label: "Delete",
-          onClick: () => removeStudent(id),
-        },
-        {
-          label: "Cancel",
-          onClick: () => console.log("Delete canceled"),
-        },
-      ],
-    });
-  };
-
-  useEffect(() => {
-    dispatch(FILTER_STUDENTS({ students, search }));
-  }, [dispatch, students, search]);
 
   return (
     <div>
@@ -106,7 +69,7 @@ const StudentDashboard = () => {
                     </tr>
                   </thead>
                   <tbody className="table__body">
-                    {filteredStudents.map((student) => (
+                    {/* {filteredStudents.map((student) => ( */}
                       <tr key={student.id} className="table__row">
                         <td className="same_class">{student.name}</td>
                         <td className="same_class">{student.email}</td>
@@ -122,7 +85,7 @@ const StudentDashboard = () => {
                           />
                         </td>
                       </tr>
-                    ))}
+                    {/* ))} */}
                   </tbody>
                 </table>
               </div>
