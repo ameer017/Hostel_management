@@ -3,10 +3,7 @@ import "./Register.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import {
-  RESET,
-  addStudent,
-} from "../../../redux/features/student/studentSlice";
+
 
 const initialState = {
   name: "",
@@ -42,7 +39,6 @@ const StudentReg = () => {
     setImagePreview(URL.createObjectURL(file));
   };
 
-  const { isLoading, isSuccess, message } = useSelector((state) => state.student);
 
   const registerStudent = async (e) => {
     e.preventDefault();
@@ -77,15 +73,10 @@ const StudentReg = () => {
       photo: imageURL || formData.photo,
     };
 
-    dispatch(addStudent(studentData));
+    // dispatch(addStudent(studentData));
   };
 
-  useEffect(() => {
-    if (isSuccess) {
-      navigate("/studentdash");
-      dispatch(RESET());
-    }
-  }, [isSuccess, dispatch, navigate]);
+ 
 
   return (
     <div className="form__">

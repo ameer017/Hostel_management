@@ -1,7 +1,6 @@
-import { RiDeleteBin6Line, RiFilePaperLine } from "react-icons/ri";
-import { FaPen } from "react-icons/fa";
-
 import React, { useState } from "react";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { FaPen } from "react-icons/fa";
 import EditStatusModal from "./EditStatusModal";
 import AddRoomModal from "./AddRoomModal";
 
@@ -57,34 +56,37 @@ const RoomTable = ({ rooms, onAddRoom, onUpdateRoom, onDeleteRoom }) => {
                     onClick={() => handleEditClick(room)}
                     className="_noBg"
                   >
-                    <FaPen size={25} color="blue" />
+                    <FaPen size={15} color="blue" />
                   </button>
                   <button
                     onClick={() => onDeleteRoom(room._id)}
                     className="_noBg"
                   >
-                    <RiDeleteBin6Line size={25} color="red" />
+                    <RiDeleteBin6Line size={15} color="red" />
                   </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-
       </div>
-        <div className="right">
-          <button onClick={handleAddModalOpen} className="btn-secondary">
-            Add New Room
-          </button>
-        </div>
+      <div className="right">
+        <button onClick={handleAddModalOpen} className="btn-secondary">
+          Add New Room
+        </button>
+      </div>
 
-        {isAddModalOpen && (
-          <AddRoomModal onAddRoom={onAddRoom} onClose={handleAddModalClose} />
-        )}
+      {isAddModalOpen && (
+        <AddRoomModal onAddRoom={onAddRoom} onClose={handleAddModalClose} />
+      )}
 
-        {isEditModalOpen && (
-          <EditStatusModal room={selectedRoom} onClose={handleEditModalClose} />
-        )}
+      {isEditModalOpen && (
+        <EditStatusModal
+          room={selectedRoom}
+          onClose={handleEditModalClose}
+          onUpdateRoom={onUpdateRoom}
+        />
+      )}
     </>
   );
 };

@@ -1,28 +1,37 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import './Dashboard.css';
-import { updateRoom } from '../../../redux/features/room/roomSlice';
+import React, { useState } from "react";
+import axios from "axios";
+import "./Dashboard.css";
 
-const EditStatusModal = ({ room, onClose }) => {
+const EditStatusModal = ({ room, onClose, onUpdateRoom }) => {
   const [newStatus, setNewStatus] = useState(room.roomStatus);
-  const dispatch = useDispatch();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   const handleStatusChange = (e) => {
     setNewStatus(e.target.value);
   };
 
-  const handleSubmit = () => {
-    const roomData = {
-      id: room._id,
-      roomNumber: room.roomNumber,
-      roomStatus: newStatus,
-      roomCapacity: room.roomCapacity,
-      roomOccupancy: room.roomOccupancy,
-      roomLocation: room.roomLocation,
-    };
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    setError("");
 
-    dispatch(updateRoom(roomData));
-    onClose();
+    try {
+      const updateResponse = await axios.patch(
+        `http://localhost:3500/room/update-room/${room._id}`,
+        { roomStatus: newStatus }
+      );
+      console.log("Room updated:", updateResponse.data);
+
+      // Update the room data in the parent component
+      onUpdateRoom(updateResponse.data);
+
+      onClose();
+    } catch (error) {
+      setError("Failed to update room status. Please try again.");
+      console.log(error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -30,13 +39,26 @@ const EditStatusModal = ({ room, onClose }) => {
       <div className="modal-content">
         <h2 className="modal-title">Edit Room Status</h2>
         <p className="room-number">Room Number: {room.roomNumber}</p>
-        <label htmlFor="status" className="status-label">New Status:</label>
+        <label htmlFor="status" className="status-label">
+          New Status:
+        </label>
         <div className="right">
-          <input type="text" id="status" className="search" value={newStatus} onChange={handleStatusChange} />
+          <input
+            type="text"
+            id="status"
+            className="search"
+            value={newStatus}
+            onChange={handleStatusChange}
+          />
         </div>
+        {error && <p className="error">{error}</p>}
         <div className="button-group">
-          <button className="save-button" onClick={handleSubmit}>Save</button>
-          <button className="cancel-button" onClick={onClose}>Cancel</button>
+          <button className="save-button" onClick={handleSubmit} disabled={isSubmitting}>
+            {isSubmitting ? "Saving..." : "Save"}
+          </button>
+          <button className="cancel-button" onClick={onClose}>
+            Cancel
+          </button>
         </div>
       </div>
     </div>
