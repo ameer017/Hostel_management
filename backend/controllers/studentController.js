@@ -32,7 +32,7 @@ const registerStudent = asyncHandler(async (req, res) => {
     const studentExist = await Student.findOne({ email });
 
     if (studentExist) {
-      return res.status(400).json({ msg: "Student already exists" });
+      return res.status(400).json({ msg: "Student already existss" });
     }
 
   
