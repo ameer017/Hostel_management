@@ -1,7 +1,11 @@
 const express = require("express");
-const {createNewRoom, getAllRoom, getRoom, updateRoom, deleteRoom} = require("../controllers/roomController")
-
-
+const {
+  createNewRoom,
+  getAllRoom,
+  getRoom,
+  updateRoom,
+  deleteRoom,
+} = require("../controllers/roomController");
 
 const router = express.Router();
 
