@@ -47,7 +47,7 @@ const RoomTable = ({ rooms, onAddRoom, onUpdateRoom, onDeleteRoom }) => {
               <tr key={room._id} className="table_row">
                 <td className="same_class">{room.roomNumber}</td>
                 <td className="same_class">{room.roomCapacity}</td>
-                <td className="same_class">{room.roomOccupancy}</td>
+                <td className="same_class">{room.roomOccupancy.length}</td>
                 <td className="same_class">{room.roomLocation}</td>
                 <td className="same_class">{room.roomStatus}</td>
 

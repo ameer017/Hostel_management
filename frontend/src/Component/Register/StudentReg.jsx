@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./Register.css";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
+import axios from "axios";
 
 const initialState = {
   name: "",
@@ -16,16 +15,13 @@ const initialState = {
   nationality: "",
 };
 
-const cloud_name = "";  // add your cloud name
-const upload_preset = "";  // add your upload preset
-
 const StudentReg = () => {
   const [formData, setFormData] = useState(initialState);
-  const [studentImage, setStudentImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
-  const { name, age, roomNumber, g_name, g_email, gender, nationality } = formData;
+  const [formValidMessage, setFormValidMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { name, age, roomNumber, g_name, g_email, gender, nationality, email } =
+    formData;
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -33,50 +29,40 @@ const StudentReg = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setStudentImage(file);
-    setImagePreview(URL.createObjectURL(file));
-  };
-
-
   const registerStudent = async (e) => {
     e.preventDefault();
-    let imageURL = "";
 
-    if (studentImage) {
-      try {
-        const image = new FormData();
-        image.append("file", studentImage);
-        image.append("cloud_name", cloud_name);
-        image.append("upload_preset", upload_preset);
-
-        const response = await fetch(
-          "https://api.cloudinary.com/v1_1/zinotrust/image/upload",
-          { method: "post", body: image }
-        );
-        const imgData = await response.json();
-        imageURL = imgData.url;
-      } catch (error) {
-        toast.error("Image upload failed");
-        return;
-      }
-    }
-
-    if (!name || !age || !roomNumber || !g_name || !g_email || !gender || !nationality) {
+    if (
+      !name ||
+      !age ||
+      !roomNumber ||
+      !g_name ||
+      !g_email ||
+      !gender ||
+      !nationality ||
+      !email
+    ) {
       toast.error("All fields are required");
       return;
     }
-
-    const studentData = {
-      ...formData,
-      photo: imageURL || formData.photo,
-    };
-
-    // dispatch(addStudent(studentData));
+    axios
+        .post(`http://localhost:3500/students/registerStudent`, formData)
+        .then((response) => {
+          setUser(response.data);
+          setIsSubmitting(false);
+          setFormCompleted(true);
+          toast.success("Registration Successful")
+          navigate("/homedash", { state: { user: response.data } });
+        })
+        .catch((error) => {
+          setIsSubmitting(false);
+          const message =
+            error.response?.status === 400
+              ? "A Student with the same email address already exists"
+              : "Server error unable to process your registration";
+          setFormValidMessage(message);
+        });
   };
-
- 
 
   return (
     <div className="form__">
@@ -108,6 +94,18 @@ const StudentReg = () => {
           </div>
 
           <div className="--dir-column">
+            <label htmlFor="age">Email:</label>
+            <input
+              type="email"
+              className="input"
+              name="email"
+              placeholder="yourname@gmail.com"
+              onChange={handleInputChange}
+              value={email}
+            />
+          </div>
+
+          <div className="--dir-column">
             <label htmlFor="gender">Gender:</label>
             <input
               type="text"
@@ -134,7 +132,7 @@ const StudentReg = () => {
           <div className="--dir-column">
             <label htmlFor="roomNumber">Room Number:</label>
             <input
-              type="number"
+              type="text"
               className="input"
               name="roomNumber"
               placeholder="Enter room number"
@@ -167,26 +165,15 @@ const StudentReg = () => {
             />
           </div>
 
-          <div className="--dir-column">
-            <label htmlFor="photo">Student Photo:</label>
-            <input
-              type="file"
-              className="input"
-              name="photo"
-              onChange={handleImageChange}
-            />
-          </div>
-
-          {imagePreview && (
-            <div className="image-preview">
-              <img src={imagePreview} alt="Preview" />
-            </div>
-          )}
-
-          <button className="--btn" type="submit">
-            Register
+          <button className="--btn" disabled={isSubmitting}>
+            {isSubmitting ? "Adding Student..." : "Add Student"}
           </button>
         </form>
+
+        {formValidMessage && (
+          <p className="error-message">{formValidMessage}</p>
+        )}
+        
       </div>
     </div>
   );
