@@ -9,10 +9,7 @@ const guardianSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please add an email'],
     trim: true,
-    match: [
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      'Please enter a valid email',
-    ]
+    
   }
 });
 
@@ -48,10 +45,7 @@ const studentSchema = new mongoose.Schema({
     required: [true, 'Please add an email'],
     trim: true,
     unique: true,
-    match: [
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      'Please enter a valid email',
-    ]
+    
   },
   guardian: guardianSchema,
   room: {
