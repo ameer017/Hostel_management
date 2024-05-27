@@ -1,10 +1,9 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./HomeDash.css";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { CALC_ACTIVE_STUDENT } from "../../../redux/features/student/studentSlice";
-import { getUser } from "../../../redux/features/auth-admin/adminSlice";
-import StudentStatus from "../AdminPreview/StudentStatus";
+import { UserContext } from "../../../context/userContext";
+import useAuthRedirect from "../../../context/useAuth";
+import axios  from "axios"
 
 export const shortenText = (text, n) => {
   if (text.length > n) {
@@ -15,77 +14,56 @@ export const shortenText = (text, n) => {
 };
 
 const HomeDash = () => {
-  const dispatch = useDispatch();
-  const { students, activeStudent } = useSelector((state) => state.student);
+  useAuthRedirect();
+  const { user } = useContext(UserContext);
+  const [data, setData] = useState([]);
+  const [checkedInCount, setCheckedInCount] = useState(0);
+  const [checkedOutCount, setCheckedOutCount] = useState(0);
 
-  const { admin } = useSelector((state) => state.admin);
-  const initialState = {
-    name: admin?.name || "",
-    email: admin?.email || "",
-  };
-  const [dashboard, setDashboard] = useState(initialState);
-
-  const totalStudent = Array.isArray(students) ? students.length : 0;
-
-  // Ensure activeStudent is an array before accessing length
-  const activeStudentCount = Array.isArray(activeStudent)
-    ? activeStudent.length
-    : 0;
-
-  // Calculate inactive students
-  const inActive = totalStudent - activeStudentCount;
 
   useEffect(() => {
-    dispatch(getUser());
-  }, dispatch);
+    const fetchStudents = async () => {
+      const response = await axios.get("http://localhost:3500/students/")
 
-  useEffect(
-    () => {
-      dispatch(CALC_ACTIVE_STUDENT());
-    },
-    dispatch,
-    students
-  );
+      setData(response.data)
+      // console.log(response.data)
+      const checkedInStudents = response.data.filter(student => student.checkedIn);
+        setCheckedInCount(checkedInStudents.length);
 
-  useLayoutEffect(() => {
-    if (admin) {
-      setDashboard({
-        ...dashboard,
-        name: admin.name,
-        email: admin.email,
-      });
+      const checkedOutStudents = response.data.filter(student => !student.checkedIn);
+        setCheckedOutCount(checkedOutStudents.length);
     }
-  }, [admin]);
+    fetchStudents()
+  })
+
   return (
     <div className="--flex-center __homeDashCon">
       <div className="__paraCon">
-        {admin && (
-          <h1 className="__paraHeader">
-            Welcome back, {dashboard?.name || John}!
-          </h1>
-        )}
+        <h1 className="__paraHeader">Hi {shortenText(user.fullname, 8)}</h1>
       </div>
 
       <div className="__secondCon">
         <h3 className="__quickTitle">Quick Stats</h3>
         <div className="__flex __boardss">
           <div className="__board">
-            <p className="__boardHead">{totalStudent}</p>
+            <p className="__boardHead">
+              {data.length}
+            </p>
             <p className="__boardDetails">Total students</p>
           </div>
           <div className="__board">
-            <p className="__boardHead">{activeStudentCount}</p>
+            <p className="__boardHead">
+              {checkedInCount}
+            </p>
             <p className="__boardDetails">Active students</p>
           </div>
           <div className="__board">
-            <p className="__boardHead">{inActive}</p>
+            <p className="__boardHead">
+              {checkedOutCount}
+            </p>
             <p className="__boardDetails">Inactive students</p>
           </div>
         </div>
-      </div>
-
-      <div className="--flex-center  __firstCon">
-        <StudentStatus students={students} />
       </div>
 
       <div className="__lastCon">

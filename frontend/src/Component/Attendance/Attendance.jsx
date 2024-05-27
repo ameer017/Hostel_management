@@ -3,8 +3,10 @@ import "./Attendance.css";
 import { moe } from "../../assets";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { LuChevronsLeft, LuChevronsRight } from "react-icons/lu";
+import useAuthRedirect from "../../../context/useAuth";
 
 const Attendance = () => {
+  useAuthRedirect()
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth() + 1);
 

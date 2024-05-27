@@ -7,6 +7,9 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const errorHandler = require("./middleware/errorMiddleware");
 const connectDb = require("./config/DBConnect");
+const roomRoute = require("./routes/room");
+const adminRoute = require("./routes/adminRoutes");
+const studentRoute = require("./routes/student")
 const PORT = process.env.PORT || 3500;
 
 app.use(express.json());
@@ -24,11 +27,13 @@ app.use(
     origin: ["http://localhost:5173"],
     credentials: true,
     optionSuccessStatus: 200,
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE, OPTIONS",
   })
 );
 
-app.use("/room", require("./routes/room"));
+app.use("/room", roomRoute);
+app.use("/admin", adminRoute);
+app.use("/students", studentRoute);
 
 app.get("/", (req, res) => {
   res.send("Home Page!");

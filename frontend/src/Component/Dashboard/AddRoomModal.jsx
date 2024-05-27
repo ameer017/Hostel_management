@@ -1,92 +1,112 @@
 import React, { useState } from "react";
+import axios from "axios";
 import "./Dashboard.css";
 
 const AddRoomModal = ({ onAddRoom, onClose }) => {
-  const [newRoom, setNewRoom] = useState({
+  const [roomData, setRoomData] = useState({
     roomNumber: "",
-    capacity: "",
-    occupancy: "",
-    status: "",
-    location: "",
+    roomCapacity: "",
+    roomOccupancy: "",
+    roomLocation: "",
+    roomStatus: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setNewRoom((prevRoom) => ({
-      ...prevRoom,
+    setRoomData((prevData) => ({
+      ...prevData,
       [name]: value,
     }));
   };
 
-  const handleSubmit = () => {
-    onAddRoom(newRoom);
-    onClose();
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    setError("");
+
+    try {
+      const response = await axios.post(
+        `http://localhost:3500/room/create-room`,
+        roomData
+      );
+      console.log("Room added:", response.data);
+
+      onAddRoom(response.data);
+
+      onClose();
+    } catch (error) {
+      setError("Failed to add room. Please try again.");
+      console.log(error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <div className="modal">
-      <div className="modal-content --flex-start --dir-column">
+      <div className="modal-content">
         <h2 className="modal-title">Add New Room</h2>
-        <label htmlFor="roomNumber" className="room-label">
-          Room Number:
-        </label>
-        <input
-          type="text"
-          id="roomNumber"
-          name="roomNumber"
-          value={newRoom.roomNumber}
-          onChange={handleChange}
-          className="input-field"
-        />
-        <label htmlFor="capacity" className="room-label">
-          Capacity:
-        </label>
-        <input
-          type="text"
-          id="capacity"
-          name="capacity"
-          value={newRoom.capacity}
-          onChange={handleChange}
-          className="input-field"
-        />
-        <label htmlFor="occupancy" className="room-label">
-          Occupancy:
-        </label>
-        <input
-          type="text"
-          id="occupancy"
-          name="occupancy"
-          value={newRoom.occupancy}
-          onChange={handleChange}
-          className="input-field"
-        />
-        <label htmlFor="status" className="room-label">
-          Status:
-        </label>
-        <input
-          type="text"
-          id="status"
-          name="status"
-          value={newRoom.status}
-          onChange={handleChange}
-          className="input-field"
-        />
-        <label htmlFor="location" className="room-label">
-          Location:
-        </label>
-        <input
-          type="text"
-          id="location"
-          name="location"
-          value={newRoom.location}
-          onChange={handleChange}
-          className="input-field"
-        />
-        <div className="button-group">
-          <button className="save-button" onClick={handleSubmit}>
-            Save
+        <div className="form-group">
+          <label htmlFor="roomNumber">Room Number:</label>
+          <input
+            type="text"
+            id="roomNumber"
+            name="roomNumber"
+            value={roomData.roomNumber}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="roomCapacity">Room Capacity:</label>
+          <input
+            type="text"
+            id="roomCapacity"
+            name="roomCapacity"
+            value={roomData.roomCapacity}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="roomOccupancy">Room Occupancy:</label>
+          <input
+            type="text"
+            id="roomOccupancy"
+            name="roomOccupancy"
+            value={roomData.roomOccupancy}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="roomLocation">Room Location:</label>
+          <input
+            type="text"
+            id="roomLocation"
+            name="roomLocation"
+            value={roomData.roomLocation}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="roomStatus">Room Status:</label>
+          <input
+            type="text"
+            id="roomStatus"
+            name="roomStatus"
+            value={roomData.roomStatus}
+            onChange={handleChange}
+          />
+        </div>
+        {error && <p className="error">{error}</p>}
+        <div className="modal-actions">
+          <button
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+            className="btn-primary"
+          >
+            {isSubmitting ? "Adding..." : "Add "}
           </button>
-          <button className="cancel-button" onClick={onClose}>
+          <button onClick={onClose} className="btn-secondary">
             Cancel
           </button>
         </div>

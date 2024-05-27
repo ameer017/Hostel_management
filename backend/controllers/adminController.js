@@ -1,41 +1,70 @@
 const Admin = require("../models/adminModel");
 const bcrypt = require("bcryptjs");
-
+const asyncHandler = require("express-async-handler");
+const { generateToken } = require("../utils");
 
 // Register a new admin
-const register = async (req, res) => {
+const register = asyncHandler(async (req, res) => {
   try {
     const { email, fullname, password } = req.body;
 
+    if (!fullname || !email || !password) {
+      res.status(400);
+      throw new Error("Please fill in all the required fields.");
+    }
+
+    if (password.length < 6) {
+      res.status(400);
+      throw new Error("Password must be up to 6 characters.");
+    }
+
     // Check if user already exists
-    let admin = await Admin.findOne({ email });
-    if (admin) {
+    const userExist = await Admin.findOne({ email });
+
+    if (userExist) {
       return res.status(400).json({ msg: "User already exists" });
     }
 
     // Create new admin
-    admin = new Admin({
-      email,
+    const admin = await Admin.create({
       fullname,
+      email,
       password,
     });
 
-    // Encrypt password
-    const salt = await bcrypt.genSalt(10);
-    admin.password = await bcrypt.hash(password, salt);
+    const token = generateToken(admin._id);
 
-    // Save admin
-    await admin.save();
+    // Send HTTP-only cookie
+    res.cookie("token", token, {
+      path: "/",
+      httpOnly: true,
+      expires: new Date(Date.now() + 1000 * 86400), // 1 day
+      sameSite: "none",
+      secure: true,
+    });
 
-    res.status(201).json({ msg: "Admin registered successfully" });
+    if (admin) {
+      const { _id, fullname, email, role } = admin;
+
+      res.status(201).json({
+        _id,
+        fullname,
+        email,
+        token,
+        role,
+      });
+    } else {
+      res.status(400);
+      throw new Error("Invalid data");
+    }
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
   }
-};
+});
 
 // Admin login
-const login = async (req, res) => {
+const login = asyncHandler(async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -51,26 +80,143 @@ const login = async (req, res) => {
       return res.status(400).json({ msg: "Invalid Credentials" });
     }
 
-    res.status(200).json({ msg: "Admin logged in successfully" });
+    const token = generateToken(admin._id);
+
+    if (admin && isMatch) {
+      // Send HTTP-only cookie
+      res.cookie("token", token, {
+        path: "/",
+        httpOnly: true,
+        expires: new Date(Date.now() + 1000 * 86400), // 1 day
+        sameSite: "none",
+        secure: true,
+      });
+
+      const { _id, fullname, email, role } = admin;
+
+      res.status(201).json({
+        _id,
+        fullname,
+        email,
+        token,
+        role,
+      });
+    } else {
+      res.status(500);
+      throw new Error("Something went wrong, please try again");
+    }
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
   }
-};
+});
 
 // Delete an admin
-const deleteAdmin = async (req, res) => {
+const deleteAdmin = asyncHandler(async (req, res) => {
+  try {
+    const admin = Admin.findById(req.params.id);
+
+    if (!admin) {
+      res.status(404);
+      throw new Error("User not found");
+    }
+
+    await admin.deleteOne();
+    res.status(200).json({
+      message: "Admin data deleted successfully",
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+
+// Get details of a single admin
+const getAdmin = asyncHandler(async (req, res) => {
   try {
     const { adminId } = req.params;
 
-    // Find admin and delete
-    await Admin.findByIdAndDelete(adminId);
+    const admin = await Admin.findById(adminId);
 
-    res.status(200).json({ msg: "Admin deleted successfully" });
+    if (admin) {
+      const { _id, fullname, email, role } = admin;
+
+      res.status(200).json({
+        _id,
+        fullname,
+        email,
+        role,
+      });
+    } else {
+      res.status(404).json({ message: "Admin not found" });
+    }
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
+    console.error('Error retrieving admin:', err.message);
+    res.status(500).json({ message: "Server Error" });
   }
-};
+});
 
-module.exports = { register, login, deleteAdmin };
+
+// Get details of all admins
+const getAdmins = asyncHandler(async (req, res) => {
+  const admins = await Admin.find().sort("-createdAt").select("-password");
+  if (!admins) {
+    res.status(500);
+    throw new Error("Something went wrong");
+  }
+  res.status(200).json(admins);
+});
+
+const updateAdmin = asyncHandler(async (req, res) => {
+ const updateAdmin = asyncHandler(async (req, res) => {
+  const {adminId} = req.params
+  try {
+    const admin = await Admin.findById(adminId).select("-password");
+
+    if (!admin) {
+      res.status(404).json({ error: "Admin not found" });
+      return;
+    }
+
+    // Update admin properties if they exist in the request body
+    if (req.body.fullname) {
+      admin.fullname = req.body.fullname;
+    }
+    if (req.body.role) {
+      admin.role = req.body.role;
+    }
+    if (req.body.email) {
+      admin.email = req.body.email;
+    }
+
+    const updatedAdmin = await admin.save();
+
+    res.status(200).json(updatedAdmin);
+  } catch (error) {
+    console.error("Error updating admin:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+});
+
+const logoutAdmin = asyncHandler(async (req, res) => {
+  res.cookie("token", "", {
+    path: "/",
+    httpOnly: true,
+    expires: new Date(0), // 1 day
+    sameSite: "none",
+    secure: true,
+  });
+  return res.status(200).json({ message: "Logout successful" });
+});
+
+module.exports = {
+  register,
+  login,
+  deleteAdmin,
+  getAdmin,
+  getAdmins,
+  updateAdmin,
+  logoutAdmin
+};

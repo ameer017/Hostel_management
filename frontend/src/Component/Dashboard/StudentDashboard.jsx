@@ -4,52 +4,61 @@ import "./Dashboard.css";
 import Sidebar from "./Sidebar";
 import { Link } from "react-router-dom";
 import { IoMenu, IoCloseOutline } from "react-icons/io5";
-import { useDispatch, useSelector } from "react-redux";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
-import { deleteStudent, getStudents } from "../../../redux/features/student/studentSlice";
-import { FILTER_STUDENTS, selectStudents } from "../../../redux/features/filterSlice";
+import useAuthRedirect from "../../../context/useAuth";
+import axios from "axios";
 
 const StudentDashboard = () => {
-  const dispatch = useDispatch();
+  useAuthRedirect();
   const [search, setSearch] = useState("");
   const [isSidebarToggle, setIsSidebarToggle] = useState(false);
-
-  const { students } = useSelector(
-    (state) => state.student
-  );
-
-  const filteredStudents = useSelector(selectStudents);
+  const [data, setData] = useState([]);
+  const [message, setMessage] = useState();
 
   useEffect(() => {
-    dispatch(getStudents());
-  }, [dispatch]);
+    const fetchStudents = async () => {
+      const response = await axios.get("http://localhost:3500/students/");
 
-  const removeStudent = async (id) => {
-    await dispatch(deleteStudent(id));
-    dispatch(getStudents());
+      setData(response.data);
+      // console.log(response.data);
+    };
+    fetchStudents();
+  });
+
+  const removeUser = async (id) => {
+    try {
+      await axios.delete(`http://localhost:3500/students/delete-student/${_id}`);
+      setData(data.filter((item) => item._id !== _id));
+      setMessage("Student deleted successfully");
+    } catch (error) {
+      setMessage("Failed to delete");
+      console.error("Error deleting:", error);
+    }
   };
 
   const confirmDelete = (id) => {
     confirmAlert({
-      title: "Delete This Student",
-      message: "Are you sure to delete this student?",
+      title: "Delete This User",
+      message: "Are you sure to delete this user?",
       buttons: [
         {
           label: "Delete",
-          onClick: () => removeStudent(id),
+          onClick: () => removeUser(id),
         },
         {
           label: "Cancel",
-          onClick: () => console.log("Delete canceled"),
+          onClick: () => alert("Deletion cancelled"),
         },
       ],
     });
   };
 
-  useEffect(() => {
-    dispatch(FILTER_STUDENTS({ students, search }));
-  }, [dispatch, students, search]);
+  const filteredData = data.filter(
+    (item) =>
+      item.nationality.toLowerCase().includes(search.toLowerCase()) ||
+      item.email.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div>
@@ -106,11 +115,11 @@ const StudentDashboard = () => {
                     </tr>
                   </thead>
                   <tbody className="table__body">
-                    {filteredStudents.map((student) => (
+                    {filteredData.map((student) => (
                       <tr key={student.id} className="table__row">
                         <td className="same_class">{student.name}</td>
                         <td className="same_class">{student.email}</td>
-                        <td className="same_class">{student.idNumber}</td>
+                        <td className="same_class">{student._id}</td>
                         <td className="same_class">{student.gender}</td>
                         <td className="same_class">{student.age}</td>
                         <td className="same_class">{student.nationality}</td>

@@ -1,30 +1,30 @@
 import React, { useState } from "react";
-import "./Dashboard.css";
-import { RiDeleteBin6Line, RiFilePaperLine } from "react-icons/ri";
+import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaPen } from "react-icons/fa";
 import EditStatusModal from "./EditStatusModal";
 import AddRoomModal from "./AddRoomModal";
 
 const RoomTable = ({ rooms, onAddRoom, onUpdateRoom, onDeleteRoom }) => {
-  const [showModal, setShowModal] = useState(false);
-  const [showAddModal, setShowAddModal] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState(null);
 
-  const openModal = (room) => {
+  const handleEditClick = (room) => {
     setSelectedRoom(room);
-    setShowModal(true);
+    setIsEditModalOpen(true);
   };
 
-  const openAddModal = () => {
-    setShowAddModal(true);
+  const handleEditModalClose = () => {
+    setIsEditModalOpen(false);
+    setSelectedRoom(null);
   };
 
-  const closeModal = () => {
-    setShowModal(false);
+  const handleAddModalOpen = () => {
+    setIsAddModalOpen(true);
   };
-  
-  const closeAddModal = () => {
-    setShowAddModal(false);
+
+  const handleAddModalClose = () => {
+    setIsAddModalOpen(false);
   };
 
   return (
@@ -43,22 +43,26 @@ const RoomTable = ({ rooms, onAddRoom, onUpdateRoom, onDeleteRoom }) => {
             </tr>
           </thead>
           <tbody className="table__body">
-            {rooms.map((room, index) => (
-              <tr key={index} className="table__row">
+            {rooms.map((room) => (
+              <tr key={room._id} className="table_row">
                 <td className="same_class">{room.roomNumber}</td>
-                <td className="same_class">{room.capacity}</td>
-                <td className="same_class">{room.occupancy}</td>
-                <td className="same_class">{room.location}</td>
-                <td className="same_class">{room.status}</td>
-                <td className="same_class">
-                  <button onClick={() => openModal(room)} className="_noBg">
-                    <FaPen size={25} color="blue" />
-                  </button>
+                <td className="same_class">{room.roomCapacity}</td>
+                <td className="same_class">{room.roomOccupancy.length}</td>
+                <td className="same_class">{room.roomLocation}</td>
+                <td className="same_class">{room.roomStatus}</td>
+
+                <td>
                   <button
-                    onClick={() => onDeleteRoom(room.roomNumber)}
+                    onClick={() => handleEditClick(room)}
                     className="_noBg"
                   >
-                    <RiDeleteBin6Line size={25} color="red" />
+                    <FaPen size={15} color="blue" />
+                  </button>
+                  <button
+                    onClick={() => onDeleteRoom(room._id)}
+                    className="_noBg"
+                  >
+                    <RiDeleteBin6Line size={15} color="red" />
                   </button>
                 </td>
               </tr>
@@ -67,22 +71,22 @@ const RoomTable = ({ rooms, onAddRoom, onUpdateRoom, onDeleteRoom }) => {
         </table>
       </div>
       <div className="right">
-        <button onClick={openAddModal} className="btn-secondary">
+        <button onClick={handleAddModalOpen} className="btn-secondary">
           Add New Room
         </button>
-
-        {showAddModal && (
-          <AddRoomModal onAddRoom={onAddRoom} onClose={closeAddModal} />
-        )}
-
-        {showModal && (
-          <EditStatusModal
-            room={selectedRoom}
-            onUpdateRoom={onUpdateRoom}
-            onClose={closeModal}
-          />
-        )}
       </div>
+
+      {isAddModalOpen && (
+        <AddRoomModal onAddRoom={onAddRoom} onClose={handleAddModalClose} />
+      )}
+
+      {isEditModalOpen && (
+        <EditStatusModal
+          room={selectedRoom}
+          onClose={handleEditModalClose}
+          onUpdateRoom={onUpdateRoom}
+        />
+      )}
     </>
   );
 };

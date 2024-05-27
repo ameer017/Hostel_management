@@ -1,31 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useContext } from "react";
 import "./Register.css";
 import Loader from "../Loader/Loader";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { FaTimes } from "react-icons/fa";
 import { BsCheck2All } from "react-icons/bs";
-import { RESET, register } from "../../../redux/features/auth-admin/adminSlice";
 import PasswordInput from "../PasswordInput/PasswordInput";
 import { toast } from "react-toastify";
-const initialState = {
-  name: "",
-  email: "",
-  password: "",
-  password2: "",
-};
+import { UserContext } from "../../../context/userContext";
+import axios from "axios";
 
 const AdminReg = () => {
   const [loading, setLoading] = useState(true);
-  const [formData, setFormData] = useState(initialState);
-  const { name, email, password, password2 } = formData;
+  const { setUser } = useContext(UserContext);
+  const [formValidMessage, setFormValidMessage] = useState("");
+  const [formCompleted, setFormCompleted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const dispatch = useDispatch();
+  const [formData, setFormData] = useState({
+    fullname: "",
+    email: "",
+    password: "",
+    password2: "",
+  });
+
   const navigate = useNavigate();
-
-  const { isLoading, isLoggedIn, isSuccess, message } = useSelector(
-    (state) => state.admin
-  );
 
   const [uCase, setUCase] = useState(false);
   const [num, setNum] = useState(false);
@@ -36,86 +34,67 @@ const AdminReg = () => {
   const checkIcon = <BsCheck2All color="green" size={15} />;
 
   const switchIcon = (condition) => {
-    if (condition) {
-      return checkIcon;
-    }
-    return timesIcon;
+    return condition ? checkIcon : timesIcon;
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = useCallback((e) => {
+    setFormValidMessage("");
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  }, []);
 
   useEffect(() => {
-    // Check Lower and Uppercase
-    if (password.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/)) {
-      setUCase(true);
-    } else {
-      setUCase(false);
-    }
-    // Check for numbers
-    if (password.match(/([0-9])/)) {
-      setNum(true);
-    } else {
-      setNum(false);
-    }
-    // Check for special character
-    if (password.match(/([!,%,&,@,#,$,^,*,?,_,~])/)) {
-      setSChar(true);
-    } else {
-      setSChar(false);
-    }
-    // Check for PASSWORD LENGTH
-    if (password.length > 5) {
-      setPassLength(true);
-    } else {
-      setPassLength(false);
-    }
-  }, [password]);
+    const { password } = formData;
+    setUCase(/([a-z].*[A-Z])|([A-Z].*[a-z])/.test(password));
+    setNum(/[0-9]/.test(password));
+    setSChar(/[!,%,&,@,#,$,^,*,?,_,~]/.test(password));
+    setPassLength(password.length > 5);
+  }, [formData.password]);
 
-  const registerUser = async (e) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(
+    (event) => {
+      event.preventDefault();
 
-    if (!name || !email || !password) {
-      return toast.error("All fields are required");
-    }
-    if (password.length < 6) {
-      return toast.error("Password must be up to 6 characters");
-    }
-    if (
-      email.match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      )
-    ) {
-      return toast.error("Please enter a valid email");
-    }
-    if (password !== password2) {
-      return toast.error("Passwords do not match");
-    }
+      const { fullname, email, password, password2 } = formData;
 
-    const userData = {
-      name,
-      email,
-      password,
-    };
+      if (!fullname || !email || !password || !password2) {
+        setFormValidMessage("Oops! all fields are required");
+        return;
+      }
 
-    // console.log(userData);
-    await dispatch(register(userData));
-  };
+      if (password !== password2) {
+        setFormValidMessage("Password does not match!");
+        return;
+      }
+
+      setIsSubmitting(true);
+
+      axios
+        .post(`http://localhost:3500/admin/register`, formData)
+        .then((response) => {
+          setUser(response.data);
+          setIsSubmitting(false);
+          setFormCompleted(true);
+          toast.success("Registration Successful")
+          navigate("/homedash", { state: { user: response.data } });
+        })
+        .catch((error) => {
+          setIsSubmitting(false);
+          const message =
+            error.response?.status === 400
+              ? "A user with the same email address already exists"
+              : "Server error unable to process your registration";
+          setFormValidMessage(message);
+        });
+    },
+    [formData, navigate, setUser]
+  );
 
   useEffect(() => {
-    if (isSuccess && isLoggedIn) {
-      navigate("/homedash");
-    }
-
-    dispatch(RESET());
-  }, [isLoggedIn, isSuccess, dispatch, navigate]);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
+    setTimeout(() => setLoading(false), 2000);
   }, []);
 
   return (
@@ -126,49 +105,46 @@ const AdminReg = () => {
         <div className="container form__ --100vh">
           <div className="form-container">
             <p className="title">Create an account</p>
-            <form className="form" onSubmit={registerUser}>
+            <form className="form" onSubmit={handleSubmit}>
               <div className="--dir-column">
-                <label htmlFor="name">Full name:</label>
+                <label htmlFor="fullname">Full name:</label>
                 <input
                   type="text"
                   className="input"
-                  name="name"
-                  value={name}
+                  name="fullname"
+                  value={formData.fullname}
                   placeholder="Enter your full name"
                   required
                   onChange={handleInputChange}
                 />
               </div>
-
               <div className="--dir-column">
                 <label htmlFor="email">Email:</label>
                 <input
                   type="email"
                   className="input"
                   name="email"
-                  value={email}
+                  value={formData.email}
                   placeholder="Enter your email"
                   required
                   onChange={handleInputChange}
                 />
               </div>
-
               <div className="--dir-column">
                 <label htmlFor="password">Password:</label>
                 <PasswordInput
                   placeholder="Password"
                   name="password"
-                  value={password}
+                  value={formData.password}
                   onChange={handleInputChange}
                 />
               </div>
-
               <div className="--dir-column">
-                <label htmlFor="password">Confirm password:</label>
+                <label htmlFor="password2">Confirm password:</label>
                 <PasswordInput
                   placeholder="Confirm Password"
                   name="password2"
-                  value={password2}
+                  value={formData.password2}
                   onChange={handleInputChange}
                   onPaste={(e) => {
                     e.preventDefault();
@@ -177,37 +153,33 @@ const AdminReg = () => {
                   }}
                 />
               </div>
-
               <div className="card">
                 <ul className="form-list">
                   <li>
                     <span className="indicator">
-                      {switchIcon(uCase)}
-                      &nbsp; Lowercase & Uppercase
+                      {switchIcon(uCase)}&nbsp; Lowercase & Uppercase
                     </span>
                   </li>
                   <li>
                     <span className="indicator">
-                      {switchIcon(num)}
-                      &nbsp; Number (0-9)
+                      {switchIcon(num)}&nbsp; Number (0-9)
                     </span>
                   </li>
                   <li>
                     <span className="indicator">
-                      {switchIcon(sChar)}
-                      &nbsp; Special Character (!@#$%^&*)
+                      {switchIcon(sChar)}&nbsp; Special Character (!@#$%^&*)
                     </span>
                   </li>
                   <li>
                     <span className="indicator">
-                      {switchIcon(passLength)}
-                      &nbsp; At least 6 Character
+                      {switchIcon(passLength)}&nbsp; At least 6 Characters
                     </span>
                   </li>
                 </ul>
               </div>
-
-              <button className="--btn">Create account</button>
+              <button className="--btn" disabled={isSubmitting}>
+                {isSubmitting ? "Submitting..." : "Create account"}
+              </button>
             </form>
             <p>
               Already have an account? <Link to="/login">Login</Link>
