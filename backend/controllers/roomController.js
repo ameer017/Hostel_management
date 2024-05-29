@@ -4,7 +4,7 @@ const asyncHandler = require("express-async-handler");
 const createNewRoom = asyncHandler(async (req, res) => {
   const { roomNumber, roomCapacity, roomOccupancy, roomLocation, roomStatus } = req.body;
 
-  if (!roomNumber || !roomCapacity || !roomLocation || !roomStatus) {
+  if (!roomNumber || !roomCapacity || !roomLocation) {
     res.status(400);
     throw new Error("All fields are required!");
   }
