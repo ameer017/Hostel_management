@@ -114,7 +114,8 @@ const login = asyncHandler(async (req, res) => {
 // Delete an admin
 const deleteAdmin = asyncHandler(async (req, res) => {
   try {
-    const admin = Admin.findById(req.params.id);
+    const { adminId } = req.params;
+    const admin = Admin.findById(adminId);
 
     if (!admin) {
       res.status(404);
@@ -135,6 +136,7 @@ const deleteAdmin = asyncHandler(async (req, res) => {
 // Get details of a single admin
 const getAdmin = asyncHandler(async (req, res) => {
   try {
+    
     const { adminId } = req.params;
 
     const admin = await Admin.findById(adminId);
@@ -168,30 +170,30 @@ const getAdmins = asyncHandler(async (req, res) => {
   res.status(200).json(admins);
 });
 
+
 const updateAdmin = asyncHandler(async (req, res) => {
-  const admin = await Admin.findById(req.admin._id);
 
-  if (admin) {
-    const { _id, fullname, email, role } = admin;
+  const { adminId } = req.params;
 
-    admin.email = email;
-    admin.fullname = req.body.name || fullname;
-    admin.role = req.body.role || role;
+    const admin = await Admin.findById(adminId).select("-password");
 
-    const updatedAdmin = await admin.save();
 
-    res.status(200).json({
-      _id: updatedAdmin._id,
-      fullname: updatedAdmin.fullname,
-      role: updatedAdmin.role,
-      email: updatedAdmin.email,
-    });
-  } else {
-    res.status(404);
-    throw new Error("Admin not found");
-  }
-});
+    if(!admin) {
+      res.status(404).json({error: "Admin not found"})
+    }
+    if (admin) {
 
+      if (req.body?.fullname) admin.fullname = req.body.fullname;
+      if (req.body?.email) admin.email = req.body.email;
+      if (req.body?.role) admin.role = req.body.role;
+  
+      const result = await admin.save()
+
+      res.json(result)
+
+}
+
+})
 const logoutAdmin = asyncHandler(async (req, res) => {
   res.cookie("token", "", {
     path: "/",
