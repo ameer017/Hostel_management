@@ -57,7 +57,6 @@ const registerStudent = asyncHandler(async (req, res) => {
       _id: uniqueId,
       email,
       name,
-      lastname,
       age,
       nationality,
       guardian: {
@@ -65,7 +64,8 @@ const registerStudent = asyncHandler(async (req, res) => {
         guardianEmail: g_email,
       },
       gender,
-      room: room._id, // Assign the room's ObjectId to the student
+      room: room._id,
+      checkedIn: true,
     });
 
     room.roomOccupancy.push(student._id);
@@ -116,7 +116,7 @@ const updateStudentProfile = asyncHandler(async (req, res) => {
     student.age = req.body.age || age;
     student.nationality = req.body.nationality || nationality;
     student.guardian.guardianName = req.body.g_name || guardian.guardianName;
-    student.guardian.guardianEmail = req.body.g_email || guardian.guardianName;
+    student.guardian.guardianEmail = req.body.g_email || guardian.guardianEmail;
     student.gender = req.body.gender || gender;
 
     const updatedStudent = await student.save();
@@ -179,9 +179,9 @@ const updateCheckInStatus = asyncHandler(async (req, res) => {
   }
 
   if (action === "checkIn") {
-    student.checkIn();
+    student.checkedIn = true;
   } else if (action === "checkOut") {
-    student.checkOut();
+    student.checkedIn = false;
   } else {
     return res.status(400).json({ msg: "Invalid action" });
   }
@@ -217,5 +217,5 @@ module.exports = {
   updateStudentProfile,
   changeStudentRoom,
   updateCheckInStatus,
-  deleteStudent
+  deleteStudent,
 };

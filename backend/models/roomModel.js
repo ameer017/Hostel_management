@@ -12,6 +12,7 @@ const roomSchema = new mongoose.Schema({
 
   roomOccupancy: [
     {
+      
       type: String,
       ref: "Student",
     },
@@ -24,7 +25,7 @@ const roomSchema = new mongoose.Schema({
 
   roomStatus: {
     type: String,
-    default: "unAvailable",
+    default: "available",
   },
 });
 
