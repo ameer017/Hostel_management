@@ -8,7 +8,7 @@ const guardianSchema = new mongoose.Schema({
   guardianEmail: {
     type: String,
     required: [true, 'Please add an email'],
-    trim: true,
+    trim: true,  
     
   }
 });
@@ -41,7 +41,7 @@ const studentSchema = new mongoose.Schema({
     required: true
   },
   email: {
-    type: String,
+    type: String, 
     required: [true, 'Please add an email'],
     trim: true,
     unique: true,

@@ -14,7 +14,7 @@ const createNewRoom = asyncHandler(async (req, res) => {
     roomCapacity,
     roomOccupancy,
     roomLocation,
-    roomStatus,
+    roomStatus,    
   });
 
   if (room) {
@@ -104,7 +104,7 @@ const updateRoom = asyncHandler(async (req, res) => {
       res.status(200).json({
         message: "Room deleted successfully",
       });
-    } catch (error) {
+    } catch (error) { 
       res.status(500).json({ message: "Internal server error" });
     }
   });
