@@ -192,9 +192,9 @@ const updateCheckInStatus = asyncHandler(async (req, res) => {
 });
 
 const deleteStudent = asyncHandler(async (req, res) => {
-  const studentId = req.params.studentId;
+  const studentId = req.params._id;
   try {
-    const student = Student.findById(studentId);
+    const student = await Student.findById(studentId);
 
     if (!student) {
       res.status(404);

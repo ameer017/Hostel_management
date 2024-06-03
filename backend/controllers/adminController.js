@@ -113,12 +113,14 @@ const login = asyncHandler(async (req, res) => {
 
 // Delete an admin
 const deleteAdmin = asyncHandler(async (req, res) => {
+  const adminId = req.params.id; // Use req.params.id to get the admin ID from the route params
+
   try {
-    const admin = Admin.findById(req.params.id);
+    const admin = await Admin.findById(adminId);
 
     if (!admin) {
       res.status(404);
-      throw new Error("User not found");
+      throw new Error("Admin not found");
     }
 
     await admin.deleteOne();
@@ -130,6 +132,8 @@ const deleteAdmin = asyncHandler(async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
+
 
 
 // Get details of a single admin
@@ -169,26 +173,19 @@ const getAdmins = asyncHandler(async (req, res) => {
 });
 
 const updateAdmin = asyncHandler(async (req, res) => {
- const updateAdmin = asyncHandler(async (req, res) => {
-  const {adminId} = req.params
+  const adminId = req.body.id; // Use req.body.id to get the admin ID from the request body
+
   try {
-    const admin = await Admin.findById(adminId).select("-password");
+    const admin = await Admin.findById(adminId);
 
     if (!admin) {
-      res.status(404).json({ error: "Admin not found" });
-      return;
+      res.status(404);
+      throw new Error("Admin not found");
     }
 
-    // Update admin properties if they exist in the request body
-    if (req.body.fullname) {
-      admin.fullname = req.body.fullname;
-    }
-    if (req.body.role) {
-      admin.role = req.body.role;
-    }
-    if (req.body.email) {
-      admin.email = req.body.email;
-    }
+    // Update the admin fields
+    admin.fullname = req.body.fullname || admin.fullname; // Use req.body.name or keep the existing fullname
+    admin.role = req.body.role || admin.role; // Use req.body.role or keep the existing role
 
     const updatedAdmin = await admin.save();
 
@@ -198,7 +195,7 @@ const updateAdmin = asyncHandler(async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-});
+
 
 const logoutAdmin = asyncHandler(async (req, res) => {
   res.cookie("token", "", {

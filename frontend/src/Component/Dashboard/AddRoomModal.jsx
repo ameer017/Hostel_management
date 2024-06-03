@@ -6,7 +6,6 @@ const AddRoomModal = ({ onAddRoom, onClose }) => {
   const [roomData, setRoomData] = useState({
     roomNumber: "",
     roomCapacity: "",
-    roomOccupancy: "",
     roomLocation: "",
     roomStatus: "",
   });
@@ -67,16 +66,7 @@ const AddRoomModal = ({ onAddRoom, onClose }) => {
             onChange={handleChange}
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="roomOccupancy">Room Occupancy:</label>
-          <input
-            type="text"
-            id="roomOccupancy"
-            name="roomOccupancy"
-            value={roomData.roomOccupancy}
-            onChange={handleChange}
-          />
-        </div>
+
         <div className="form-group">
           <label htmlFor="roomLocation">Room Location:</label>
           <input
