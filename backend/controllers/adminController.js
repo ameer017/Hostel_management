@@ -189,15 +189,10 @@ const updateAdmin = asyncHandler(async (req, res) => {
 
     const updatedAdmin = await admin.save();
 
-    res.status(200).json({
-      _id: updatedAdmin._id,
-      fullname: updatedAdmin.fullname,
-      role: updatedAdmin.role,
-      email: updatedAdmin.email,
-    });
+    res.status(200).json(updatedAdmin);
   } catch (error) {
-    console.error(error.message);
-    res.status(500).json({ message: "Server Error" });
+    console.error("Error updating admin:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
