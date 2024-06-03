@@ -64,6 +64,7 @@ const Login = () => {
     <div className="container form__ --100vh">
       <div className="form-container">
         <p className="title">Admin Login</p>
+
         <form className="form" onSubmit={loginUser}>
           <div className="--dir-column">
             <label htmlFor="email">Email:</label>
@@ -77,6 +78,7 @@ const Login = () => {
               onChange={handleInputChange}
             />
           </div>
+
           <div className="--dir-column">
             <label htmlFor="password">Password:</label>
             <PasswordInput
@@ -86,16 +88,21 @@ const Login = () => {
               onChange={handleInputChange}
             />
           </div>
+
           <button className="--btn" disabled={isSubmitting}>
             {isSubmitting ? "Signing In..." : "Sign In"}
           </button>
+
         </form>
+
         {formValidMessage && (
           <p className="error-message">{formValidMessage}</p>
         )}
+
         <p>
           Don't have an account yet? <Link to="/">Sign Up</Link>
         </p>
+        
       </div>
     </div>
   );

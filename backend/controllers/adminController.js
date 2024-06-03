@@ -113,12 +113,14 @@ const login = asyncHandler(async (req, res) => {
 
 // Delete an admin
 const deleteAdmin = asyncHandler(async (req, res) => {
+  const adminId = req.params.id; // Use req.params.id to get the admin ID from the route params
+
   try {
-    const admin = Admin.findById(req.params.id);
+    const admin = await Admin.findById(adminId);
 
     if (!admin) {
       res.status(404);
-      throw new Error("User not found");
+      throw new Error("Admin not found");
     }
 
     await admin.deleteOne();
@@ -130,6 +132,8 @@ const deleteAdmin = asyncHandler(async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
+
 
 
 // Get details of a single admin
@@ -169,14 +173,19 @@ const getAdmins = asyncHandler(async (req, res) => {
 });
 
 const updateAdmin = asyncHandler(async (req, res) => {
-  const admin = await Admin.findById(req.admin._id);
+  const adminId = req.body.id; // Use req.body.id to get the admin ID from the request body
 
-  if (admin) {
-    const { _id, fullname, email, role } = admin;
+  try {
+    const admin = await Admin.findById(adminId);
 
-    admin.email = email;
-    admin.fullname = req.body.name || fullname;
-    admin.role = req.body.role || role;
+    if (!admin) {
+      res.status(404);
+      throw new Error("Admin not found");
+    }
+
+    // Update the admin fields
+    admin.fullname = req.body.fullname || admin.fullname; // Use req.body.name or keep the existing fullname
+    admin.role = req.body.role || admin.role; // Use req.body.role or keep the existing role
 
     const updatedAdmin = await admin.save();
 
@@ -186,11 +195,12 @@ const updateAdmin = asyncHandler(async (req, res) => {
       role: updatedAdmin.role,
       email: updatedAdmin.email,
     });
-  } else {
-    res.status(404);
-    throw new Error("Admin not found");
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: "Server Error" });
   }
 });
+
 
 const logoutAdmin = asyncHandler(async (req, res) => {
   res.cookie("token", "", {

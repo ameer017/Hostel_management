@@ -14,37 +14,47 @@ const StudentDashboard = () => {
   const [search, setSearch] = useState("");
   const [isSidebarToggle, setIsSidebarToggle] = useState(false);
   const [data, setData] = useState([]);
-  const [message, setMessage] = useState();
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     const fetchStudents = async () => {
-      const response = await axios.get("http://localhost:3500/students/");
-
-      setData(response.data);
-      // console.log(response.data);
+      try {
+        const response = await axios.get("http://localhost:3500/students/");
+        setData(response.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     };
     fetchStudents();
-  });
+  }, []); // Add empty dependency array to avoid re-fetching data on every render
 
-  const removeUser = async (id) => {
+  const removeUser = async (_id) => {
     try {
-      await axios.delete(`http://localhost:3500/students/delete-student/${_id}`);
-      setData(data.filter((item) => item._id !== _id));
+      console.log(`Deleting student with id: ${_id}`);
+      const response = await axios.delete(`http://localhost:3500/students/delete-student/${_id}`);
+      console.log(response.data); // Log response from server
+
+      // Filtering out the deleted student from the data
+      setData((prevData) => prevData.filter((student) => student._id !== _id));
+      console.log('Student removed from local state.');
+
+      // Setting the success message
       setMessage("Student deleted successfully");
     } catch (error) {
+      // Setting the error message
       setMessage("Failed to delete");
       console.error("Error deleting:", error);
     }
   };
 
-  const confirmDelete = (id) => {
+  const confirmDelete = (_id) => {
     confirmAlert({
       title: "Delete This User",
       message: "Are you sure to delete this user?",
       buttons: [
         {
           label: "Delete",
-          onClick: () => removeUser(id),
+          onClick: () => removeUser(_id),
         },
         {
           label: "Cancel",
@@ -116,7 +126,7 @@ const StudentDashboard = () => {
                   </thead>
                   <tbody className="table__body">
                     {filteredData.map((student) => (
-                      <tr key={student.id} className="table__row">
+                      <tr key={student._id} className="table__row">
                         <td className="same_class">{student.name}</td>
                         <td className="same_class">{student.email}</td>
                         <td className="same_class">{student._id}</td>
@@ -127,7 +137,7 @@ const StudentDashboard = () => {
                           <RiDeleteBin6Line
                             size={25}
                             color="red"
-                            onClick={() => confirmDelete(student.id)}
+                            onClick={() => confirmDelete(student._id)}
                           />
                         </td>
                       </tr>
