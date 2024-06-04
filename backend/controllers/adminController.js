@@ -113,23 +113,20 @@ const login = asyncHandler(async (req, res) => {
 
 // Delete an admin
 const deleteAdmin = asyncHandler(async (req, res) => {
-  const adminId = req.params.id; // Use req.params.id to get the admin ID from the route params
+  const adminId = req.params.id;
 
   try {
     const admin = await Admin.findById(adminId);
 
     if (!admin) {
-      res.status(404);
-      throw new Error("Admin not found");
+      return res.status(404).json({ message: "Admin not found" });
     }
 
     await admin.deleteOne();
-    res.status(200).json({
-      message: "Admin data deleted successfully",
-    });
+    res.status(200).json({ message: "Admin data deleted successfully" });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server Error");
+    res.status(500).json({ message: "Server Error" });
   }
 });
 
@@ -173,28 +170,27 @@ const getAdmins = asyncHandler(async (req, res) => {
 });
 
 const updateAdmin = asyncHandler(async (req, res) => {
-  const adminId = req.body.id; // Use req.body.id to get the admin ID from the request body
+  const adminId = req.params.id; // Use req.params.id to get the admin ID from the route params
+  const { role } = req.body; // Extract role from req.body
 
   try {
     const admin = await Admin.findById(adminId);
 
     if (!admin) {
-      res.status(404);
-      throw new Error("Admin not found");
+      return res.status(404).json({ message: "Admin not found" });
     }
 
-    // Update the admin fields
-    admin.fullname = req.body.fullname || admin.fullname; // Use req.body.name or keep the existing fullname
-    admin.role = req.body.role || admin.role; // Use req.body.role or keep the existing role
+    admin.role = role; // Update the role
 
-    const updatedAdmin = await admin.save();
+    await admin.save();
 
-    res.status(200).json(updatedAdmin);
+    res.status(200).json(admin);
   } catch (error) {
     console.error("Error updating admin:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ message: "Internal Server Error" });
   }
 });
+
 
 
 const logoutAdmin = asyncHandler(async (req, res) => {

@@ -13,8 +13,7 @@ router.post("/login", adminController.login);
 router.get("/admins", adminController.getAdmins);
 router.post("/logout", adminController.logoutAdmin);
 
-router.patch("/updateAdmin", adminController.updateAdmin);
-
+router.patch("/:id", adminController.updateAdmin);
 router.get("/:adminId", adminController.getAdmin);
 router.delete("/:id", adminController.deleteAdmin);
 
