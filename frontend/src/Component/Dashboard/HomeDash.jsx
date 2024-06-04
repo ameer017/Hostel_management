@@ -44,6 +44,33 @@ const HomeDash = () => {
     fetchStudents();
   });
 
+  const formatCheckInTime = (checkInTime) => {
+    if (!checkInTime) {
+      return "Invalid Date";
+    }
+  
+    const date = new Date(checkInTime);
+    if (isNaN(date.getTime())) {
+      return "Invalid Date";
+    }
+  
+    const options = {
+      weekday: "short",
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+      timeZone: "UTC"
+    };
+  
+    return new Intl.DateTimeFormat("en-US", options).format(date);
+  };
+  
+  
+
   return (
     <div className="--flex-center __homeDashCon">
       <div className="__paraCon">
@@ -85,7 +112,7 @@ const HomeDash = () => {
 
                     <td className="table_data">
                       {" "}
-                      {checkInTime}
+                      {formatCheckInTime(checkInTime)}
                     </td>
                   </tr>
                 );

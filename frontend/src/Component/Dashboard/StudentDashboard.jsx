@@ -29,13 +29,8 @@ const StudentDashboard = () => {
     fetchStudents();
   }, []);
 
-  const updateCheckIn = async() => {
-    try {
-      const response = await axios.patch("http://localhost:3500/students/checkInStatus")
-    } catch (error) {
-      console.log("Error updating:", error)
-    }
-  }
+  
+  
 
   const removeUser = async (_id) => {
     try {
