@@ -3,7 +3,7 @@ import "./HomeDash.css";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../../context/userContext";
 import useAuthRedirect from "../../../context/useAuth";
-import axios  from "axios"
+import axios from "axios";
 
 export const shortenText = (text, n) => {
   if (text.length > n) {
@@ -19,22 +19,30 @@ const HomeDash = () => {
   const [data, setData] = useState([]);
   const [checkedInCount, setCheckedInCount] = useState(0);
   const [checkedOutCount, setCheckedOutCount] = useState(0);
-
+  const [checkIn, setCheckIn] = useState([]);
+  const [checkOut, setCheckOut] = useState([]);
 
   useEffect(() => {
     const fetchStudents = async () => {
-      const response = await axios.get("http://localhost:3500/students/")
+      const response = await axios.get("http://localhost:3500/students/");
 
-      setData(response.data)
+      setData(response.data);
       // console.log(response.data)
-      const checkedInStudents = response.data.filter(student => student.checkedIn);
-        setCheckedInCount(checkedInStudents.length);
+      const checkedInStudents = response.data.filter(
+        (student) => student.checkedIn
+      );
+      setCheckedInCount(checkedInStudents.length);
+      setCheckIn(checkedInStudents);
+      // console.log(checkIn)
 
-      const checkedOutStudents = response.data.filter(student => !student.checkedIn);
-        setCheckedOutCount(checkedOutStudents.length);
-    }
-    fetchStudents()
-  })
+      const checkedOutStudents = response.data.filter(
+        (student) => !student.checkedIn
+      );
+      setCheckedOutCount(checkedOutStudents.length);
+      setCheckOut(checkedOutStudents);
+    };
+    fetchStudents();
+  });
 
   return (
     <div className="--flex-center __homeDashCon">
@@ -46,23 +54,64 @@ const HomeDash = () => {
         <h3 className="__quickTitle">Quick Stats</h3>
         <div className="__flex __boardss">
           <div className="__board">
-            <p className="__boardHead">
-              {data.length}
-            </p>
+            <p className="__boardHead">{data.length}</p>
             <p className="__boardDetails">Total students</p>
           </div>
           <div className="__board">
-            <p className="__boardHead">
-              {checkedInCount}
-            </p>
+            <p className="__boardHead">{checkedInCount}</p>
             <p className="__boardDetails">Active students</p>
           </div>
           <div className="__board">
-            <p className="__boardHead">
-              {checkedOutCount}
-            </p>
+            <p className="__boardHead">{checkedOutCount}</p>
             <p className="__boardDetails">Inactive students</p>
           </div>
+        </div>
+      </div>
+
+      <div className="--flex-center  __firstCon">
+        <h4 className="__title">Recent Activity</h4>
+        <div className="__users ">
+          <table className="home_table">
+            <tbody>
+              {checkIn.map((student) => {
+                const { name, checkInTime, _id } = student;
+
+                return (
+                  <tr key={_id} className="table_data">
+                    <td className="table_data">
+                      {name}
+                      <p>{shortenText(name, 5)} has checked In</p>
+                    </td>
+
+                    <td className="table_data">
+                      {" "}
+                      {checkInTime}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+        <div className="__users ">
+          <table className="home_table">
+            <tbody>
+              {checkOut.map((student) => {
+                const { name, checkOutTime, _id } = student;
+
+                return (
+                  <tr key={_id} className="table_data">
+                    <td className="table_data">
+                      {name}
+                      <p>{shortenText(name, 5)} has checked out</p>
+                    </td>
+
+                    <td className="table_data">{checkOutTime}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       </div>
 

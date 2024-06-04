@@ -7,7 +7,6 @@ const AddRoomModal = ({ onAddRoom, onClose }) => {
     roomNumber: "",
     roomCapacity: "",
     roomLocation: "",
-    roomStatus: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -77,16 +76,7 @@ const AddRoomModal = ({ onAddRoom, onClose }) => {
             onChange={handleChange}
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="roomStatus">Room Status:</label>
-          <input
-            type="text"
-            id="roomStatus"
-            name="roomStatus"
-            value={roomData.roomStatus}
-            onChange={handleChange}
-          />
-        </div>
+
         {error && <p className="error">{error}</p>}
         <div className="modal-actions">
           <button
