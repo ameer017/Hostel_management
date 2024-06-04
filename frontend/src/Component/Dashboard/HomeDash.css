@@ -341,6 +341,6 @@
   padding: 8px;
 }
 
-/* .table_data:nth-child(even) {
+.table_data:nth-child(even) {
   background-color: #dddddd;
-} */
+}
