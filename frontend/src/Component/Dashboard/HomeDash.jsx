@@ -24,36 +24,36 @@ const HomeDash = () => {
 
   useEffect(() => {
     const fetchStudents = async () => {
-      const response = await axios.get("http://localhost:3500/students/");
+      try {
+        const response = await axios.get("http://localhost:3500/students/");
+        const students = response.data;
 
-      setData(response.data);
-      // console.log(response.data)
-      const checkedInStudents = response.data.filter(
-        (student) => student.checkedIn
-      );
-      setCheckedInCount(checkedInStudents.length);
-      setCheckIn(checkedInStudents);
-      // console.log(checkIn)
+        setData(students);
 
-      const checkedOutStudents = response.data.filter(
-        (student) => !student.checkedIn
-      );
-      setCheckedOutCount(checkedOutStudents.length);
-      setCheckOut(checkedOutStudents);
+        const checkedInStudents = students.filter((student) => student.checkedIn);
+        setCheckedInCount(checkedInStudents.length);
+        setCheckIn(checkedInStudents);
+
+        const checkedOutStudents = students.filter((student) => !student.checkedIn);
+        setCheckedOutCount(checkedOutStudents.length);
+        setCheckOut(checkedOutStudents);
+      } catch (error) {
+        console.error("Error fetching student data:", error);
+      }
     };
     fetchStudents();
-  });
+  }, []); // Empty dependency array ensures useEffect runs only once
 
-  const formatCheckInTime = (checkInTime) => {
-    if (!checkInTime) {
+  const formatDate = (dateTime) => {
+    if (!dateTime) {
       return "Invalid Date";
     }
-  
-    const date = new Date(checkInTime);
+
+    const date = new Date(dateTime);
     if (isNaN(date.getTime())) {
       return "Invalid Date";
     }
-  
+
     const options = {
       weekday: "short",
       year: "numeric",
@@ -65,11 +65,9 @@ const HomeDash = () => {
       hour12: false,
       timeZone: "UTC"
     };
-  
+
     return new Intl.DateTimeFormat("en-US", options).format(date);
   };
-  
-  
 
   return (
     <div className="--flex-center __homeDashCon">
@@ -97,46 +95,55 @@ const HomeDash = () => {
 
       <div className="--flex-center  __firstCon">
         <h4 className="__title">Recent Activity</h4>
-        <div className="__users ">
+        <div className="__users">
           <table className="home_table">
             <tbody>
-              {checkIn.map((student) => {
-                const { name, checkInTime, _id } = student;
-
-                return (
-                  <tr key={_id} className="table_data">
-                    <td className="table_data">
-                      {name}
-                      <p>{shortenText(name, 5)} has checked In</p>
-                    </td>
-
-                    <td className="table_data">
-                      {" "}
-                      {formatCheckInTime(checkInTime)}
-                    </td>
-                  </tr>
-                );
-              })}
+              {checkIn.length > 0 ? (
+                checkIn.map((student) => {
+                  const { name, checkInTime, _id } = student;
+                  return (
+                    <tr key={_id} className="table_data">
+                      <td className="table_data">
+                        {name}
+                        <p>{shortenText(name, 5)} has checked In</p>
+                      </td>
+                      <td className="table_data">
+                        {formatDate(checkInTime)}
+                      </td>
+                    </tr>
+                  );
+                })
+              ) : (
+                <tr>
+                  <td colSpan="2">No recent check-ins</td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
-        <div className="__users ">
+        <div className="__users">
           <table className="home_table">
             <tbody>
-              {checkOut.map((student) => {
-                const { name, checkOutTime, _id } = student;
-
-                return (
-                  <tr key={_id} className="table_data">
-                    <td className="table_data">
-                      {name}
-                      <p>{shortenText(name, 5)} has checked out</p>
-                    </td>
-
-                    <td className="table_data">{checkOutTime}</td>
-                  </tr>
-                );
-              })}
+              {checkOut.length > 0 ? (
+                checkOut.map((student) => {
+                  const { name, checkOutTime, _id } = student;
+                  return (
+                    <tr key={_id} className="table_data">
+                      <td className="table_data">
+                        {name}
+                        <p>{shortenText(name, 5)} has checked out</p>
+                      </td>
+                      <td className="table_data">
+                        {formatDate(checkOutTime)}
+                      </td>
+                    </tr>
+                  );
+                })
+              ) : (
+                <tr>
+                  <td colSpan="2">No recent check-outs</td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

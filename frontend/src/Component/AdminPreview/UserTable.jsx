@@ -50,7 +50,7 @@ const UserTable = ({ data, onDelete, onUpdateRole }) => {
                 </button>
                 <button
                   className="__prevDelButton _noBg"
-                  onClick={() => onDelete(user.id)}
+                  onClick={() => onDelete(user._id)}
                   
                 >
                   <RiDeleteBin6Line />

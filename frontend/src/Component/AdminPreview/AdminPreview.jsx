@@ -11,7 +11,7 @@ const AdminPreview = () => {
   useAuthRedirect();
   const [search, setSearch] = useState("");
   const [adminData, setAdminData] = useState([]);
-  const [message, setMessage] = useState();
+  const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -19,11 +19,9 @@ const AdminPreview = () => {
     const fetchAdmins = async () => {
       try {
         const response = await axios.get(`http://localhost:3500/admin/admins`);
-
         setAdminData(response.data);
-        console.log(adminData);
+        console.log(response.data);
       } catch (error) {
-        setIsLoading(false);
         if (error.response && error.response.status === 400) {
           setMessage("Cannot fetch data");
         } else {
@@ -39,39 +37,38 @@ const AdminPreview = () => {
   const handleUpdateRole = async (id, newRole) => {
     try {
       const response = await axios.patch(
-        `http://localhost:3500/admin/updateAdmin`,
-        {
-          id,
-          role: newRole,
-        }
+        `http://localhost:3500/admin/${id}`,
+        { role: newRole }
       );
-
+  
       setAdminData((prevData) =>
         prevData.map((admin) =>
-          admin._id === id ? { ...admin, role: newRole } : admin
+          admin._id === id ? { ...admin, role: response.data.role } : admin
         )
       );
-      console.log(response.data); // Log the response data for debugging
+  
       setMessage("Admin role updated successfully");
     } catch (error) {
       setMessage("Failed to update admin role");
       console.error("Error updating admin role:", error);
     }
   };
+  
 
   const removeUser = async (id) => {
+    console.log("Removing user with id:", id); // Debugging
     try {
       await axios.delete(`http://localhost:3500/admin/${id}`);
-      setAdminData(adminData.filter((admin) => admin._id !== id));
+      setAdminData((prevData) => prevData.filter((admin) => admin._id !== id));
       setMessage("Admin deleted successfully");
     } catch (error) {
       setMessage("Failed to delete admin");
       console.error("Error deleting admin:", error);
     }
   };
-  
 
   const confirmDelete = (id) => {
+    console.log("Confirm delete for id:", id); // Debugging
     confirmAlert({
       title: "Delete This User",
       message: "Are you sure to delete this user?",
@@ -110,12 +107,20 @@ const AdminPreview = () => {
       </div>
 
       <div className="__prevList">
-        <UserTable
-          data={filteredData}
-          onDelete={confirmDelete}
-          onUpdateRole={handleUpdateRole}
-        />
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : adminData.length > 0 ? (
+          <UserTable
+            data={filteredData}
+            onDelete={confirmDelete}
+            onUpdateRole={handleUpdateRole}
+          />
+        ) : (
+          <p>No admins found</p>
+        )}
       </div>
+
+      {message && <p>{message}</p>}
     </div>
   );
 };

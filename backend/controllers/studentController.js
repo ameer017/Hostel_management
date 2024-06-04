@@ -207,9 +207,15 @@ const updateCheckInStatus = asyncHandler(async (req, res) => {
     student.checkedIn = true;
   } else if (action === "checkOut") {
     student.checkedIn = false;
+    student.checkOutTime = format24Hour(format)
   } else {
     return res.status(400).json({ msg: "Invalid action" });
   }
+
+  await Room.updateMany(
+    { roomOccupancy: studentId },
+    { $pull: { roomOccupancy: studentId } }
+  );
 
   await student.save();
 
