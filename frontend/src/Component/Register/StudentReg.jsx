@@ -7,10 +7,10 @@ import axios from "axios";
 const initialState = {
   name: "",
   age: "",
-  roomNumber: "",
+  roomNum: "",
   g_name: "",
   g_email: "",
-  photo: "",
+  email: "",
   gender: "",
   nationality: "",
 };
@@ -19,23 +19,24 @@ const StudentReg = () => {
   const [formData, setFormData] = useState(initialState);
   const [formValidMessage, setFormValidMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { name, age, roomNumber, g_name, g_email, gender, nationality, email } =
-    formData;
 
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    // console.log(e.target.value)
     setFormData({ ...formData, [name]: value });
   };
 
   const registerStudent = async (e) => {
     e.preventDefault();
+    const { name, age, roomNum, g_name, g_email, gender, nationality, email } =
+      formData;
 
     if (
       !name ||
       !age ||
-      !roomNumber ||
+      !roomNum ||
       !g_name ||
       !g_email ||
       !gender ||
@@ -46,22 +47,23 @@ const StudentReg = () => {
       return;
     }
     axios
-        .post(`http://localhost:3500/students/registerStudent`, formData)
-        .then((response) => {
-          setUser(response.data);
-          setIsSubmitting(false);
-          setFormCompleted(true);
-          toast.success("Registration Successful")
-          navigate("/homedash", { state: { user: response.data } });
-        })
-        .catch((error) => {
-          setIsSubmitting(false);
-          const message =
-            error.response?.status === 400
-              ? "A Student with the same email address already exists"
-              : "Server error unable to process your registration";
-          setFormValidMessage(message);
-        });
+    .post(`http://localhost:3500/students/registerStudent`, formData)
+    .then((response) => {
+      console.log(response); // Debug response
+      setIsSubmitting(false);
+      toast.success("Registration Successful");
+      navigate("/studentdash");
+    })
+    .catch((error) => {
+      console.error(error); // Debug error
+      setIsSubmitting(false);
+      const message =
+        error.response?.status === 400
+          ? "A Student with the same email address already exists"
+          : "Server error unable to process your registration";
+      setFormValidMessage(message);
+      toast.error(message); // Display error toast
+    });
   };
 
   return (
@@ -77,7 +79,7 @@ const StudentReg = () => {
               name="name"
               placeholder="Enter name"
               onChange={handleInputChange}
-              value={name}
+              value={formData.name}
             />
           </div>
 
@@ -89,7 +91,7 @@ const StudentReg = () => {
               name="age"
               placeholder="Enter age"
               onChange={handleInputChange}
-              value={age}
+              value={formData.age}
             />
           </div>
 
@@ -101,7 +103,7 @@ const StudentReg = () => {
               name="email"
               placeholder="yourname@gmail.com"
               onChange={handleInputChange}
-              value={email}
+              value={formData.email}
             />
           </div>
 
@@ -113,7 +115,7 @@ const StudentReg = () => {
               name="gender"
               placeholder="Male || Female"
               onChange={handleInputChange}
-              value={gender}
+              value={formData.gender}
             />
           </div>
 
@@ -125,19 +127,19 @@ const StudentReg = () => {
               name="nationality"
               placeholder="Enter nationality"
               onChange={handleInputChange}
-              value={nationality}
+              value={formData.nationality}
             />
           </div>
 
           <div className="--dir-column">
-            <label htmlFor="roomNumber">Room Number:</label>
+            <label htmlFor="roomNum">Room Number:</label>
             <input
               type="text"
               className="input"
-              name="roomNumber"
+              name="roomNum"
               placeholder="Enter room number"
               onChange={handleInputChange}
-              value={roomNumber}
+              value={formData.roomNum}
             />
           </div>
 
@@ -149,7 +151,7 @@ const StudentReg = () => {
               name="g_name"
               placeholder="Enter guardian's name"
               onChange={handleInputChange}
-              value={g_name}
+              value={formData.g_name}
             />
           </div>
 
@@ -161,7 +163,7 @@ const StudentReg = () => {
               name="g_email"
               placeholder="Enter guardian's email"
               onChange={handleInputChange}
-              value={g_email}
+              value={formData.g_email}
             />
           </div>
 
@@ -173,7 +175,6 @@ const StudentReg = () => {
         {formValidMessage && (
           <p className="error-message">{formValidMessage}</p>
         )}
-        
       </div>
     </div>
   );

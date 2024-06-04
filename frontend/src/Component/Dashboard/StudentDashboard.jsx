@@ -4,6 +4,7 @@ import "./Dashboard.css";
 import Sidebar from "./Sidebar";
 import { Link } from "react-router-dom";
 import { IoMenu, IoCloseOutline } from "react-icons/io5";
+import { FaPenFancy } from "react-icons/fa";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import useAuthRedirect from "../../../context/useAuth";
@@ -26,7 +27,15 @@ const StudentDashboard = () => {
       }
     };
     fetchStudents();
-  }, []); // Add empty dependency array to avoid re-fetching data on every render
+  }, []);
+
+  const updateCheckIn = async() => {
+    try {
+      const response = await axios.patch("http://localhost:3500/students/checkInStatus")
+    } catch (error) {
+      console.log("Error updating:", error)
+    }
+  }
 
   const removeUser = async (_id) => {
     try {
@@ -49,8 +58,8 @@ const StudentDashboard = () => {
 
   const confirmDelete = (_id) => {
     confirmAlert({
-      title: "Delete This User",
-      message: "Are you sure to delete this user?",
+      title: "Delete This Student",
+      message: "Are you sure to delete this student?",
       buttons: [
         {
           label: "Delete",
@@ -118,7 +127,6 @@ const StudentDashboard = () => {
                       <th className="same_class">Student Name</th>
                       <th className="same_class">Email</th>
                       <th className="same_class">ID Number</th>
-                      <th className="same_class">Gender</th>
                       <th className="same_class">Age</th>
                       <th className="same_class">Nationality</th>
                       <th className="same_class">Actions</th>
@@ -130,13 +138,18 @@ const StudentDashboard = () => {
                         <td className="same_class">{student.name}</td>
                         <td className="same_class">{student.email}</td>
                         <td className="same_class">{student._id}</td>
-                        <td className="same_class">{student.gender}</td>
                         <td className="same_class">{student.age}</td>
                         <td className="same_class">{student.nationality}</td>
                         <td className="same_class">
                           <RiDeleteBin6Line
                             size={25}
                             color="red"
+                            onClick={() => confirmDelete(student._id)}
+                          />
+                          &nbsp;&nbsp;
+                          <FaPenFancy
+                            size={25}
+                            color="blue"
                             onClick={() => confirmDelete(student._id)}
                           />
                         </td>

@@ -16,6 +16,30 @@ const ensureUniqueId = async () => {
   return uniqueId;
 };
 
+const date = new Date();
+
+const formatData = (input) => {
+  return input > 9 ? input : `0${input}`;
+};
+
+const formatHour = (input) => {
+  return input > 12 ? input - 12 : input;
+};
+
+const format = {
+  dd: formatData(date.getDate()),
+  mm: formatData(date.getMonth() + 1),
+  yyyy: date.getFullYear(),
+  HH: formatData(date.getHours()),
+  hh: formatData(formatHour(date.getHours())),
+  MM: formatData(date.getMinutes()),
+  SS: formatData(date.getSeconds()),
+};
+
+const format24Hour = ({ dd, mm, yyyy, HH, MM, SS }) => {
+  return `${mm}/${dd}/${yyyy} ${HH}:${MM}:${SS}`;
+};
+
 const registerStudent = asyncHandler(async (req, res) => {
   try {
     const { email, name, age, nationality, g_name, g_email, gender, roomNum } =
@@ -66,6 +90,7 @@ const registerStudent = asyncHandler(async (req, res) => {
       gender,
       room: room._id,
       checkedIn: true,
+      checkInTime: format24Hour(format),
     });
 
     room.roomOccupancy.push(student._id);
@@ -200,6 +225,12 @@ const deleteStudent = asyncHandler(async (req, res) => {
       res.status(404);
       throw new Error("Student not found");
     }
+
+    // Remove studentId from roomOccupancy array in Room collection
+    await Room.updateMany(
+      { roomOccupancy: studentId },
+      { $pull: { roomOccupancy: studentId } }
+    );
 
     await student.deleteOne();
     res.status(200).json({
