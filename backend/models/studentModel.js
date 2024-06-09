@@ -73,47 +73,6 @@ const studentSchema = new mongoose.Schema(
   }
 );
 
-const date = new Date();
-
-const formatData = (input) => {
-  if (input > 9) {
-    return input;
-  } else return `0${input}`;
-};
-
-const formatHour = (input) => {
-  if (input > 12) {
-    return input - 12;
-  }
-  return input;
-};
-
-const format = {
-  dd: formatData(date.getDate()),
-  mm: formatData(date.getMonth() + 1),
-  yyyy: date.getFullYear(),
-  HH: formatData(date.getHours()),
-  hh: formatData(formatHour(date.getHours())),
-  MM: formatData(date.getMinutes()),
-  SS: formatData(date.getSeconds()),
-};
-
-const format24Hour = ({ dd, mm, yyyy, HH, MM, SS }) => {
-  return `${mm}/${dd}/${yyyy} ${HH}:${MM}:${SS}`;
-};
-
-studentSchema.methods.checkIn = function () {
-  this.checkedIn = true;
-  this.checkInTime = format24Hour(format);
-  this.checkOutTime = null;
-};
-
-studentSchema.methods.checkOut = function () {
-  this.checkedIn = false;
-  this.checkOutTime = format24Hour(format);
-  this.checkInTime = null;
-};
-
 const Student = mongoose.model("Student", studentSchema);
 
 module.exports = Student;
